@@ -10,8 +10,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 
-const Login = () => {
-  const [name, setName] = useState("");
+const SignUp = () => {
   const paperStyle = {
     padding: 20,
     height: "70vh",
@@ -36,40 +35,39 @@ const Login = () => {
       <Paper elevation={10} style={paperStyle}>
         <Grid align="center">
           <Avatar className={classes.avatar}></Avatar>
-          <h2>Login</h2>
+          <h2>Sign up</h2>
         </Grid>
-        {name}
+
         <form>
           <TextField
             type="text"
             id="standard1"
-            label="Name"
+            label="Eter Label"
             fullWidth
             required
             autoComplete
-            value={name}
-            onChange={(e) => setName(e.target.value)}
           />
           <br />
           <br />
           <TextField
             type="password"
             id="standard2"
-            label="Password"
+            label="Enter label"
             fullWidth
             required
             autoComplete
           />
+
           <ButtonForm fullWidth style={btn}>
-            LOGIN
+            sign up
           </ButtonForm>
 
           {/* if may other mode of login- https://colorlib.com/wp/wp-content/uploads/sites/2/login-form-v11.jpg */}
           {/* <Typography>Or login with</Typography> */}
 
           <Typography>
-            Do you have an account?
-            <Link to="/registration">Sign Up</Link>
+            Already have an account?
+            <Link to="/login">Log In</Link>
           </Typography>
         </form>
       </Paper>
@@ -77,4 +75,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
