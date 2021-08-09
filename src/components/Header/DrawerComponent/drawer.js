@@ -8,22 +8,29 @@ import {
   ListItemText,
   makeStyles,
   Drawer,
+  Typography,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 
 const DrawerComponent = () => {
   const useStyles = makeStyles((theme) => ({
-    drawerContainer: {},
+    drawerContainer: {
+      width: "200",
+    },
     iconButtonContainer: {
       marginLeft: "auto",
       color: "white",
+      float: "right",
+      marginRight: theme.spacing(2),
     },
-
-    menuIconToggle: {
-      fontSize: "3rem",
+    list: {
+      width: 200,
     },
     link: {
       textDecoration: "none",
+    },
+    menuIconToggle: {
+      marginRight: "1rem",
     },
   }));
 
@@ -33,6 +40,19 @@ const DrawerComponent = () => {
   const classes = useStyles();
   return (
     <div>
+      <IconButton
+        edge="end"
+        className={classes.iconButtonContainer}
+        onClick={() => setOpenDrawer(!openDrawer)}
+        disableRipple
+        aria-label="menu"
+      >
+        <MenuIcon fontSize="large" className={classes.menuIconToggle} />
+        <Typography variant="h6" color="inherit">
+          Website
+        </Typography>
+      </IconButton>
+
       <Drawer
         anchor="left"
         classes={{ paper: classes.drawerContainer }}
@@ -40,22 +60,23 @@ const DrawerComponent = () => {
         open={openDrawer}
         onOpen={() => setOpenDrawer(true)}
       >
-        <List className={classes.link}>
-          <Link to="/">
+        <List className={classes.list}>
+          <Link to="/" className={classes.link}>
             <ListItem divider button onClick={() => setOpenDrawer(false)}>
               <ListItemIcon>
-                <ListItemText> Homepage</ListItemText>
+                <ListItemText>Homepage</ListItemText>
               </ListItemIcon>
             </ListItem>
           </Link>
 
-          <Link to="/login">
+          <Link to="/login" className={classes.link}>
             <ListItem divider button onClick={() => setOpenDrawer(false)}>
               <ListItemIcon>
                 <ListItemText> Login</ListItemText>
               </ListItemIcon>
             </ListItem>
           </Link>
+
           <ListItem divider button onClick={() => setOpenDrawer(false)}>
             <ListItemIcon>
               <ListItemText>Sample</ListItemText>
@@ -69,15 +90,6 @@ const DrawerComponent = () => {
           </ListItem>
         </List>
       </Drawer>
-
-      <IconButton
-        edge="end"
-        className={classes.iconButtonContainer}
-        onClick={() => setOpenDrawer(!openDrawer)}
-        disableRipple
-      >
-        <MenuIcon className={classes.menuIconToggle} />
-      </IconButton>
     </div>
   );
 };
