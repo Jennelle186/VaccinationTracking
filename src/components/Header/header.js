@@ -1,6 +1,6 @@
 //header https://www.youtube.com/playlist?list=PLakAmVjYWIY6m-EfiY6swKgDjtnQgFS5A
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -13,12 +13,20 @@ import {
 } from "@material-ui/core";
 import DrawerComponent from "./DrawerComponent/drawer";
 
-const Header = () => {
+const Header = (props) => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // for the tab to stay on the correct path/page even if it was reloaded
+  useEffect(() => {
+    let path = window.location.pathname;
+    if (path === "/" && value !== 0) setValue(0);
+    else if (path === "/login" && value !== 1) setValue(1);
+    // else if (path === "/about" && value !== 2) setValue(2);
+  }, [value]);
 
   //Breakpoints
   const theme = useTheme();
@@ -37,13 +45,13 @@ const Header = () => {
             backgroundColor: "#2196F3",
           }}
         >
-          {/* //or just change this typography to an icon or picture */}
           {/*------------------- Name of the website -----------------*/}
           {isMatch ? (
             <></>
           ) : (
             <Typography variant="h6" color="inherit">
               Website
+              {/* //or just change this typography to an icon or picture */}
             </Typography>
           )}
           {/*------------------- Name of the website -----------------*/}
