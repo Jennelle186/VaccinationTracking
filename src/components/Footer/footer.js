@@ -12,13 +12,14 @@ const Footer = (props) => {
       >
         <Container maxWidth="lg">
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
+            {/* change the sm={6} to sm{4} if it needs another section */}
+            <Grid item xs={12} sm={6}>
               <Box borderBottom={1}>Help</Box>
               <Box>Contactt</Box>
               <Box>Support</Box>
               <Box>Privacy</Box>
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={6}>
               <Box borderBottom={1}>Help</Box>
               <Box>Contactt</Box>
               <Box>Support</Box>
