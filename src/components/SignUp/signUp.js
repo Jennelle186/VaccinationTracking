@@ -14,7 +14,7 @@ const SignUp = () => {
   const paperStyle = {
     padding: 20,
     height: "70vh",
-    width: 350,
+    // width: 350,
     margin: "20px auto",
     padding: "3rem",
   };
@@ -31,7 +31,14 @@ const SignUp = () => {
   const classes = useStyles();
 
   return (
-    <Grid>
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: "100vh" }}
+    >
       <Paper elevation={10} style={paperStyle}>
         <Grid align="center">
           <Avatar className={classes.avatar}></Avatar>
