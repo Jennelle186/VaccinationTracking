@@ -6,7 +6,7 @@ const Homepage = (props) => {
     <section>
       <br />
       <h1>Homepage</h1>
-      <GenerateQR />
+      {/* <GenerateQR /> */}
     </section>
   );
 };
