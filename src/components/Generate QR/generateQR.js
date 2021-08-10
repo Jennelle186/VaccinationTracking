@@ -11,6 +11,7 @@ import {
   Container,
 } from "@material-ui/core";
 import ButtonForm from "./../Forms/Button/button";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 const useStyles = makeStyles({
   root: {
@@ -41,6 +42,8 @@ const GenerateQR = (props) => {
     <div>
       Generate QR code
       <Container style={{ marginBottom: "1rem" }}>
+        <ButtonForm startIcon={<GetAppIcon />}>Download</ButtonForm>
+        <br />
         {imgURL ? (
           <Card className={classes.root}>
             <CardActionArea>
@@ -49,6 +52,7 @@ const GenerateQR = (props) => {
                 image={imgURL}
                 // title="Contemplative Reptile"
               />
+
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   Name of the user here
