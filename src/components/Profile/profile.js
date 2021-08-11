@@ -44,7 +44,7 @@ const Profile = () => {
         "Full Name: ",
         firstName + middleName + lastName,
         ",",
-        selectedDate,
+        selectedDate.toLocaleDateString(),
         ",",
         phoneNumber
       );
