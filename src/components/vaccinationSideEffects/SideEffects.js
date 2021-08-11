@@ -24,10 +24,10 @@ const SideEffects = (props) => {
   const classes = useStyles();
   const [others, setOthers] = useState("");
   const [state, setState] = useState({
-    checkedA: false,
-    checkedB: false,
-    checkedC: false,
-    checkedD: false,
+    Fever: false,
+    Headache: false,
+    Nausea: false,
+    "Muscle Pain": false,
   });
   const handleCheckbox = (event) => {
     console.log(event.target.value);
@@ -36,6 +36,10 @@ const SideEffects = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // console.log(others, state);
+    for (const p in state) {
+      if (!state[p]) delete state[p];
+    }
     console.log(others, state);
   };
 
@@ -51,8 +55,8 @@ const SideEffects = (props) => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={state.checkedA}
-                  name="checkedA"
+                  checked={state.Fever}
+                  name="Fever"
                   color="primary"
                   value="Fever"
                   onChange={handleCheckbox}
@@ -63,8 +67,8 @@ const SideEffects = (props) => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={state.checkedB}
-                  name="checkedB"
+                  checked={state.Headache}
+                  name="Headache"
                   color="primary"
                   value="Headache"
                   onChange={handleCheckbox}
@@ -75,8 +79,8 @@ const SideEffects = (props) => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={state.checkedC}
-                  name="checkedC"
+                  checked={state.Nausea}
+                  name="Nausea"
                   color="primary"
                   value="Nausea"
                   onChange={handleCheckbox}
@@ -87,8 +91,8 @@ const SideEffects = (props) => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={state.checkedD}
-                  name="checkedD"
+                  checked={state["Muscle Pain"]}
+                  name="Muscle Pain"
                   color="primary"
                   value="Muscle Pain"
                   onChange={handleCheckbox}

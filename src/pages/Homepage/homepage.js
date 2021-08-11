@@ -1,6 +1,7 @@
 //generate QR code and side effects is only temporary here so I can view the design of this
 import GenerateQR from "../../components/Generate QR/generateQR";
 import SideEffects from "../../components/vaccinationSideEffects/SideEffects";
+import Profile from "../../components/Profile/profile";
 
 const Homepage = (props) => {
   return (
@@ -10,6 +11,7 @@ const Homepage = (props) => {
 
       {/* <GenerateQR /> */}
       {/* <SideEffects /> */}
+      <Profile />
     </section>
   );
 };
