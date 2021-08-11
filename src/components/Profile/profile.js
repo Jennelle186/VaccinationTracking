@@ -42,7 +42,7 @@ const Profile = () => {
     try {
       console.log(
         "Full Name: ",
-        firstName + middleName + lastName,
+        firstName + " " + middleName + "," + lastName,
         ",",
         selectedDate.toLocaleDateString(),
         ",",
