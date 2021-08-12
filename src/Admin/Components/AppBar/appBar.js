@@ -26,10 +26,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import MenuBookIcon from "@material-ui/icons/MenuBook";
-import RemoveShoppingCartIcon from "@material-ui/icons/RemoveShoppingCart";
-import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import StoreIcon from "@material-ui/icons/Store";
+import AssessmentIcon from "@material-ui/icons/Assessment";
+import AnnouncementIcon from "@material-ui/icons/Announcement";
+import GroupIcon from "@material-ui/icons/Group";
 
 const drawerWidth = 240;
 
@@ -202,9 +202,9 @@ export default function PersistentDrawerLeft() {
             </ListItem>
           </Link>
           <Link to="/reports" className={classes.link}>
-            <ListItem button key="Menu">
+            <ListItem button key="Vaccination Reports">
               <ListItemIcon>
-                <MenuBookIcon fontSize="large" />
+                <AssessmentIcon fontSize="large" />
               </ListItemIcon>
               <Typography variant="h6">Vaccination Reports</Typography>
             </ListItem>
@@ -212,7 +212,7 @@ export default function PersistentDrawerLeft() {
           <Link to="/announcement" className={classes.link}>
             <ListItem button key="Orders">
               <ListItemIcon>
-                <RemoveShoppingCartIcon fontSize="large" />
+                <AnnouncementIcon fontSize="large" />
               </ListItemIcon>
               <Typography variant="h6">Announcement</Typography>
             </ListItem>
@@ -221,7 +221,7 @@ export default function PersistentDrawerLeft() {
           <Link to="/users" className={classes.link}>
             <ListItem button key="Admin">
               <ListItemIcon>
-                <SupervisedUserCircleIcon fontSize="large" />
+                <GroupIcon fontSize="large" />
               </ListItemIcon>
               <Typography variant="h6">Users</Typography>
             </ListItem>
