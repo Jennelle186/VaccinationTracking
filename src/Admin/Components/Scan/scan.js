@@ -40,6 +40,8 @@ const Scan = () => {
     e.preventDefault();
   };
 
+  const [secDose, setSecDose] = useState(secondDose);
+
   return (
     <Card className={classes.root}>
       <CardHeader title="Update Vaccination Status" />
@@ -124,7 +126,7 @@ const Scan = () => {
                 fullWidth
               />
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <TextField
                 type="text"
                 label="Estimated 2nd Dosage"
@@ -132,6 +134,18 @@ const Scan = () => {
                 value={secondDose}
                 fullWidth
               />
+            </Grid> */}
+            <Grid item>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DatePicker
+                  format="MM/dd/yyyy"
+                  value={secDose}
+                  onChange={setSecDose}
+                  fullWidth
+                  id="date-picker-inline"
+                  label="Estimated 2nd Dose of Vaccination"
+                />
+              </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
               <TextField
