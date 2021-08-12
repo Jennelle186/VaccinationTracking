@@ -69,7 +69,7 @@ const AnnouncementPage = () => {
                   }
                 />
                 <CardContent>Schedule</CardContent>
-                <CardActions>
+                <CardActions style={{ justifyContent: "flex-end" }}>
                   <IconButton
                     aria-label="delete"
                     edge="end"
