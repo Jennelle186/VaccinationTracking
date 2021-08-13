@@ -24,6 +24,7 @@ const Scan = () => {
   const [firstDose, setFirstDose] = useState(new Date().toLocaleDateString());
   const [selectedDate, handleDateChange] = useState(new Date());
 
+  //for the estimated 2nd Dose of vaccine logic--------------------------
   const date = new Date();
   var newdate = new Date(date);
 
@@ -35,12 +36,12 @@ const Scan = () => {
   var y = newdate.getFullYear();
 
   const secondDose = mm + "/" + dd + "/" + y;
+  const [secDose, setSecDose] = useState(secondDose); //variable for 2nd dose
+  //for the estimated 2nd Dose of vaccine logic--------------------------
 
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-
-  const [secDose, setSecDose] = useState(secondDose);
 
   return (
     <Card className={classes.root}>
