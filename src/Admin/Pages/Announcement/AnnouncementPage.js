@@ -59,7 +59,7 @@ const AnnouncementPage = () => {
             }}
           >
             <Grid container justify="flex-start">
-              <Card className={classes.root}>
+              <Card className={classes.root} elevation={5}>
                 <CardHeader
                   title="Name of vaccine"
                   action={
