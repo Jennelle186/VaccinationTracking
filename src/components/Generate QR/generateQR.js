@@ -45,7 +45,7 @@ const GenerateQR = (props) => {
         <ButtonForm startIcon={<GetAppIcon />}>Download</ButtonForm>
         <br />
         {imgURL ? (
-          <Card className={classes.root}>
+          <Card className={classes.root} elevation={5}>
             <CardActionArea>
               <CardMedia
                 className={classes.media}

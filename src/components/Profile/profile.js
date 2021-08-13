@@ -54,7 +54,7 @@ const Profile = () => {
   };
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} elevation={5}>
       <CardHeader title="Update Profile" />
       <CardContent>
         <form onSubmit={handleSubmit}>

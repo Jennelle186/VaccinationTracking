@@ -50,7 +50,7 @@ const SideEffects = (props) => {
       </Typography>
       {/* https://stackoverflow.com/questions/55968689/how-can-i-use-checkbox-form-in-react */}
       <form onSubmit={handleSubmit}>
-        <Card className={classes.root}>
+        <Card className={classes.root} elevation={5}>
           <FormGroup style={{ alignContent: "center", padding: "1rem" }}>
             <FormControlLabel
               control={
