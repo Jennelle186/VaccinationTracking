@@ -45,7 +45,7 @@ const Login = () => {
           <Avatar className={classes.avatar}></Avatar>
           <h2>Login</h2>
         </Grid>
-        {name}
+
         <form>
           <TextField
             type="text"
