@@ -5,7 +5,6 @@ import AddVacinator from "../../Components/AddVacinator/AddVacinator";
 const AdminHome = () => {
   return (
     <div>
-      {/* AdminHome */}
       <Dashboard />
       {/* <Scan /> */}
       {/* <AddVacinator /> */}
