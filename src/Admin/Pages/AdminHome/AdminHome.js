@@ -9,6 +9,7 @@ const AdminHome = () => {
       <Dashboard />
       {/* <Scan /> */}
       {/* <AddVacinator /> */}
+      {/* <BarChart /> */}
     </div>
   );
 };

@@ -70,6 +70,7 @@ const AddVacinator = (props) => {
                 onlyCountries={["ph"]}
                 onChange={handleValue}
                 placeholder="Phone Number"
+                required
               />
             </Grid>
             <br />
