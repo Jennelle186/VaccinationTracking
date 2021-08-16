@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { signInWithGoogle } from "../../Firebase/utils";
 import { Link } from "react-router-dom";
 import ButtonForm from "./../Forms/Button/button";
 import {
@@ -9,6 +10,12 @@ import {
   Avatar,
   makeStyles,
 } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  avatar: {
+    backgroundColor: "#2196F3",
+  },
+}));
 
 const Login = () => {
   const [name, setName] = useState("");
@@ -24,11 +31,6 @@ const Login = () => {
     margin: "1.5rem 0",
   };
 
-  const useStyles = makeStyles((theme) => ({
-    avatar: {
-      backgroundColor: "#2196F3",
-    },
-  }));
   const classes = useStyles();
 
   return (
@@ -78,6 +80,10 @@ const Login = () => {
             Do you have an account?
             <Link to="/registration">Sign Up</Link>
           </Typography>
+          {/* not sure here, just trying to see if firebase works */}
+          <ButtonForm onClick={signInWithGoogle}>
+            Continue with Gmail
+          </ButtonForm>
         </form>
       </Paper>
     </Grid>

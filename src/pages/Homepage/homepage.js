@@ -11,7 +11,7 @@ const Homepage = (props) => {
 
       {/* <GenerateQR /> */}
       {/* <SideEffects /> */}
-      <Profile />
+      {/* <Profile /> */}
     </section>
   );
 };
