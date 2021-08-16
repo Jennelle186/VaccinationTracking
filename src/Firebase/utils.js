@@ -17,7 +17,6 @@ export const handleUserProfile = async (userAuth, additionalData) => {
   const { uid } = userAuth;
 
   const userRef = firestore.doc(`users/${uid}`);
-  const snapshot = await userRef.get();
 
   //create new user
   const snapshot = await userRef.get();
