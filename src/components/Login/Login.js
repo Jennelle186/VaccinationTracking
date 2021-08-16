@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { signInWithGoogle } from "../../Firebase/utils";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ButtonForm from "./../Forms/Button/button";
 import {
@@ -11,6 +11,8 @@ import {
   makeStyles,
 } from "@material-ui/core";
 
+import { googleSignInStart } from "../../Redux/User/userActions";
+
 const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: "#2196F3",
@@ -18,7 +20,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const classes = useStyles();
   const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const paperStyle = {
     padding: 20,
     height: "70vh",
@@ -31,7 +37,14 @@ const Login = () => {
     margin: "1.5rem 0",
   };
 
-  const classes = useStyles();
+  const handleGoogleSignIn = () => {
+    dispatch(googleSignInStart());
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+  };
 
   return (
     <Grid
@@ -81,7 +94,7 @@ const Login = () => {
             <Link to="/registration">Sign Up</Link>
           </Typography>
           {/* not sure here, just trying to see if firebase works */}
-          <ButtonForm onClick={signInWithGoogle}>
+          <ButtonForm onClick={handleGoogleSignIn}>
             Continue with Gmail
           </ButtonForm>
         </form>

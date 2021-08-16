@@ -3,16 +3,19 @@ import "firebase/firestore";
 import "firebase/auth";
 import { firebaseConfig } from "./config";
 
-firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(firebaseConfig);
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-const GoogleProvider = new firebase.auth.GoogleAuthProvider();
+//utility function for the onclick event with the Sign in of Google button
+export const GoogleProvider = new firebase.auth.GoogleAuthProvider();
 GoogleProvider.setCustomParameters({ prompt: "select_account" });
-export const signInWithGoogle = () => auth.signInWithPopup(GoogleProvider);
 
-export const handleUserProfile = async (userAuth, additionalData) => {
+export const handleUserProfile = async ({ userAuth, additionalData }) => {
   if (!userAuth) return;
   const { uid } = userAuth;
 
@@ -36,4 +39,14 @@ export const handleUserProfile = async (userAuth, additionalData) => {
     }
   }
   return userRef;
+};
+
+//if the currentUser is signed in in the application
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      unsubscribe();
+      resolve(userAuth);
+    }, reject);
+  });
 };

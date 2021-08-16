@@ -1,7 +1,8 @@
 //header https://www.youtube.com/playlist?list=PLakAmVjYWIY6m-EfiY6swKgDjtnQgFS5A
 
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -11,13 +12,21 @@ import {
   useTheme,
   Typography,
   Grid,
+  Button,
 } from "@material-ui/core";
 import DrawerComponent from "./DrawerComponent/drawer";
 import ButtonForm from "../Forms/Button/button";
+import { signOutUserStart } from "../../Redux/User/userActions";
+
+const mapState = (state) => ({
+  currentUser: state.user.currentUser,
+});
 
 const Header = (props) => {
+  const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);
-
+  const history = useHistory();
+  const { currentUser } = useSelector(mapState);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -33,6 +42,18 @@ const Header = (props) => {
   //Breakpoints
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+
+  const signOut = () => {
+    dispatch(signOutUserStart());
+  };
+
+  useEffect(() => {
+    //whenever signinsuccess is true
+    if (currentUser) {
+      history.push("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
   return (
     <div>
       <AppBar
@@ -77,19 +98,36 @@ const Header = (props) => {
                   aria-label="simple tabs example"
                   variant="fullWidth"
                 >
-                  <Tab disableRipple label="Homepage" to="/" component={Link} />
-                  <Tab
-                    disableRipple
-                    label="Login"
-                    to="/login"
-                    component={Link}
-                  />
-                  //idk what else to put it hereHHAHAHAH sample lang to sa baba
-                  para ma check ko if
-                  <Tab disableRipple label="Settings" />
-                  <Tab disableRipple label="Sample1" />
-                  <Tab disableRipple label="Sample2" />
-                  <Tab disableRipple label="Sample3" />
+                  {currentUser && [
+                    <>
+                      <Tab
+                        disableRipple
+                        label="Homepage"
+                        to="/"
+                        component={Link}
+                      />
+                      <Tab disableRipple label="Settings" />
+                      <Button color="inherit" onClick={() => signOut()}>
+                        Logout
+                      </Button>
+                    </>,
+                  ]}
+                  {!currentUser && [
+                    <>
+                      {/* <Tab
+                        disableRipple
+                        label="Homepage"
+                        to="/"
+                        component={Link}
+                      /> */}
+                      <Tab
+                        disableRipple
+                        label="Login"
+                        to="/login"
+                        component={Link}
+                      />
+                    </>,
+                  ]}
                 </Tabs>
               </Grid>
             </div>
