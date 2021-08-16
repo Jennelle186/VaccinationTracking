@@ -10,8 +10,10 @@ import {
   useMediaQuery,
   useTheme,
   Typography,
+  Grid,
 } from "@material-ui/core";
 import DrawerComponent from "./DrawerComponent/drawer";
+import ButtonForm from "../Forms/Button/button";
 
 const Header = (props) => {
   const [value, setValue] = React.useState(0);
@@ -67,21 +69,29 @@ const Header = (props) => {
             </h1>
           ) : (
             <div>
-              <Tabs
-                value={value}
-                indicatorColor="primary"
-                onChange={handleChange}
-                aria-label="simple tabs example"
-              >
-                <Tab disableRipple label="Homepage" to="/" component={Link} />
-                <Tab disableRipple label="Login" to="/login" component={Link} />
-                //idk what else to put it hereHHAHAHAH sample lang to sa baba
-                para ma check ko if
-                <Tab disableRipple label="Settings" />
-                <Tab disableRipple label="Sample1" />
-                <Tab disableRipple label="Sample2" />
-                <Tab disableRipple label="Sample3" />
-              </Tabs>
+              <Grid>
+                <Tabs
+                  value={value}
+                  indicatorColor="primary"
+                  onChange={handleChange}
+                  aria-label="simple tabs example"
+                  variant="fullWidth"
+                >
+                  <Tab disableRipple label="Homepage" to="/" component={Link} />
+                  <Tab
+                    disableRipple
+                    label="Login"
+                    to="/login"
+                    component={Link}
+                  />
+                  //idk what else to put it hereHHAHAHAH sample lang to sa baba
+                  para ma check ko if
+                  <Tab disableRipple label="Settings" />
+                  <Tab disableRipple label="Sample1" />
+                  <Tab disableRipple label="Sample2" />
+                  <Tab disableRipple label="Sample3" />
+                </Tabs>
+              </Grid>
             </div>
           )}
         </Toolbar>
