@@ -1,7 +1,6 @@
 //HOC A.K.A HIGER ORDER COMPONENT
 
 //if the user is not logged in, then we want to be logged in to access Registration
-
 import { useAuth } from "../CustomHooks/index";
 import { withRouter } from "react-router-dom";
 

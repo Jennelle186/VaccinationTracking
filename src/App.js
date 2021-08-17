@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
 import "./App.css";
+
+//hoc
+import WithAuth from "./HOC/withAuth";
+
 import Homepage from "./pages/Homepage/homepage";
 import LoginPage from "./pages/Login/login";
 import Registration from "./pages/Registration/registration";
@@ -11,7 +15,7 @@ import AppBar from "./Admin/Components/AppBar/appBar";
 import { useDispatch } from "react-redux";
 import { userAuthSession } from "./Redux/User/userActions";
 
-import WithAuth from "./HOC/withAuth";
+import Profile from "./pages/Profile/profile";
 
 const App = (props) => {
   const dispatch = useDispatch();
@@ -21,6 +25,7 @@ const App = (props) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div className="App">
       <Switch>
@@ -49,6 +54,17 @@ const App = (props) => {
             <MainLayout>
               <Registration />
             </MainLayout>
+          )}
+        />
+        <Route
+          exact
+          path="/profile"
+          render={() => (
+            <WithAuth>
+              <MainLayout>
+                <Profile />
+              </MainLayout>
+            </WithAuth>
           )}
         />
         <Route render={() => <AppBar />} />

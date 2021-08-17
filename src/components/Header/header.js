@@ -97,6 +97,7 @@ const Header = (props) => {
                   onChange={handleChange}
                   aria-label="simple tabs example"
                   variant="fullWidth"
+                  style={{ flexGrow: 1 }}
                 >
                   {currentUser && [
                     <>
@@ -105,8 +106,15 @@ const Header = (props) => {
                         label="Homepage"
                         to="/"
                         component={Link}
+                        style={{ flexGrow: 1 }}
                       />
-                      <Tab disableRipple label="Settings" />
+                      <Tab
+                        disableRipple
+                        label="Profile"
+                        to="/profile"
+                        component={Link}
+                      />
+                      <Tab disableRipple label="Settings" to="/profile" />
                       <Button color="inherit" onClick={() => signOut()}>
                         Logout
                       </Button>
@@ -114,12 +122,12 @@ const Header = (props) => {
                   ]}
                   {!currentUser && [
                     <>
-                      {/* <Tab
+                      <Tab
                         disableRipple
                         label="Homepage"
                         to="/"
                         component={Link}
-                      /> */}
+                      />
                       <Tab
                         disableRipple
                         label="Login"
