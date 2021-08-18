@@ -94,7 +94,7 @@ const Header = (props) => {
                 >
                   <Tab disableRipple label="Homepage" to="/" component={Link} />
                   {currentUser && (
-                    <div>
+                    <>
                       <Tab
                         disableRipple
                         label="Profile"
@@ -104,11 +104,11 @@ const Header = (props) => {
                       <Button color="inherit" onClick={() => auth.signOut()}>
                         Logout
                       </Button>
-                    </div>
+                    </>
                   )}
 
                   {!currentUser && (
-                    <div>
+                    <>
                       <Tab
                         disableRipple
                         label="Login"
@@ -121,7 +121,7 @@ const Header = (props) => {
                         to="/registration"
                         component={Link}
                       />
-                    </div>
+                    </>
                   )}
                 </Tabs>
               </Grid>
