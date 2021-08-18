@@ -1,5 +1,3 @@
-//header https://www.youtube.com/playlist?list=PLakAmVjYWIY6m-EfiY6swKgDjtnQgFS5A
-
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -14,6 +12,7 @@ import {
   Grid,
   Button,
   makeStyles,
+  TabPanel,
 } from "@material-ui/core";
 import DrawerComponent from "./DrawerComponent/drawer";
 
@@ -103,6 +102,28 @@ const Header = (props) => {
                   )}
 
                   {currentUser && (
+                    <Tab
+                      disableRipple
+                      label="Homepage"
+                      to="/"
+                      component={Link}
+                    />
+                  )}
+                  {currentUser && (
+                    <Tab
+                      disableRipple
+                      label="Profile"
+                      to="/profile"
+                      component={Link}
+                    />
+                  )}
+                  {currentUser && (
+                    <Button color="inherit" onClick={() => auth.signOut()}>
+                      Logout
+                    </Button>
+                  )}
+                  {/* 
+                  {currentUser && (
                     <>
                       <Tab
                         disableRipple
@@ -121,9 +142,9 @@ const Header = (props) => {
                         Logout
                       </Button>
                     </>
-                  )}
+                  )} */}
 
-                  {!currentUser && (
+                  {/* {!currentUser && (
                     <>
                       <Tab
                         disableRipple
@@ -144,6 +165,22 @@ const Header = (props) => {
                         component={Link}
                       />
                     </>
+                  )} */}
+                  {!currentUser && (
+                    <Tab
+                      disableRipple
+                      label="Homepage"
+                      to="/"
+                      component={Link}
+                    />
+                  )}
+                  {!currentUser && (
+                    <Tab
+                      disableRipple
+                      label="Login"
+                      to="/login"
+                      component={Link}
+                    />
                   )}
                 </Tabs>
               </Grid>
