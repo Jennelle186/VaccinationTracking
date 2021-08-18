@@ -18,6 +18,7 @@ import {
 import DrawerComponent from "./DrawerComponent/drawer";
 
 import { auth } from "../../Firebase/utils";
+import { checkUserAdmin } from "../../Admin/AdminRoute/checkAdmin";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +44,7 @@ const Header = (props) => {
     else if (path === "/profile" && value !== 2) setValue(2);
   }, [value]);
 
-  console.log(currentUser);
+  const admin = checkUserAdmin(currentUser);
 
   //Breakpoints
   const theme = useTheme();
@@ -92,15 +93,30 @@ const Header = (props) => {
                   aria-label="simple tabs example"
                   variant="fullWidth"
                 >
-                  <Tab disableRipple label="Homepage" to="/" component={Link} />
+                  {admin && (
+                    <Tab
+                      disableRipple
+                      label="Admin"
+                      to="/admin"
+                      component={Link}
+                    />
+                  )}
+
                   {currentUser && (
                     <>
+                      <Tab
+                        disableRipple
+                        label="Homepage"
+                        to="/"
+                        component={Link}
+                      />
                       <Tab
                         disableRipple
                         label="Profile"
                         to="/profile"
                         component={Link}
                       />
+
                       <Button color="inherit" onClick={() => auth.signOut()}>
                         Logout
                       </Button>
@@ -109,6 +125,12 @@ const Header = (props) => {
 
                   {!currentUser && (
                     <>
+                      <Tab
+                        disableRipple
+                        label="Homepage"
+                        to="/"
+                        component={Link}
+                      />
                       <Tab
                         disableRipple
                         label="Login"

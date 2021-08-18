@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import "./App.css";
+//firebase
+import { auth, handleUserProfile } from "./Firebase/utils";
 
 import WithAuth from "./Higher Order Component/withAuth";
+import WithAdmin from "./Admin/AdminRoute/withAdmin";
 
 //pages
 import Homepage from "./pages/Homepage/homepage";
@@ -15,13 +18,14 @@ import AppBar from "./Admin/Components/AppBar/appBar";
 import ForgotPassword from "./components/ForgotPassword/forgotPass";
 import ProfilePage from "./pages/Profile/profile";
 
-//firebase
-import { auth, handleUserProfile } from "./Firebase/utils";
-
 import { setCurrentUser } from "./redux/user/user.actions";
+
+import { checkUserAdmin } from "./Admin/AdminRoute/checkAdmin";
 
 const App = (props) => {
   const { setCurrentUser, currentUser } = props;
+  const admin = checkUserAdmin(currentUser);
+  console.log(admin);
 
   useEffect(() => {
     const authListener = auth.onAuthStateChanged(async (userAuth) => {
@@ -94,9 +98,32 @@ const App = (props) => {
             </WithAuth>
           )}
         />
+        <Route
+          render={() => (
+            <WithAdmin>
+              {" "}
+              <AppBar />
+            </WithAdmin>
+          )}
+        />
 
-        <Route render={() => <AppBar />} />
-        <Route exact path="/admin" render={() => <AdminHome />} />
+        <Route
+          exact
+          path="/admin"
+          render={() => (
+            <WithAdmin>
+              <AdminHome />
+            </WithAdmin>
+          )}
+        />
+        {/* {admin ? (
+          <li>
+            <Route render={() => <AppBar />} />
+            <Route exact path="/admin" render={() => <AdminHome />} />
+          </li>
+        ) : (
+          <Redirect to="/login" />
+        )} */}
       </Switch>
     </div>
   );
