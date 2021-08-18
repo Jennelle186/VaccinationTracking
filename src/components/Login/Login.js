@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { signInWithGoogle } from "../../Firebase/utils";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import ButtonForm from "./../Forms/Button/button";
 import {
   Grid,
@@ -10,6 +10,7 @@ import {
   Avatar,
   makeStyles,
 } from "@material-ui/core";
+import { auth } from "../../Firebase/utils";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -17,8 +18,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = () => {
-  const [name, setName] = useState("");
+const Login = (props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const paperStyle = {
     padding: 20,
     height: "70vh",
@@ -32,6 +35,22 @@ const Login = () => {
   };
 
   const classes = useStyles();
+
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      auth.signInWithEmailAndPassword(email, password);
+      resetForm();
+      props.history.push("/");
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   return (
     <Grid
@@ -48,16 +67,16 @@ const Login = () => {
           <h2>Login</h2>
         </Grid>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <TextField
             type="text"
             id="standard1"
-            label="Name"
+            label="Email"
             fullWidth
             required
             autoComplete
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <br />
           <br />
@@ -67,9 +86,11 @@ const Login = () => {
             label="Password"
             fullWidth
             required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             autoComplete
           />
-          <ButtonForm fullWidth style={btn}>
+          <ButtonForm fullWidth style={btn} type="submit">
             LOGIN
           </ButtonForm>
 
@@ -80,6 +101,9 @@ const Login = () => {
             Do you have an account?
             <Link to="/registration">Sign Up</Link>
           </Typography>
+          <Link to="/resetPassword">
+            <Typography>Forgot Password?</Typography>
+          </Link>
           {/* not sure here, just trying to see if firebase works */}
           <ButtonForm onClick={signInWithGoogle}>
             Continue with Gmail
@@ -90,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withRouter(Login);

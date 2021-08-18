@@ -18,6 +18,7 @@ const useStyles = makeStyles({
     maxWidth: 500,
     margin: "0 auto",
     marginBottom: "1rem",
+    marginTop: "1rem",
   },
 });
 

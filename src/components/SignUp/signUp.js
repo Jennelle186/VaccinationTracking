@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import ButtonForm from "./../Forms/Button/button";
 import {
   Grid,
@@ -9,8 +10,21 @@ import {
   Avatar,
   makeStyles,
 } from "@material-ui/core";
+import { auth, handleUserProfile } from "../../Firebase/utils";
+const useStyles = makeStyles((theme) => ({
+  avatar: {
+    backgroundColor: "#2196F3",
+  },
+}));
 
-const SignUp = () => {
+const SignUp = (props) => {
+  const history = useHistory();
+  const classes = useStyles();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState([]);
+
   const paperStyle = {
     padding: 20,
     height: "70vh",
@@ -23,12 +37,33 @@ const SignUp = () => {
     margin: "1.5rem 0",
   };
 
-  const useStyles = makeStyles((theme) => ({
-    avatar: {
-      backgroundColor: "#2196F3",
-    },
-  }));
-  const classes = useStyles();
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      const err = ["Password does not match."];
+      setErrors(err);
+      return;
+    }
+
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      await handleUserProfile(user);
+      resetForm();
+      props.history.push("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Grid
@@ -45,32 +80,70 @@ const SignUp = () => {
           <h2>Sign up</h2>
         </Grid>
 
-        <form>
+        {/* {errors.length > 0 && (
+          <ul>
+            {errors.map((err, index) => {
+              return <li key={index}>{err}</li>;
+            })}
+          </ul>
+        )} */}
+
+        <form onSubmit={handleSubmit}>
           <TextField
             type="text"
             id="standard1"
-            label="Eter Label"
+            label="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             fullWidth
             required
             autoComplete
           />
-          <br />
           <br />
           <TextField
             type="password"
             id="standard2"
-            label="Enter label"
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             fullWidth
             required
             autoComplete
+            error={
+              errors.length > 0 && (
+                <ul>
+                  {errors.map((err, index) => {
+                    return <li key={index}>{err}</li>;
+                  })}
+                </ul>
+              )
+            }
+            helperText={errors}
+          />
+          <TextField
+            type="password"
+            id="standard2"
+            label="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            fullWidth
+            required
+            autoComplete
+            error={
+              errors.length > 0 && (
+                <ul>
+                  {errors.map((err, index) => {
+                    return <li key={index}>{err}</li>;
+                  })}
+                </ul>
+              )
+            }
+            helperText={errors}
           />
 
-          <ButtonForm fullWidth style={btn}>
+          <ButtonForm fullWidth style={btn} type="submit">
             sign up
           </ButtonForm>
-
-          {/* if may other mode of login- https://colorlib.com/wp/wp-content/uploads/sites/2/login-form-v11.jpg */}
-          {/* <Typography>Or login with</Typography> */}
 
           <Typography>
             Already have an account?
@@ -82,4 +155,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default withRouter(SignUp);
