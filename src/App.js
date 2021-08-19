@@ -25,7 +25,6 @@ import { checkUserAdmin } from "./Admin/AdminRoute/checkAdmin";
 const App = (props) => {
   const { setCurrentUser, currentUser } = props;
   const admin = checkUserAdmin(currentUser);
-  console.log(admin);
 
   useEffect(() => {
     const authListener = auth.onAuthStateChanged(async (userAuth) => {
