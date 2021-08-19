@@ -44,8 +44,8 @@ const Header = (props) => {
     let path = window.location.pathname;
     if (path === "/" && value !== 0) setValue(0);
     else if (path === "/login" && value !== 1) setValue(1);
+    else if (path === "/profile" && value !== 1) setValue(1);
     else if (path === "/registration" && value !== 2) setValue(2);
-    else if (path === "/profile" && value !== 2) setValue(2);
   }, [value]);
 
   const admin = checkUserAdmin(currentUser);
@@ -100,20 +100,11 @@ const Header = (props) => {
               <Grid>
                 <Tabs
                   value={value}
-                  indicatorColor="primary"
+                  // indicatorColor="primary"
                   onChange={handleChange}
                   aria-label="simple tabs example"
                   variant="fullWidth"
                 >
-                  {admin && (
-                    <Tab
-                      disableRipple
-                      label="Admin"
-                      to="/admin"
-                      component={Link}
-                    />
-                  )}
-
                   {currentUser && (
                     <Tab
                       disableRipple
@@ -130,58 +121,20 @@ const Header = (props) => {
                       component={Link}
                     />
                   )}
+                  {admin && (
+                    <Tab
+                      disableRipple
+                      label="Admin"
+                      to="/admin"
+                      component={Link}
+                    />
+                  )}
                   {currentUser && (
-                    // <Button color="inherit" onClick={() => auth.signOut()}>
-                    //   Logout
-                    // </Button>
                     <Button color="inherit" onClick={handleClickOpen}>
                       Logout
                     </Button>
                   )}
-                  {/* 
-                  {currentUser && (
-                    <>
-                      <Tab
-                        disableRipple
-                        label="Homepage"
-                        to="/"
-                        component={Link}
-                      />
-                      <Tab
-                        disableRipple
-                        label="Profile"
-                        to="/profile"
-                        component={Link}
-                      />
 
-                      <Button color="inherit" onClick={() => auth.signOut()}>
-                        Logout
-                      </Button>
-                    </>
-                  )} */}
-
-                  {/* {!currentUser && (
-                    <>
-                      <Tab
-                        disableRipple
-                        label="Homepage"
-                        to="/"
-                        component={Link}
-                      />
-                      <Tab
-                        disableRipple
-                        label="Login"
-                        to="/login"
-                        component={Link}
-                      />
-                      <Tab
-                        disableRipple
-                        label="Register"
-                        to="/registration"
-                        component={Link}
-                      />
-                    </>
-                  )} */}
                   {!currentUser && (
                     <Tab
                       disableRipple
