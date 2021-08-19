@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { firestore } from "../../../Firebase/utils";
 import MUIDataTable from "mui-datatables";
 
 class Users extends Component {
@@ -21,31 +22,25 @@ class Users extends Component {
     selectableRows: "none",
   };
 
-  //   componentDidMount() {
-  //     firestore
-  //       .collection("users")
-  //       .get()
-  //       .then((snapshot) => {
-  //         const users = [];
-  //         snapshot.forEach((doc) => {
-  //           const data = doc.data();
-  //           users.push({
-  //             "Display Name": data.displayName,
-  //             Email: data.email,
-  //             // Address: data.street + "," + data.Barangay,
-  //             ...(data.street && data.Barangay
-  //               ? {
-  //                   Address: data.street + "," + data.Barangay,
-  //                 }
-  //               : {}),
-  //             "Phone Number": data.phone,
-  //           });
-  //         });
-  //         this.setState({ users: users });
-  //         // console.log(snapshot)
-  //       })
-  //       .catch((error) => console.log(error));
-  //   }
+  componentDidMount() {
+    firestore
+      .collection("users")
+      .get()
+      .then((snapshot) => {
+        const users = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          users.push({
+            Name: data.firstName + " " + data.middleName + "." + data.lastName,
+            Email: data.email,
+            "Phone Number": data.phoneNumber,
+          });
+        });
+        this.setState({ users: users });
+        // console.log(snapshot)
+      })
+      .catch((error) => console.log(error));
+  }
 
   render() {
     return this.state.users ? (
