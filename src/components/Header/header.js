@@ -12,9 +12,13 @@ import {
   Grid,
   Button,
   makeStyles,
-  TabPanel,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  Dialog,
 } from "@material-ui/core";
 import DrawerComponent from "./DrawerComponent/drawer";
+import { DialogBtn } from "../Forms/DialogButton/dialogBtn";
 
 import { auth } from "../../Firebase/utils";
 import { checkUserAdmin } from "../../Admin/AdminRoute/checkAdmin";
@@ -29,6 +33,7 @@ const Header = (props) => {
   const classes = useStyles();
   const { currentUser } = props;
   const [value, setValue] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -48,6 +53,14 @@ const Header = (props) => {
   //Breakpoints
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div>
       <AppBar
@@ -118,7 +131,10 @@ const Header = (props) => {
                     />
                   )}
                   {currentUser && (
-                    <Button color="inherit" onClick={() => auth.signOut()}>
+                    // <Button color="inherit" onClick={() => auth.signOut()}>
+                    //   Logout
+                    // </Button>
+                    <Button color="inherit" onClick={handleClickOpen}>
                       Logout
                     </Button>
                   )}
@@ -188,6 +204,25 @@ const Header = (props) => {
           )}
         </Toolbar>
       </AppBar>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle id="alert-dialog-title">{"Log Out"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to logout?
+          </DialogContentText>
+        </DialogContent>
+        <DialogBtn handleClose={handleClose}>
+          <Button
+            onClick={() => {
+              auth.signOut();
+              handleClose();
+            }}
+            color="primary"
+          >
+            Yes
+          </Button>
+        </DialogBtn>
+      </Dialog>
     </div>
   );
 };
