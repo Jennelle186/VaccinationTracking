@@ -25,7 +25,6 @@ import { checkUserAdmin } from "./Admin/AdminRoute/checkAdmin";
 import { AuthRoute } from "./Hooks/AuthRoute";
 import { AdminRoute } from "./Hooks/AdminRoute";
 const App = (props) => {
-  const dispatch = useDispatch();
   const {
     setAuthPending, // <-- access action
     setCurrentUser,
