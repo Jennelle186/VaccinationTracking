@@ -3,7 +3,7 @@ import Profile from "../../components/Profile/profile";
 const ProfilePage = () => {
   return (
     <section>
-      <Profile />;
+      <Profile />
     </section>
   );
 };

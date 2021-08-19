@@ -47,6 +47,7 @@ const Profile = () => {
   const [firstName, setFirstName] = useState(currentUser.firstName);
   const [middleName, setMiddleName] = useState(currentUser.middleName);
   const [lastName, setLastName] = useState(currentUser.lastName);
+  const [address, setAddress] = useState(currentUser.address);
   const [selectedDate, handleDateChange] = useState(currentUser.birthdate);
   const [phoneNumber, setphoneNumber] = useState(currentUser.phoneNumber);
 
@@ -70,9 +71,11 @@ const Profile = () => {
     setphoneNumber(value);
   };
 
+  const birthdate = new Date(selectedDate).toDateString();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const birthdate = selectedDate.toDateString();
+
     try {
       const userRef = firestore.collection("users").doc(uid);
       const ref = userRef.set(
@@ -80,6 +83,7 @@ const Profile = () => {
           firstName,
           middleName,
           lastName,
+          address,
           birthdate,
           phoneNumber,
         },
@@ -122,6 +126,16 @@ const Profile = () => {
                 variant="outlined"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                label="Address"
+                variant="outlined"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
                 fullWidth
                 required
               />
