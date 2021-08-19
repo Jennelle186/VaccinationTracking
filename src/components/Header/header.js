@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogContentText,
   Dialog,
+  Box,
 } from "@material-ui/core";
 import DrawerComponent from "./DrawerComponent/drawer";
 import { DialogBtn } from "../Forms/DialogButton/dialogBtn";
@@ -23,9 +24,20 @@ import { DialogBtn } from "../Forms/DialogButton/dialogBtn";
 import { auth } from "../../Firebase/utils";
 import { checkUserAdmin } from "../../Admin/AdminRoute/checkAdmin";
 
+import MailIcon from "@material-ui/icons/Mail";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  sectionDesktop: {
+    display: "none",
+    align: "right",
+    flexGrow: 1,
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+    },
   },
 }));
 
@@ -97,13 +109,16 @@ const Header = (props) => {
             </h1>
           ) : (
             <div>
-              <Grid>
+              <>
                 <Tabs
+                  centered
                   value={value}
+                  fullWidth={true}
                   // indicatorColor="primary"
                   onChange={handleChange}
                   aria-label="simple tabs example"
                   variant="fullWidth"
+                  style={{ display: "inline-block" }}
                 >
                   {currentUser && (
                     <Tab
@@ -152,7 +167,7 @@ const Header = (props) => {
                     />
                   )}
                 </Tabs>
-              </Grid>
+              </>
             </div>
           )}
         </Toolbar>

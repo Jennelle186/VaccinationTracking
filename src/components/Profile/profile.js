@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Card,
@@ -6,12 +6,21 @@ import {
   CardHeader,
   CardContent,
   TextField,
+  Snackbar,
 } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import "react-phone-input-2/lib/style.css";
 import ReactPhoneInput from "react-phone-input-2";
 import ButtonForm from "./../Forms/Button/button";
+import { firestore } from "../../Firebase/utils";
+
+import { useSelector } from "react-redux";
+
+const mapState = ({ user }) => ({
+  currentUser: user.currentUser,
+});
 
 const useStyles = makeStyles({
   root: {
@@ -22,33 +31,61 @@ const useStyles = makeStyles({
   },
 });
 
+//MUI-ALERT
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const Profile = () => {
   const classes = useStyles();
+  const { currentUser } = useSelector(mapState);
   const [value, setValue] = useState();
   const current = new Date().toISOString().split("T")[0];
 
   //variables
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [selectedDate, handleDateChange] = useState(new Date());
-  const [phoneNumber, setphoneNumber] = useState();
+  const [uid, setUid] = useState(currentUser.id);
+  const [firstName, setFirstName] = useState(currentUser.firstName);
+  const [middleName, setMiddleName] = useState(currentUser.middleName);
+  const [lastName, setLastName] = useState(currentUser.lastName);
+  const [selectedDate, handleDateChange] = useState(currentUser.birthdate);
+  const [phoneNumber, setphoneNumber] = useState(currentUser.phoneNumber);
+
+  //for Mui alert---
+  const [open, setOpen] = React.useState(false); //for MUI ALERT
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+  //--------------------------------
 
   const handleValue = (value) => {
     setphoneNumber(value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const birthdate = selectedDate.toDateString();
     try {
-      console.log(
-        "Full Name: ",
-        firstName + " " + middleName + "," + lastName,
-        ",",
-        selectedDate.toLocaleDateString(),
-        ",",
-        phoneNumber
+      const userRef = firestore.collection("users").doc(uid);
+      const ref = userRef.set(
+        {
+          firstName,
+          middleName,
+          lastName,
+          birthdate,
+          phoneNumber,
+        },
+        { merge: true }
       );
+      console.log(" saved");
     } catch (err) {
       console.log(err);
     }
@@ -102,8 +139,8 @@ const Profile = () => {
               </MuiPickersUtilsProvider>
             </Grid>
             <Grid>
-              {/* https://stackoverflow.com/questions/59809814/unable-to-increase-sizeheight-width-of-react-phone-input-2 */}
               <ReactPhoneInput
+                value={phoneNumber}
                 defaultCountry="us"
                 onlyCountries={["ph"]}
                 onChange={handleValue}
@@ -112,13 +149,18 @@ const Profile = () => {
             </Grid>
             <br />
             <Grid>
-              <ButtonForm type="submit" fullWidth>
+              <ButtonForm type="submit" fullWidth onClick={() => handleClick()}>
                 Submit
               </ButtonForm>
             </Grid>
           </Grid>
         </form>
       </CardContent>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          Profile Updated!
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };
