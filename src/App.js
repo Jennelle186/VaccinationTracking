@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import "./App.css";
 //firebase
 import { auth, handleUserProfile } from "./Firebase/utils";
@@ -17,17 +17,26 @@ import AdminHome from "./Admin/Pages/AdminHome/AdminHome";
 import AppBar from "./Admin/Components/AppBar/appBar";
 import ForgotPassword from "./components/ForgotPassword/forgotPass";
 import ProfilePage from "./pages/Profile/profile";
+import Users from "./Admin/Pages/Users/Users";
 
-import { setCurrentUser } from "./redux/user/user.actions";
-
+import { setCurrentUser, setAuthPending } from "./redux/user/user.actions";
 import { checkUserAdmin } from "./Admin/AdminRoute/checkAdmin";
 
+import { AuthRoute } from "./Hooks/AuthRoute";
+import { AdminRoute } from "./Hooks/AdminRoute";
 const App = (props) => {
-  const { setCurrentUser, currentUser } = props;
+  const dispatch = useDispatch();
+  const {
+    setAuthPending, // <-- access action
+    setCurrentUser,
+    currentUser,
+  } = props;
+
   const admin = checkUserAdmin(currentUser);
 
   useEffect(() => {
     const authListener = auth.onAuthStateChanged(async (userAuth) => {
+      setAuthPending(true); //--make it true
       if (userAuth) {
         const userRef = await handleUserProfile(userAuth);
         userRef.onSnapshot((snapshot) => {
@@ -36,9 +45,12 @@ const App = (props) => {
             ...snapshot.data(),
           });
         });
+      } else {
+        setCurrentUser(null);
       }
 
-      setCurrentUser(userAuth);
+      // setCurrentUser(userAuth); //clears auth pending
+      // setAuthPending(userAuth); //does work but after loggin out, you must refresh the page to properly log out
     });
 
     return () => {
@@ -85,8 +97,21 @@ const App = (props) => {
             </MainLayout>
           )}
         />
+        <AuthRoute
+          exact
+          path="/profile"
+          render={() => (
+            <MainLayout>
+              <ProfilePage />
+            </MainLayout>
+          )}
+        />
 
-        <Route
+        <AdminRoute component={AppBar} />
+        <AdminRoute exact path="/admin" component={AdminHome} />
+        <AdminRoute exact path="/users" component={Users} />
+
+        {/* <Route
           exact
           path="/profile"
           render={() => (
@@ -96,17 +121,18 @@ const App = (props) => {
               </MainLayout>
             </WithAuth>
           )}
-        />
-        <Route
+        /> */}
+
+        {/* <Route
           render={() => (
             <WithAdmin>
               {" "}
               <AppBar />
             </WithAdmin>
           )}
-        />
+        /> */}
 
-        <Route
+        {/* <Route
           exact
           path="/admin"
           render={() => (
@@ -114,15 +140,7 @@ const App = (props) => {
               <AdminHome />
             </WithAdmin>
           )}
-        />
-        {/* {admin ? (
-          <li>
-            <Route render={() => <AppBar />} />
-            <Route exact path="/admin" render={() => <AdminHome />} />
-          </li>
-        ) : (
-          <Redirect to="/login" />
-        )} */}
+        /> */}
       </Switch>
     </div>
   );
@@ -133,6 +151,7 @@ const mapStateToProps = ({ user }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  setAuthPending: (pending) => dispatch(setAuthPending(pending)),
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
 

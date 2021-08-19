@@ -13,6 +13,7 @@ class Users extends Component {
     "Name",
     "Email",
     "Phone Number",
+    "Address",
     "Vaccine",
     "At least 1 dose",
     "Fully Vaccinated",
@@ -34,6 +35,7 @@ class Users extends Component {
             Name: data.firstName + " " + data.middleName + "." + data.lastName,
             Email: data.email,
             "Phone Number": data.phoneNumber,
+            Address: data.address,
           });
         });
         this.setState({ users: users });
