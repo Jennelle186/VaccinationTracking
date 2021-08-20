@@ -1,5 +1,5 @@
 //those textfields are not yet final
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Card,
@@ -11,6 +11,7 @@ import {
 import ButtonForm from "../../../components/Forms/Button/button";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { firestore } from "../../../Firebase/utils";
 const useStyles = makeStyles({
   root: {
     maxWidth: 500,
@@ -43,6 +44,20 @@ const Scan = ({ scanResult }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    firestore
+      .collection("users")
+      .doc(scanResult)
+      .onSnapshot((snapshot) => {
+        const arr = [];
+        arr.push({
+          ...snapshot.data(),
+        });
+        // setDetails(arr);
+        console.log(" account details", arr);
+      });
+  }, []);
 
   return (
     <Card className={classes.root}>
