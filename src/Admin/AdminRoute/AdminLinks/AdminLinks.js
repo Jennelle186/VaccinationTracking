@@ -1,6 +1,7 @@
 import { Switch, Route } from "react-router-dom";
 import AdminHome from "../../Pages/AdminHome/AdminHome";
 import AnnouncementPage from "../../Pages/Announcement/AnnouncementPage";
+import ScanPage from "../../Pages/ScanQrCode/scanPage";
 import Users from "../../Pages/Users/Users";
 import { AdminRoute } from "../../../Hooks/AdminRoute";
 
@@ -21,6 +22,7 @@ const AdminLinks = () => {
           <AdminRoute exact path="/admin" component={AdminHome} />
           <AdminRoute exact path="/announcement" component={AnnouncementPage} />
           <AdminRoute exact path="/users" component={Users} />
+          <AdminRoute exact path="/scanQR-Code" component={ScanPage} />
         </Switch>
       </ThemeProvider>
     </div>

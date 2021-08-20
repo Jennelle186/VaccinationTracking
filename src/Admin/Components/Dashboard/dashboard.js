@@ -1,12 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Grid,
   makeStyles,
   Card,
   Typography,
-  CardActionArea,
   CardContent,
-  Paper,
   CardHeader,
 } from "@material-ui/core";
 import ButtonForm from "../../../components/Forms/Button/button";
@@ -17,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   },
   graph: {
     padding: "1rem",
+  },
+  link: {
+    textDecoration: "none",
   },
 }));
 
@@ -42,7 +44,9 @@ const Dashboard = () => {
                 <Typography variant="body2" color="textSecondary" component="p">
                   <Grid container spacing={2}>
                     <Grid item>
-                      <ButtonForm>Scan QR Code</ButtonForm>
+                      <Link to="/scanQR-Code" className={classes.link}>
+                        <ButtonForm>Scan QR Code</ButtonForm>
+                      </Link>
                     </Grid>
                     <Grid item>
                       <ButtonForm>Add Vaccine</ButtonForm>

@@ -11,6 +11,7 @@ import WithAdmin from "./Admin/AdminRoute/withAdmin";
 import Homepage from "./pages/Homepage/homepage";
 import LoginPage from "./pages/Login/login";
 import Registration from "./pages/Registration/registration";
+import QrCodePage from "./pages/Generate QR Code/qrCodePage";
 import { Route, Switch, Redirect } from "react-router-dom";
 import MainLayout from "./components/MainLayout/mainLayout";
 import AdminHome from "./Admin/Pages/AdminHome/AdminHome";
@@ -106,6 +107,15 @@ const App = (props) => {
           render={() => (
             <MainLayout>
               <ProfilePage />
+            </MainLayout>
+          )}
+        />
+        <AuthRoute
+          exact
+          path="/QR-Code"
+          render={() => (
+            <MainLayout>
+              <QrCodePage />
             </MainLayout>
           )}
         />

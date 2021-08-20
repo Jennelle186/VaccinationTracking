@@ -7,6 +7,7 @@ import {
   CardContent,
   TextField,
   Snackbar,
+  theme,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import DateFnsUtils from "@date-io/date-fns";
@@ -22,14 +23,19 @@ const mapState = ({ user }) => ({
   currentUser: user.currentUser,
 });
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 500,
     margin: "0 auto",
     marginBottom: "1rem",
     marginTop: "1rem",
   },
-});
+  snackBar: {
+    [theme.breakpoints.down("xs")]: {
+      bottom: 90,
+    },
+  },
+}));
 
 //MUI-ALERT
 function Alert(props) {
@@ -170,7 +176,12 @@ const Profile = () => {
           </Grid>
         </form>
       </CardContent>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        className={classes.snackBar}
+      >
         <Alert onClose={handleClose} severity="success">
           Profile Updated!
         </Alert>

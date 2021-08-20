@@ -27,6 +27,8 @@ import { checkUserAdmin } from "../../Admin/AdminRoute/checkAdmin";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 
+import MobileView from "./BottomBar/mobileView";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -56,7 +58,8 @@ const Header = (props) => {
     let path = window.location.pathname;
     if (path === "/" && value !== 0) setValue(0);
     else if (path === "/login" && value !== 1) setValue(1);
-    else if (path === "/profile" && value !== 1) setValue(1);
+    else if (path === "/QR-Code" && value !== 1) setValue(1);
+    else if (path === "/profile" && value !== 2) setValue(2);
     else if (path === "/registration" && value !== 2) setValue(2);
   }, [value]);
 
@@ -75,46 +78,30 @@ const Header = (props) => {
   };
   return (
     <div>
-      <AppBar
-        style={{
-          position: "sticky",
-          top: "0",
-        }}
-      >
-        {/*  */}
-        <Toolbar
-          variant="dense"
+      {isMatch ? (
+        <MobileView />
+      ) : (
+        <AppBar
           style={{
-            backgroundColor: "#2196F3",
+            position: "sticky",
+            top: "0",
           }}
         >
-          {/*------------------- Name of the website -----------------*/}
-          {isMatch ? (
-            <></>
-          ) : (
-            <Typography variant="h6" color="inherit">
-              Website
-              {/* //or just change this typography to an icon or picture */}
-            </Typography>
-          )}
-          {/*------------------- Name of the website -----------------*/}
-
-          {/* DrawerComponent is for the mobile view for the navbar. Tabs is for the desktop or large
-          screen view */}
-          {isMatch ? (
-            <h1>
-              <div>
-                <DrawerComponent />
-              </div>
-            </h1>
-          ) : (
+          {/*  */}
+          <Toolbar
+            variant="dense"
+            style={{
+              backgroundColor: "#2196F3",
+            }}
+          >
+            <Typography>Ayala Vaccination Tracker</Typography>
             <div>
               <>
                 <Tabs
                   centered
                   value={value}
                   fullWidth={true}
-                  // indicatorColor="primary"
+                  indicatorColor="primary"
                   onChange={handleChange}
                   aria-label="simple tabs example"
                   variant="fullWidth"
@@ -125,6 +112,14 @@ const Header = (props) => {
                       disableRipple
                       label="Homepage"
                       to="/"
+                      component={Link}
+                    />
+                  )}
+                  {currentUser && (
+                    <Tab
+                      disableRipple
+                      label="QR Code"
+                      to="/QR-Code"
                       component={Link}
                     />
                   )}
@@ -169,9 +164,10 @@ const Header = (props) => {
                 </Tabs>
               </>
             </div>
-          )}
-        </Toolbar>
-      </AppBar>
+          </Toolbar>
+        </AppBar>
+      )}
+
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle id="alert-dialog-title">{"Log Out"}</DialogTitle>
         <DialogContent>

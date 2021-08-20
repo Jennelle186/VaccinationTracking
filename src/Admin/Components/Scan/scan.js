@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Scan = () => {
+const Scan = ({ scanResult }) => {
   const classes = useStyles();
   const [firstDose, setFirstDose] = useState(new Date().toLocaleDateString());
   const [selectedDate, handleDateChange] = useState(new Date());
@@ -29,7 +29,8 @@ const Scan = () => {
   var newdate = new Date(date);
 
   newdate.setDate(newdate.getDate() + 28);
-  console.log(newdate);
+  // console.log(newdate);
+  console.log(scanResult);
 
   var dd = newdate.getDate();
   var mm = newdate.getMonth() + 1;
@@ -127,15 +128,7 @@ const Scan = () => {
                 fullWidth
               />
             </Grid>
-            {/* <Grid item>
-              <TextField
-                type="text"
-                label="Estimated 2nd Dosage"
-                variant="outlined"
-                value={secondDose}
-                fullWidth
-              />
-            </Grid> */}
+
             <Grid item>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
