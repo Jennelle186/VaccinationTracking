@@ -55,7 +55,7 @@ const Login = (props) => {
       // resetForm();
       // props.history.push("/");
     } catch (error) {
-      alert(err.message);
+      alert(error.message);
     }
   };
 
