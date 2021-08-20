@@ -11,6 +11,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { auth } from "../../Firebase/utils";
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [signInError, setSignInError] = useState("");
 
   const paperStyle = {
     padding: 20,
@@ -44,11 +46,16 @@ const Login = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      auth.signInWithEmailAndPassword(email, password);
-      resetForm();
-      props.history.push("/");
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then(() => resetForm())
+        .catch((error) => {
+          setSignInError(error.message);
+        });
+      // resetForm();
+      // props.history.push("/");
     } catch (error) {
-      alert(error);
+      alert(err.message);
     }
   };
 
@@ -66,6 +73,14 @@ const Login = (props) => {
           <Avatar className={classes.avatar}></Avatar>
           <h2>Login</h2>
         </Grid>
+
+        {signInError != "" && (
+          <>
+            <Alert severity="error">
+              <AlertTitle> {signInError}</AlertTitle>
+            </Alert>
+          </>
+        )}
 
         <form onSubmit={handleSubmit}>
           <TextField

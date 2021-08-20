@@ -72,11 +72,15 @@ const App = (props) => {
         <Route
           exact
           path="/login"
-          render={() => (
-            <MainLayout>
-              <LoginPage />
-            </MainLayout>
-          )}
+          render={() =>
+            currentUser ? (
+              <Redirect to="/" />
+            ) : (
+              <MainLayout>
+                <LoginPage />
+              </MainLayout>
+            )
+          }
         />
         <Route
           exact

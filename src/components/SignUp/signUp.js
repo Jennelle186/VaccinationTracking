@@ -10,6 +10,7 @@ import {
   Avatar,
   makeStyles,
 } from "@material-ui/core";
+import { Alert, AlertTitle } from "@material-ui/lab";
 import { auth, handleUserProfile } from "../../Firebase/utils";
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -24,6 +25,7 @@ const SignUp = (props) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
+  const [signUpError, setSignUpError] = useState("");
 
   const paperStyle = {
     padding: 20,
@@ -61,7 +63,7 @@ const SignUp = (props) => {
       resetForm();
       props.history.push("/");
     } catch (err) {
-      console.log(err);
+      setSignUpError(err.message);
     }
   };
 
@@ -80,13 +82,15 @@ const SignUp = (props) => {
           <h2>Sign up</h2>
         </Grid>
 
-        {/* {errors.length > 0 && (
-          <ul>
-            {errors.map((err, index) => {
-              return <li key={index}>{err}</li>;
-            })}
-          </ul>
-        )} */}
+        {signUpError != "" && (
+          <>
+            <Alert severity="error">
+              <AlertTitle> {signUpError}</AlertTitle>
+            </Alert>
+            <br />
+            <br />
+          </>
+        )}
 
         <form onSubmit={handleSubmit}>
           <TextField
@@ -109,16 +113,7 @@ const SignUp = (props) => {
             fullWidth
             required
             autoComplete
-            error={
-              errors.length > 0 && (
-                <ul>
-                  {errors.map((err, index) => {
-                    return <li key={index}>{err}</li>;
-                  })}
-                </ul>
-              )
-            }
-            helperText={errors}
+            error={errors.length > 0}
           />
           <TextField
             type="password"
@@ -129,16 +124,23 @@ const SignUp = (props) => {
             fullWidth
             required
             autoComplete
-            error={
-              errors.length > 0 && (
-                <ul>
-                  {errors.map((err, index) => {
-                    return <li key={index}>{err}</li>;
-                  })}
-                </ul>
-              )
+            error={errors.length > 0}
+            helperText={
+              <ul style={{ paddingLeft: "0", marginTop: "0" }}>
+                {errors.map((err, index) => {
+                  return (
+                    <li
+                      key={index}
+                      style={{
+                        listStyle: "none",
+                      }}
+                    >
+                      {err}
+                    </li>
+                  );
+                })}
+              </ul>
             }
-            helperText={errors}
           />
 
           <ButtonForm fullWidth style={btn} type="submit">
