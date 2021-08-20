@@ -24,15 +24,13 @@ const Scan = ({ scanResult }) => {
   const classes = useStyles();
   const [firstDose, setFirstDose] = useState(new Date().toLocaleDateString());
   const [selectedDate, handleDateChange] = useState(new Date());
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
 
   //for the estimated 2nd Dose of vaccine logic--------------------------
   const date = new Date();
   var newdate = new Date(date);
 
   newdate.setDate(newdate.getDate() + 28);
-  // console.log(newdate);
-  console.log(scanResult);
 
   var dd = newdate.getDate();
   var mm = newdate.getMonth() + 1;
@@ -47,7 +45,7 @@ const Scan = ({ scanResult }) => {
   };
 
   useEffect(() => {
-    firestore
+    const unsubscribe = firestore
       .collection("users")
       .doc(scanResult)
       .onSnapshot((snapshot) => {
@@ -55,17 +53,34 @@ const Scan = ({ scanResult }) => {
         arr.push({
           ...snapshot.data(),
         });
+
         setUsers(arr);
-        console.log(" account details", arr);
+        // console.log(JSON.stringify(arr));
       });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
     <Card className={classes.root}>
       <CardHeader title="Update Vaccination Status" />
       <CardContent>
+        {users && users.map((user) => <li>{user.email}</li>)}
+
         <form onSubmit={handleSubmit}>
           <Grid container direction={"column"} spacing={2}>
+            <Grid item>
+              <TextField
+                label="ID No"
+                variant="outlined"
+                // value={firstName}
+                // onChange={(e) => setFirstName(e.target.value)}
+                fullWidth
+                required
+              />
+            </Grid>
             <Grid item>
               <TextField
                 label="First Name"
