@@ -31,6 +31,7 @@ const QrReaderComponent = () => {
       ) : (
         <Container maxWidth="sm">
           <h1>Scanning</h1>
+
           <QrReader
             delay={300}
             style={{ width: "100%" }}
@@ -38,7 +39,7 @@ const QrReaderComponent = () => {
             onScan={handleScanWebCam}
           />
           <h3>Scanned Result</h3>
-          {scanResult}{" "}
+          <Grid item>{scanResult} </Grid>
         </Container>
       )}
     </div>

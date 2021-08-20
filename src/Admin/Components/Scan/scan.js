@@ -24,6 +24,7 @@ const Scan = ({ scanResult }) => {
   const classes = useStyles();
   const [firstDose, setFirstDose] = useState(new Date().toLocaleDateString());
   const [selectedDate, handleDateChange] = useState(new Date());
+  const [users, setUsers] = useState();
 
   //for the estimated 2nd Dose of vaccine logic--------------------------
   const date = new Date();
@@ -54,7 +55,7 @@ const Scan = ({ scanResult }) => {
         arr.push({
           ...snapshot.data(),
         });
-        // setDetails(arr);
+        setUsers(arr);
         console.log(" account details", arr);
       });
   }, []);
