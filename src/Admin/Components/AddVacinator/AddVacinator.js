@@ -12,6 +12,8 @@ import {
 import ButtonForm from "../../../components/Forms/Button/button";
 import ReactPhoneInput from "react-phone-input-2";
 
+import { firestore } from "../../../Firebase/utils";
+
 const useStyles = makeStyles({
   root: {
     maxWidth: 500,
@@ -32,8 +34,15 @@ const AddVacinator = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     try {
-      console.log(firstName, lastName, phoneNumber);
+      const userRef = firestore.collection("vaccinator-name").doc();
+      const ref = userRef.set({
+        firstName,
+        lastName,
+        phoneNumber,
+      });
+      console.log(" saved");
     } catch (err) {
       console.log(err);
     }

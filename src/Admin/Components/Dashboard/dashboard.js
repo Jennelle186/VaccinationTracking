@@ -52,7 +52,9 @@ const Dashboard = () => {
                       <ButtonForm>Add Vaccine</ButtonForm>
                     </Grid>
                     <Grid item>
-                      <ButtonForm>Add Vaccinator Name</ButtonForm>
+                      <Link to="/add-vaccinator" className={classes.link}>
+                        <ButtonForm>Add Vaccinator Name</ButtonForm>
+                      </Link>
                     </Grid>
                   </Grid>
                 </Typography>
