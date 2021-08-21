@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
 import {
-  TableContainer,
   Table,
   TableHead,
   TableRow,
@@ -37,7 +37,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const VaccinatorTable = () => {
+const VaccinatorTable = (props) => {
   const classes = useStyles();
   const [success, setSuccess] = useState();
   const [names, setNames] = useState([]);
@@ -92,6 +92,11 @@ const VaccinatorTable = () => {
     }
   };
 
+  const handleEdit = (uid) => {
+    console.log(uid);
+    props.history.push("/edit-vaccinator", uid);
+  };
+
   //----------------------
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -132,10 +137,8 @@ const VaccinatorTable = () => {
                   <TableCell numeric>{user.phoneNumber}</TableCell>
                   <TableCell>
                     <IconButton
-                      onClick={() => {
-                        console.log(`${user.id}`);
-                      }}
                       style={{ color: "green" }}
+                      onClick={() => handleEdit(`${user.id}`)}
                     >
                       <EditIcon />
                     </IconButton>
@@ -183,4 +186,4 @@ const VaccinatorTable = () => {
   );
 };
 
-export default VaccinatorTable;
+export default withRouter(VaccinatorTable);
