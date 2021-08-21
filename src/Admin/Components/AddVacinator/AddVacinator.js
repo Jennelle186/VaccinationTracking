@@ -10,13 +10,14 @@ const AddVacinator = (props) => {
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
 
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleValue = (value) => {
     setphoneNumber(value);
+  };
+
+  const resetForm = () => {
+    setFirstName("");
+    setLastName("");
+    setphoneNumber("");
   };
 
   const handleSubmit = (e) => {
@@ -29,6 +30,7 @@ const AddVacinator = (props) => {
         lastName,
         phoneNumber,
       });
+      resetForm();
       console.log(" saved");
     } catch (err) {
       console.log(err);

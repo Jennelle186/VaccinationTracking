@@ -7,7 +7,6 @@ import {
   DialogContent,
   DialogContentText,
   Dialog,
-  Button,
 } from "@material-ui/core";
 import ButtonForm from "../../../components/Forms/Button/button";
 import VaccinatorTable from "./vaccineTable";

@@ -9,9 +9,13 @@ import {
   makeStyles,
   Card,
   IconButton,
+  TablePagination,
+  Snackbar,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import { firestore } from "../../../Firebase/utils";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles({
   table: {
@@ -28,9 +32,29 @@ const useStyles = makeStyles({
   },
 });
 
+//MUI-ALERT
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const VaccinatorTable = () => {
   const classes = useStyles();
+  const [success, setSuccess] = useState();
   const [names, setNames] = useState([]);
+
+  //for Mui alert---
+  const [open, setOpen] = useState(false); //for MUI ALERT
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   useEffect(() => {
     const unsubscribe = firestore
@@ -51,39 +75,110 @@ const VaccinatorTable = () => {
     };
   }, []);
 
+  const handleDelete = async (uid) => {
+    try {
+      const userRef = firestore
+        .collection("vaccinator-name")
+        .doc(uid)
+        .delete()
+        .then(() => {
+          // console.log("saved");
+        })
+        .catch((error) => {
+          console.log("error");
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //----------------------
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 5));
+    setPage(0);
+  };
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, names.length - page * rowsPerPage);
+  //---------------------------------------
+
   return (
     <Card elevation={10} className={classes.card}>
-      <Table ria-label="a dense table">
+      <Table stickyHeader aria-label="sticky table">
         <TableHead>
           <TableRow>
             <TableCell>First Name</TableCell>
             <TableCell>Last Name</TableCell>
             <TableCell>Phone Number</TableCell>
+            <TableCell>Edit</TableCell>
             <TableCell>Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {names &&
-            names.map((user) => (
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  {user.firstName}
-                </TableCell>
-                <TableCell>{user.lastName}</TableCell>
-                <TableCell numeric>{user.phoneNumber}</TableCell>
-                <TableCell>
-                  <IconButton
-                    aria-label="delete"
-                    color="secondary"
-                    onClick={() => console.log(`${user.id}`)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
+            names
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((user) => (
+                <TableRow hover>
+                  <TableCell component="th" scope="row">
+                    {user.firstName}
+                  </TableCell>
+                  <TableCell>{user.lastName}</TableCell>
+                  <TableCell numeric>{user.phoneNumber}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => {
+                        console.log(`${user.id}`);
+                      }}
+                      style={{ color: "green" }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => {
+                        handleDelete(`${user.id}`);
+                        handleClick();
+                      }}
+                      color="secondary"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+          {emptyRows > 0 && (
+            <TableRow style={{ height: 53 * emptyRows }}>
+              <TableCell colSpan={6} />
+            </TableRow>
+          )}
         </TableBody>
       </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={names.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        className={classes.snackBar}
+      >
+        <Alert onClose={handleClose} severity="success">
+          Profile Deleted!
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };
