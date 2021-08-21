@@ -1,10 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { makeStyles, Grid } from "@material-ui/core";
-import AddVacinator from "../../Components/AddVacinator/AddVacinator";
-import MUIDataTable from "mui-datatables";
+import {
+  makeStyles,
+  Grid,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  Dialog,
+  Button,
+} from "@material-ui/core";
 import ButtonForm from "../../../components/Forms/Button/button";
 import VaccinatorTable from "./vaccineTable";
+import AddVacinator from "../../Components/AddVacinator/AddVacinator";
+
+import { DialogBtn } from "../../../components/Forms/DialogButton/dialogBtn";
 
 const useStyles = makeStyles({
   link: {
@@ -14,18 +23,18 @@ const useStyles = makeStyles({
 
 const VaccinatorPage = (props) => {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
 
-  // const columns = ["firstName", "lastName"];
-  // const options = {
-  //   filter: true,
-  // };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
-      {/* <AddVacinator /> */}
-
-      {/* {names && names.map((user) => <li>{user.firstName + user.lastName}</li>)} */}
-
       <Grid
         container
         direction="row"
@@ -38,10 +47,23 @@ const VaccinatorPage = (props) => {
           </Link>
         </Grid>
         <Grid item>
-          <ButtonForm className={classes.btn}>Add Vaccinator</ButtonForm>
+          <ButtonForm className={classes.btn} onClick={handleClickOpen}>
+            Add Vaccinator
+          </ButtonForm>
         </Grid>
       </Grid>
       <VaccinatorTable />
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle id="alert-dialog-title">
+          {"Add Vaccinator Name"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <AddVacinator />
+          </DialogContentText>
+        </DialogContent>
+        <DialogBtn handleClose={handleClose}></DialogBtn>
+      </Dialog>
     </div>
   );
 };

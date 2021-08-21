@@ -4,7 +4,7 @@ export const DialogBtn = ({ handleClose, children }) => {
   return (
     <DialogActions>
       <Button color="secondary" onClick={handleClose}>
-        No
+        Close
       </Button>
       <Button color="primary" autoFocus>
         {children}
