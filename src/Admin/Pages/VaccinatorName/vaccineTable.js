@@ -40,6 +40,7 @@ function Alert(props) {
 const VaccinatorTable = (props) => {
   const classes = useStyles();
   const [success, setSuccess] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [names, setNames] = useState([]);
 
   //for Mui alert---
@@ -68,6 +69,7 @@ const VaccinatorTable = (props) => {
           })
         );
         setNames(arr);
+        setIsLoading(true);
       });
 
     return () => {
@@ -113,64 +115,71 @@ const VaccinatorTable = (props) => {
 
   return (
     <Card elevation={10} className={classes.card}>
-      <Table stickyHeader aria-label="sticky table">
-        <TableHead>
-          <TableRow>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>Phone Number</TableCell>
-            <TableCell>Edit</TableCell>
-            <TableCell>Delete</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {names &&
-            names
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((user) => (
-                <TableRow hover>
-                  <TableCell component="th" scope="row">
-                    {user.firstName}
-                  </TableCell>
-                  <TableCell>{user.lastName}</TableCell>
-                  <TableCell numeric>{user.phoneNumber}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      style={{ color: "green" }}
-                      onClick={() => handleEdit(`${user.id}`)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>
-                    <IconButton
-                      onClick={() => {
-                        handleDelete(`${user.id}`);
-                        handleClick();
-                      }}
-                      color="secondary"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
+      {isLoading ? (
+        <>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <TableCell>First Name</TableCell>
+                <TableCell>Last Name</TableCell>
+                <TableCell>Phone Number</TableCell>
+                <TableCell>Edit</TableCell>
+                <TableCell>Delete</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {names &&
+                names
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((user) => (
+                    <TableRow hover>
+                      <TableCell component="th" scope="row">
+                        {user.firstName}
+                      </TableCell>
+                      <TableCell>{user.lastName}</TableCell>
+                      <TableCell numeric>{user.phoneNumber}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          style={{ color: "green" }}
+                          onClick={() => handleEdit(`${user.id}`)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          onClick={() => {
+                            handleDelete(`${user.id}`);
+                            handleClick();
+                          }}
+                          color="secondary"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
                 </TableRow>
-              ))}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={names.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+              )}
+            </TableBody>
+          </Table>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={names.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </>
+      ) : (
+        <h1>Loading...</h1>
+      )}
+
       <Snackbar
         open={open}
         autoHideDuration={6000}

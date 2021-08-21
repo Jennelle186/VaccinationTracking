@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link, useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { Card, TextField, CardHeader, Grid } from "@material-ui/core";
 import { firestore } from "../../../Firebase/utils";
 import ButtonForm from "../../../components/Forms/Button/button";
@@ -8,6 +8,7 @@ const EditVaccinator = () => {
   const location = useLocation();
   const rowData = location.state;
   let history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [firstName, setFirstName] = useState("");
 
@@ -22,6 +23,7 @@ const EditVaccinator = () => {
         });
 
         setUsers(arr);
+        setIsLoading(true);
       });
 
     return () => {
@@ -44,22 +46,28 @@ const EditVaccinator = () => {
           marginTop: "1rem",
         }}
       >
-        <Grid item>
+        <Grid container direction="row" justifyContent="flex-start">
           <ButtonForm onClick={() => goToPrevPath()}>Back</ButtonForm>
         </Grid>
-        {users &&
-          users.map((user) => (
-            <li style={{ listStyle: "none" }}>
-              <CardHeader title="Update Profile" />
-              <TextField
-                type="text"
-                value={firstName}
-                variant="outlined"
-                label="First Name"
-                fullWidth
-              />
-            </li>
-          ))}
+        {isLoading ? (
+          <>
+            {users &&
+              users.map((user) => (
+                <li style={{ listStyle: "none" }}>
+                  <CardHeader title="Update Profile" />
+                  <TextField
+                    type="text"
+                    value={firstName}
+                    variant="outlined"
+                    label="First Name"
+                    fullWidth
+                  />
+                </li>
+              ))}
+          </>
+        ) : (
+          <h1>Loading...</h1>
+        )}
       </Card>
     </div>
   );
