@@ -93,7 +93,6 @@ const VaccinatorTable = (props) => {
   };
 
   const handleEdit = (uid) => {
-    console.log(uid);
     props.history.push("/edit-vaccinator", uid);
   };
 
