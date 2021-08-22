@@ -58,7 +58,7 @@ const Profile = () => {
   const [phoneNumber, setphoneNumber] = useState(currentUser.phoneNumber);
 
   //for Mui alert---
-  const [open, setOpen] = React.useState(false); //for MUI ALERT
+  const [open, setOpen] = useState(false); //for MUI ALERT
 
   const handleClick = () => {
     setOpen(true);

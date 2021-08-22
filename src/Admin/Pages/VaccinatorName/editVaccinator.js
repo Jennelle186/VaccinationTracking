@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import { Card, TextField, CardHeader, Grid } from "@material-ui/core";
+import { Card, TextField, CardHeader, Grid, Snackbar } from "@material-ui/core";
 import { firestore } from "../../../Firebase/utils";
 import ButtonForm from "../../../components/Forms/Button/button";
+import MuiAlert from "@material-ui/lab/Alert";
+
+//MUI-ALERT
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const EditVaccinator = () => {
   const location = useLocation();
@@ -56,7 +62,7 @@ const EditVaccinator = () => {
     try {
       const userRef = firestore.collection("vaccinator-name").doc(rowData);
       const ref = userRef.set(
-        { ...users[index], phoneNumber }, // <-- user by index
+        { ...users[index] }, // <-- user by index
         { merge: true }
       );
       console.log(" saved");
@@ -64,6 +70,22 @@ const EditVaccinator = () => {
       console.log(err);
     }
   };
+
+  //for Mui alert---
+  const [open, setOpen] = useState(false); //for MUI ALERT
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+  //--------------------------------
 
   return (
     <div>
@@ -95,7 +117,7 @@ const EditVaccinator = () => {
                           label="First Name"
                           name="firstName" // <-- add name attribute
                           fullWidth
-                          onChange={setFirstName}
+                          onChange={changeHandler(index)}
                         />
                       </Grid>
                       <Grid item>
@@ -106,21 +128,24 @@ const EditVaccinator = () => {
                           label="Last Name"
                           name="lastName" // <-- add name attribute
                           fullWidth
+                          onChange={changeHandler(index)}
                         />
                       </Grid>
                       <Grid item>
                         <TextField
                           type="text"
-                          value={phoneNumber}
+                          value={user.phoneNumber}
                           variant="outlined"
                           label="Phone Number"
                           name="phoneNumber" // <-- add name attribute
-                          onChange={(e) => setPhoneNumber(e.target.value)}
+                          onChange={changeHandler(index)}
                           fullWidth
                         />
                       </Grid>
 
-                      <ButtonForm type="submit">Submit</ButtonForm>
+                      <ButtonForm type="submit" onClick={() => handleClick()}>
+                        Submit
+                      </ButtonForm>
                     </Grid>
                   </form>
                 </li>
@@ -129,6 +154,16 @@ const EditVaccinator = () => {
         ) : (
           <h1>Loading...</h1>
         )}
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          // className={classes.snackBar}
+        >
+          <Alert onClose={handleClose} severity="success">
+            Profile Updated!
+          </Alert>
+        </Snackbar>
       </Card>
     </div>
   );
