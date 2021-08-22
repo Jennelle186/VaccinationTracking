@@ -12,6 +12,7 @@ import ButtonForm from "../../../components/Forms/Button/button";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { firestore } from "../../../Firebase/utils";
+import SelectVaccinator from "../SelectVaccinator/selectVaccinator";
 const useStyles = makeStyles({
   root: {
     maxWidth: 500,
@@ -31,8 +32,7 @@ const Scan = ({ scanResult }) => {
   // const [birthdate, setBirthdate] = useState("");
   const [ctrlNumber, setCtrlNumber] = useState("");
   const [firstDose, setFirstDose] = useState(new Date().toLocaleDateString());
-  const [firstVaccinator, setFirstVaccinator] = useState("");
-  const [secondVaccinator, setSecondVaccintor] = useState("");
+
   const [selectedDate, handleDateChange] = useState(new Date());
 
   const [users, setUsers] = useState([]); //variable for storing user data info in an array
@@ -74,6 +74,13 @@ const Scan = ({ scanResult }) => {
       unsubscribe();
     };
   }, []);
+
+  //first selected value vaccinator names
+  const [firstVaccinator, setFirstVaccinator] = useState(0);
+  const [secondVaccinator, setSecondVaccintor] = useState(0);
+  const handleChange = (e) => setFirstVaccinator(e.target.value);
+  const handleChange2 = (e) => setSecondVaccintor(e.target.value);
+  //2nd selected value vaccinator names
 
   return (
     <Card className={classes.root}>
@@ -185,11 +192,9 @@ const Scan = ({ scanResult }) => {
                         />
                       </Grid>
                       <Grid item>
-                        <TextField
-                          type="text"
-                          label="1st Dosage Vaccinator Name"
-                          variant="outlined"
-                          fullWidth
+                        <SelectVaccinator
+                          value={firstVaccinator}
+                          onChange={handleChange}
                         />
                       </Grid>
 
@@ -205,12 +210,11 @@ const Scan = ({ scanResult }) => {
                           />
                         </MuiPickersUtilsProvider>
                       </Grid>
+
                       <Grid item>
-                        <TextField
-                          type="text"
-                          label="2nd Dosage Vaccinator Name"
-                          variant="outlined"
-                          fullWidth
+                        <SelectVaccinator
+                          value={secondVaccinator}
+                          onChange={handleChange2}
                         />
                       </Grid>
 
