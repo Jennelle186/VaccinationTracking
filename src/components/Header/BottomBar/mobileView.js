@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { IconButton, Fab, makeStyles } from "@material-ui/core";
 
 //icons
@@ -20,32 +21,40 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+  },
 }));
 
-const MobileView = () => {
+const MobileView = (props) => {
+  const { currentUser } = props;
   const classes = useStyles();
   return (
     <BottomBar>
-      <IconButton edge="start" color="inherit" aria-label="open drawer">
-        <HomeRoundedIcon /> Home
-      </IconButton>
-      {/*
-          <IconButton edge="start" color="inherit" aria-label="open drawer">
-            <AssignmentIcon />
-            VaccSymptom
-          </IconButton> */}
+      <Link to="/" className={classes.link}>
+        <IconButton edge="start" color="inherit" aria-label="open drawer">
+          <HomeRoundedIcon /> Home
+        </IconButton>
+      </Link>
 
-      <Fab color="primary" aria-label="add" className={classes.fabButton}>
-        <CropFreeRoundedIcon />
-        QR
-      </Fab>
+      {currentUser ? (
+        <Link to="/login">
+          <Fab color="primary" aria-label="add" className={classes.fabButton}>
+            <CropFreeRoundedIcon />
+            QR
+          </Fab>
+        </Link>
+      ) : (
+        <Link to="/QR-Code">
+          <Fab color="primary" aria-label="add" className={classes.fabButton}>
+            <CropFreeRoundedIcon />
+            QR
+          </Fab>
+        </Link>
+      )}
 
       <div className={classes.grow} />
-
-      {/* <IconButton edge="start" color="inherit" aria-label="open drawer">
-            <SupervisorAccountIcon />
-            VaccPopulation
-          </IconButton> */}
 
       <IconButton edge="end" color="inherit">
         <SettingsRoundedIcon />
