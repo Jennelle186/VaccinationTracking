@@ -9,6 +9,7 @@ import {
   CardHeader,
 } from "@material-ui/core";
 import ButtonForm from "../../../components/Forms/Button/button";
+import AvailableVaccine from "../../../components/AvailabilityVaccines/availableVaccine";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     textDecoration: "none",
+  },
+  announcement: {
+    marginLeft: "1rem",
   },
 }));
 
@@ -64,10 +68,8 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item>
-          <Card elevation={5} style={{ marginLeft: "1rem", padding: "1rem" }}>
-            <CardHeader title="Announcement of vaccines" />
-          </Card>
+        <Grid className={classes.announcement}>
+          <AvailableVaccine className={classes.announcement} />
         </Grid>
       </Grid>
       {/* Graph Below */}
