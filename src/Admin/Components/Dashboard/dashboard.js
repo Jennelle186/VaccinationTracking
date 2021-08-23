@@ -49,7 +49,9 @@ const Dashboard = () => {
                       </Link>
                     </Grid>
                     <Grid item>
-                      <ButtonForm>Add Vaccine</ButtonForm>
+                      <Link to="add-vaccine" className={classes.link}>
+                        <ButtonForm>Add Vaccine</ButtonForm>
+                      </Link>
                     </Grid>
                     <Grid item>
                       <Link to="/add-vaccinator" className={classes.link}>

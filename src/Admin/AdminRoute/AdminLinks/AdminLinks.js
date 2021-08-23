@@ -5,6 +5,7 @@ import ScanPage from "../../Pages/ScanQrCode/scanPage";
 import Users from "../../Pages/Users/Users";
 import AddVacinator from "../../Pages/VaccinatorName/vaccinatorPage";
 import EditVaccinator from "../../Pages/VaccinatorName/editVaccinator";
+import VaccinePage from "../../Pages/Vaccines/vaccinePage";
 import { AdminRoute } from "../../../Hooks/AdminRoute";
 
 import { createMuiTheme } from "@material-ui/core/styles";
@@ -31,6 +32,7 @@ const AdminLinks = () => {
             path="/edit-vaccinator"
             component={EditVaccinator}
           />
+          <AdminRoute exact path="/add-vaccine" component={VaccinePage} />
         </Switch>
       </ThemeProvider>
     </div>
