@@ -134,7 +134,7 @@ const Scan = ({ scanResult }) => {
       ctrlNumber,
       firstDose,
       firstVaccinator,
-      secDose,
+      secDose.toLocaleDateString(),
       secondVaccinator
     );
   };
