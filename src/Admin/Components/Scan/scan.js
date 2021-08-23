@@ -13,6 +13,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { firestore } from "../../../Firebase/utils";
 import SelectVaccinator from "../SelectVaccinator/selectVaccinator";
+import SelectVaccine from "../SelectVaccine/selectVaccine";
 const useStyles = makeStyles({
   root: {
     maxWidth: 500,
@@ -37,24 +38,6 @@ const Scan = ({ scanResult }) => {
 
   const [users, setUsers] = useState([]); //variable for storing user data info in an array
 
-  //for the estimated 2nd Dose of vaccine logic--------------------------
-  const date = new Date();
-  var newdate = new Date(date);
-
-  newdate.setDate(newdate.getDate() + 28);
-
-  var dd = newdate.getDate();
-  var mm = newdate.getMonth() + 1;
-  var y = newdate.getFullYear();
-
-  const secondDose = mm + "/" + dd + "/" + y;
-  const [secDose, setSecDose] = useState(secondDose); //variable for 2nd dose
-  //for the estimated 2nd Dose of vaccine logic--------------------------
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
   useEffect(() => {
     const unsubscribe = firestore
       .collection("users")
@@ -75,9 +58,8 @@ const Scan = ({ scanResult }) => {
     };
   }, []);
 
-  //useEffect for the vaccinator name;
+  //useEffect for the vaccinator name;------------------------
   const [names, setNames] = useState([]);
-
   useEffect(() => {
     const unsubscribe = firestore
       .collection("vaccinator-name")
@@ -102,7 +84,60 @@ const Scan = ({ scanResult }) => {
   const [secondVaccinator, setSecondVaccintor] = useState(0);
   const handleChange = (e) => setFirstVaccinator(e.target.value);
   const handleChange2 = (e) => setSecondVaccintor(e.target.value);
-  //2nd selected value vaccinator names
+  //2nd selected value vaccinator names----------------------------
+
+  //for the vaccines-------------------------------------------------
+  const [vaccines, setVaccines] = useState([]);
+  useEffect(() => {
+    const unsubscribe = firestore
+      .collection("vaccines")
+      .onSnapshot((snapshot) => {
+        const arr = [];
+        snapshot.forEach((doc) =>
+          arr.push({
+            ...doc.data(),
+            id: doc.id,
+          })
+        );
+        setVaccines(arr);
+      });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const [selectedVaccine, setSelectedVaccine] = useState(0);
+  const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
+  console.log(selectedVaccine);
+  //--------------------------------------------------------------------
+
+  //for the estimated 2nd Dose of vaccine logic--------------------------
+  const date = new Date();
+  var newdate = new Date(date);
+
+  newdate.setDate(newdate.getDate() + 28);
+
+  var dd = newdate.getDate();
+  var mm = newdate.getMonth() + 1;
+  var y = newdate.getFullYear();
+
+  const secondDose = mm + "/" + dd + "/" + y;
+  const [secDose, setSecDose] = useState(secondDose); //variable for 2nd dose
+  //for the estimated 2nd Dose of vaccine logic------------------------------
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(
+      id,
+      selectedVaccine,
+      ctrlNumber,
+      firstDose,
+      firstVaccinator,
+      secDose,
+      secondVaccinator
+    );
+  };
 
   return (
     <Card className={classes.root}>
@@ -189,7 +224,11 @@ const Scan = ({ scanResult }) => {
                         />
                       </Grid>
                       <Grid item>
-                        {/* Might have to use select for the type of vaccine */}
+                        <SelectVaccine
+                          value={selectedVaccine}
+                          onChange={handleChangeVaccine}
+                          vaccines={vaccines}
+                        />
                       </Grid>
 
                       <Grid item>
@@ -220,27 +259,31 @@ const Scan = ({ scanResult }) => {
                           names={names}
                         />
                       </Grid>
-
-                      <Grid item>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <DatePicker
-                            format="MM/dd/yyyy"
-                            value={secDose}
-                            onChange={setSecDose}
-                            fullWidth
-                            id="date-picker-inline"
-                            label="Estimated 2nd Dose of Vaccination"
-                          />
-                        </MuiPickersUtilsProvider>
-                      </Grid>
-
-                      <Grid item>
-                        <SelectVaccinator
-                          value={secondVaccinator}
-                          onChange={handleChange2}
-                          names={names}
-                        />
-                      </Grid>
+                      {selectedVaccine == "J&J" || selectedVaccine == "" ? (
+                        <></>
+                      ) : (
+                        <>
+                          <Grid item>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <DatePicker
+                                format="MM/dd/yyyy"
+                                value={secDose}
+                                onChange={setSecDose}
+                                fullWidth
+                                id="date-picker-inline"
+                                label="Estimated 2nd Dose of Vaccination"
+                              />
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                          <Grid item>
+                            <SelectVaccinator
+                              value={secondVaccinator}
+                              onChange={handleChange2}
+                              names={names}
+                            />
+                          </Grid>
+                        </>
+                      )}
 
                       <br />
                       <Grid>
