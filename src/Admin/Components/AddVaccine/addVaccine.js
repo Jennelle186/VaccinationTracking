@@ -6,6 +6,7 @@ const AddVaccine = () => {
   const [vaccine, setVaccine] = useState("");
   const [dose, setDose] = useState("");
   const [daysApart, setDaysApart] = useState(0);
+  const availability = true;
 
   const resetForm = () => {
     setVaccine("");
@@ -22,6 +23,7 @@ const AddVaccine = () => {
         vaccine,
         dose,
         daysApart,
+        availability,
       });
       resetForm();
       console.log(" saved");
