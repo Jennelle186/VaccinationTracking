@@ -124,97 +124,90 @@ const Header = (props) => {
             top: "0",
           }}
         >
-          {/*  */}
-          <Toolbar
-            variant="dense"
-            style={{
-              backgroundColor: "#2196F3",
-            }}
-          >
-            <Typography>Ayala Vaccination Tracker</Typography>
-            <div>
-              <>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <Tabs
-                      centered
-                      value={value}
-                      fullWidth={true}
-                      indicatorColor="primary"
-                      onChange={handleChange}
-                      aria-label="simple tabs example"
-                      variant="fullWidth"
-                    >
-                      {currentUser && (
-                        <Tab
-                          disableRipple
-                          label="Homepage"
-                          to="/"
-                          component={Link}
-                        />
-                      )}
-                      {currentUser && (
-                        <Tab
-                          disableRipple
-                          label="QR Code"
-                          to="/QR-Code"
-                          component={Link}
-                        />
-                      )}
-                      {admin && (
-                        <Tab
-                          disableRipple
-                          label="Admin"
-                          to="/admin"
-                          component={Link}
-                        />
-                      )}
+          <div style={{ width: "100%" }}>
+            <Toolbar
+              variant="dense"
+              style={{
+                backgroundColor: "#2196F3",
+              }}
+            >
+              <Typography>Ayala Vaccination Tracker</Typography>
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Grid item>
+                  <Tabs
+                    centered
+                    value={value}
+                    fullWidth={true}
+                    indicatorColor="primary"
+                    onChange={handleChange}
+                    aria-label="simple tabs example"
+                    variant="fullWidth"
+                  >
+                    {currentUser && (
+                      <Tab
+                        disableRipple
+                        label="Homepage"
+                        to="/"
+                        component={Link}
+                      />
+                    )}
+                    {currentUser && (
+                      <Tab
+                        disableRipple
+                        label="QR Code"
+                        to="/QR-Code"
+                        component={Link}
+                      />
+                    )}
+                    {admin && (
+                      <Tab
+                        disableRipple
+                        label="Admin"
+                        to="/admin"
+                        component={Link}
+                      />
+                    )}
 
-                      {!currentUser && (
-                        <Tab
-                          disableRipple
-                          label="Homepage"
-                          to="/"
-                          component={Link}
-                        />
-                      )}
-                      {!currentUser && (
-                        <Tab
-                          disableRipple
-                          label="Login"
-                          to="/login"
-                          component={Link}
-                        />
-                      )}
-                    </Tabs>
-                  </Grid>
-                  {currentUser && (
-                    <Grid
-                      item
-                      alignItems="flex-end"
-                      style={{ marginLeft: "35rem" }}
-                    >
-                      <IconButton
-                        edge="end"
-                        aria-label="account of current user"
-                        aria-controls={menuId}
-                        aria-haspopup="true"
-                        onClick={handleProfileMenuOpen}
-                        color="inherit"
-                      >
-                        <AccountCircle />
-                      </IconButton>
-                    </Grid>
-                  )}
+                    {!currentUser && (
+                      <Tab
+                        disableRipple
+                        label="Homepage"
+                        to="/"
+                        component={Link}
+                      />
+                    )}
+                    {!currentUser && (
+                      <Tab
+                        disableRipple
+                        label="Login"
+                        to="/login"
+                        component={Link}
+                      />
+                    )}
+                  </Tabs>
                 </Grid>
-              </>
-            </div>
-          </Toolbar>
+                {currentUser && (
+                  <Grid item alignItems="flex-end" style={{ float: "right" }}>
+                    <IconButton
+                      edge="end"
+                      aria-label="account of current user"
+                      aria-controls={menuId}
+                      aria-haspopup="true"
+                      onClick={handleProfileMenuOpen}
+                      color="inherit"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                  </Grid>
+                )}
+              </Grid>
+            </Toolbar>
+          </div>
         </AppBar>
       )}
       {renderMenu}
