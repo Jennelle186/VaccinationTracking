@@ -75,6 +75,28 @@ const Scan = ({ scanResult }) => {
     };
   }, []);
 
+  //useEffect for the vaccinator name;
+  const [names, setNames] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = firestore
+      .collection("vaccinator-name")
+      .onSnapshot((snapshot) => {
+        const arr = [];
+        snapshot.forEach((doc) =>
+          arr.push({
+            ...doc.data(),
+            id: doc.id,
+          })
+        );
+        setNames(arr);
+      });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   //first selected value vaccinator names
   const [firstVaccinator, setFirstVaccinator] = useState(0);
   const [secondVaccinator, setSecondVaccintor] = useState(0);
@@ -195,6 +217,7 @@ const Scan = ({ scanResult }) => {
                         <SelectVaccinator
                           value={firstVaccinator}
                           onChange={handleChange}
+                          names={names}
                         />
                       </Grid>
 
@@ -215,6 +238,7 @@ const Scan = ({ scanResult }) => {
                         <SelectVaccinator
                           value={secondVaccinator}
                           onChange={handleChange2}
+                          names={names}
                         />
                       </Grid>
 
