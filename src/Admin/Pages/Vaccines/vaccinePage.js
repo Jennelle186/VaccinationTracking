@@ -12,6 +12,8 @@ import {
   Dialog,
 } from "@material-ui/core";
 
+import VaccineTable from "./vaccineTable";
+
 const useStyles = makeStyles({
   link: {
     textDecoration: "none",
@@ -47,10 +49,9 @@ const VaccinePage = () => {
           <ButtonForm onClick={handleClickOpen}>Add Vaccines</ButtonForm>
         </Grid>
       </Grid>
+      <VaccineTable />
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle id="alert-dialog-title">
-          {"Add Vaccinator Name"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Add Vaccine"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <AddVaccine />

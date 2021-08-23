@@ -48,7 +48,7 @@ const AddVaccine = () => {
           <Grid item>
             <input
               type="radio"
-              value="1-dose"
+              value="1"
               name="dosage"
               onChange={(e) => setDose(e.target.value)}
             />
@@ -56,14 +56,14 @@ const AddVaccine = () => {
             <br></br>
             <input
               type="radio"
-              value="2-dose"
+              value="2"
               name="dosage"
               onChange={(e) => setDose(e.target.value)}
             />{" "}
             2 Doses
           </Grid>
           <Grid item>
-            {dose == "2-dose" && (
+            {dose == "2" && (
               <TextField
                 type="number"
                 label="How many days apart"
