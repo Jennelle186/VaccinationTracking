@@ -40,8 +40,21 @@ const AnnounceTable = (props) => {
   const handleEdit = (uid) => {
     props.history.push("/edit-announcement", uid);
   };
-  const handleDelete = (id) => {
-    console.log(id);
+  const handleDelete = (uid) => {
+    try {
+      const userRef = firestore
+        .collection("announcement")
+        .doc(uid)
+        .delete()
+        .then(() => {
+          console.log("saved");
+        })
+        .catch((error) => {
+          console.log("error");
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // useEffect(() => {
