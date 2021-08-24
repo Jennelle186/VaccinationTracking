@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Card, makeStyles, Grid } from "@material-ui/core";
+import { Card, makeStyles, Grid, CardHeader } from "@material-ui/core";
 import ButtonForm from "../../../components/Forms/Button/button";
+
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import parse from "html-react-parser";
+
+import { firestore } from "../../../Firebase/utils";
 
 const useStyles = makeStyles({
   root: {
@@ -16,6 +22,25 @@ const useStyles = makeStyles({
 
 const AddAnnouncement = () => {
   const classes = useStyles();
+  const [text, setText] = useState("");
+  const createdDate = new Date();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    try {
+      const userRef = firestore.collection("announcement").doc();
+      const ref = userRef.set({
+        text,
+        createdDate,
+      });
+      setText("");
+      // console.log(" saved");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <Grid
@@ -30,7 +55,25 @@ const AddAnnouncement = () => {
           </Link>
         </Grid>
       </Grid>
-      <Card className={classes.root}>Hello</Card>
+      <Card className={classes.root}>
+        <CardHeader title="Announcement" />
+        <div className="editor">
+          <form onSubmit={handleSubmit}>
+            <CKEditor
+              editor={ClassicEditor}
+              data={text}
+              onChange={(event, editor1) => {
+                const data = editor1.getData();
+                setText(data);
+              }}
+            />
+            <br />
+            <br />
+            <ButtonForm type="submit">Submit</ButtonForm>
+          </form>
+        </div>
+        <>{parse(text)}</>
+      </Card>
     </>
   );
 };
