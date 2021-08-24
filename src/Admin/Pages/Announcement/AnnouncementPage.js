@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, Typography, Grid, makeStyles } from "@material-ui/core";
 
 import ButtonForm from "../../../components/Forms/Button/button";
+import AnnounceTables from "./announcementTable";
 
 //icons
 import AddIcon from "@material-ui/icons/Add";
@@ -32,6 +33,7 @@ const AnnouncementPage = () => {
             </ButtonForm>
           </Link>
         </Grid>
+        <AnnounceTables />
       </Card>
     </div>
   );

@@ -12,7 +12,6 @@ import {
   Button,
   Snackbar,
 } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { firestore } from "../../../Firebase/utils";
 import MuiAlert from "@material-ui/lab/Alert";
