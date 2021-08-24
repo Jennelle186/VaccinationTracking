@@ -36,51 +36,11 @@ const AnnouncementPage = () => {
       <Card className={classes.root}>
         <Typography variant="h5">Announcement </Typography>
         <Grid container justify="flex-end">
-          <Link to="#" className={classes.link}>
+          <Link to="/add-announcement" className={classes.link}>
             <ButtonForm>
               <AddIcon /> Add Announcement
             </ButtonForm>
           </Link>
-        </Grid>
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-        >
-          <Grid
-            item
-            lg={6}
-            sm={4}
-            md={6}
-            style={{
-              textAlign: "center",
-            }}
-          >
-            <Grid container justify="flex-start">
-              <Card className={classes.root} elevation={5}>
-                <CardHeader
-                  title="Name of vaccine"
-                  action={
-                    <IconButton aria-lable="edit" style={{ color: "green" }}>
-                      <EditIcon />
-                    </IconButton>
-                  }
-                />
-                <CardContent>Schedule</CardContent>
-                <CardActions style={{ justifyContent: "flex-end" }}>
-                  <IconButton
-                    aria-label="delete"
-                    edge="end"
-                    style={{ color: "#c70000 " }}
-                  >
-                    <DeleteIcon edge="end" />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-          </Grid>
         </Grid>
       </Card>
     </div>
