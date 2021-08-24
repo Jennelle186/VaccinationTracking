@@ -6,6 +6,7 @@ import {
   TableCell,
   TableBody,
   IconButton,
+  Collapse,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { firestore } from "../../../Firebase/utils";
@@ -13,9 +14,13 @@ import MUIDataTable from "mui-datatables";
 import parse from "html-react-parser";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 const AnnounceTable = (props) => {
   const [announcement, setAnnouncement] = useState([]);
   const [isLoading, setIsLoading] = useState();
+  const { row } = props;
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = firestore
@@ -169,17 +174,32 @@ const AnnounceTable = (props) => {
         <>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableRow>
+              <TableRow hover>
+                <TableCell> </TableCell>
                 <TableCell>Title</TableCell>
                 <TableCell>Created Date</TableCell>
                 <TableCell>Edit</TableCell>
                 <TableCell>Delete</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {announcement &&
                 announcement.map((index) => (
                   <TableRow hover>
+                    <TableCell>
+                      <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => setOpen(!open)}
+                      >
+                        {open ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </IconButton>
+                    </TableCell>
                     <TableCell component="th" scope="row">
                       {index.title}
                     </TableCell>
@@ -188,6 +208,7 @@ const AnnounceTable = (props) => {
                         index.createdDate.seconds * 1000
                       ).toDateString()}
                     </TableCell>
+
                     <TableCell>
                       <IconButton
                         style={{ color: "green" }}
@@ -205,6 +226,11 @@ const AnnounceTable = (props) => {
                       >
                         <DeleteIcon />
                       </IconButton>
+                    </TableCell>
+                    <TableCell colSpan={6}>
+                      <Collapse in={open} timeout="auto" unmountOnExit>
+                        {parse(index.text)}
+                      </Collapse>
                     </TableCell>
                   </TableRow>
                 ))}
