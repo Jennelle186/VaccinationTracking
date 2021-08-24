@@ -64,7 +64,7 @@ const EditAnnouncement = () => {
     try {
       const userRef = firestore.collection("announcement").doc(rowData);
       const ref = userRef.set(
-        { ...announcements[index] }, // <-- user by index
+        { ...announcement[index], text }, // <-- user by index
         { merge: true }
       );
       console.log(" saved");
@@ -107,7 +107,7 @@ const EditAnnouncement = () => {
                         type="text"
                         value={announcement.title}
                         label="Title"
-                        name="vaccine" // <-- add name attribute
+                        name="title" // <-- add name attribute
                         fullWidth
                         onChange={changeHandler(index)}
                       />
@@ -115,7 +115,9 @@ const EditAnnouncement = () => {
                     <Grid item>
                       <CKEditor
                         editor={ClassicEditor}
-                        data={text}
+                        data={announcement.text}
+                        name="text"
+                        value={announcement.text}
                         onChange={(event, editor1) => {
                           const data = editor1.getData();
                           setText(data);

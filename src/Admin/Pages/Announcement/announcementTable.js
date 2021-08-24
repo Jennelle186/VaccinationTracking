@@ -5,13 +5,15 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  FormControlLabel,
-  Button,
+  IconButton,
 } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
 import { firestore } from "../../../Firebase/utils";
 import MUIDataTable from "mui-datatables";
 import parse from "html-react-parser";
-const AnnounceTable = () => {
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+const AnnounceTable = (props) => {
   const [announcement, setAnnouncement] = useState([]);
   const [isLoading, setIsLoading] = useState();
 
@@ -20,16 +22,12 @@ const AnnounceTable = () => {
       .collection("announcement")
       .onSnapshot((snapshot) => {
         const arr = [];
-        snapshot.forEach((doc) => {
-          const data = doc.data();
+        snapshot.forEach((doc) =>
           arr.push({
-            text: parse(data.text),
-            Title: data.title,
-            "Created Date": new Date(
-              data.createdDate.seconds * 1000
-            ).toDateString(),
-          });
-        });
+            ...doc.data(),
+            id: doc.id,
+          })
+        );
         setAnnouncement(arr);
         setIsLoading(true);
       });
@@ -39,67 +37,122 @@ const AnnounceTable = () => {
     };
   }, []);
 
-  const columns = [
-    "ID",
-    "Title",
-    "Created Date",
-    {
-      name: "Delete",
-      options: {
-        filter: true,
-        sort: false,
-        empty: true,
-        customBodyRender: (value, tableMeta) => {
-          return (
-            <FormControlLabel
-              value={value}
-              control={
-                <Button
-                  value={value}
-                  variant="outlined"
-                  style={{ borderColor: "#397D02", color: "#397D02" }}
-                >
-                  Delete
-                </Button>
-              }
-              onClick={(e) => {
-                e.stopPropagation();
-                try {
-                  firestore.collection("orders").doc(tableMeta.rowData[0]).set(
-                    {
-                      orderStatus: "Confirmed",
-                    },
-                    { merge: true }
-                  );
-                } catch (err) {
-                  console.log(err);
-                }
-                // this.handleOpen();
-              }}
-            />
-          );
-        },
-      },
-    },
-  ];
-
-  const options = {
-    filter: true,
-    expandableRows: true,
-    renderExpandableRow: (rowData, rowMeta) => {
-      console.log(); //how do I render the `text` here from firestore?
-    },
+  const handleEdit = (uid) => {
+    props.history.push("/edit-announcement", uid);
   };
+  const handleDelete = (id) => {
+    console.log(id);
+  };
+
+  // useEffect(() => {
+  //   const unsubscribe = firestore
+  //     .collection("announcement")
+  //     .onSnapshot((snapshot) => {
+  //       const arr = [];
+  //       snapshot.forEach((doc) => {
+  //         const data = doc.data();
+  //         arr.push({
+  //           ID: doc.id,
+  //           text: parse(data.text),
+  //           Title: data.title,
+  //           "Created Date": new Date(
+  //             data.createdDate.seconds * 1000
+  //           ).toDateString(),
+  //         });
+  //       });
+  //       setAnnouncement(arr);
+  //       setIsLoading(true);
+  //     });
+
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
+
+  // const columns = [
+  //   "ID",
+  //   "Title",
+  //   // "text",
+  //   "Created Date",
+  //   {
+  //     name: "Delete",
+  //     options: {
+  //       filter: true,
+  //       sort: false,
+  //       empty: true,
+  //       customBodyRender: (value, tableMeta) => {
+  //         return (
+  //           <FormControlLabel
+  //             value={value}
+  //             control={
+  //               <Button
+  //                 value={value}
+  //                 variant="outlined"
+  //                 style={{ borderColor: "#397D02", color: "#397D02" }}
+  //               >
+  //                 Delete
+  //               </Button>
+  //             }
+  //             onClick={(e) => {
+  //               e.stopPropagation();
+  //               try {
+  //                 firestore.collection("orders").doc(tableMeta.rowData[0]).set(
+  //                   {
+  //                     orderStatus: "Confirmed",
+  //                   },
+  //                   { merge: true }
+  //                 );
+  //               } catch (err) {
+  //                 console.log(err);
+  //               }
+  //               // this.handleOpen();
+  //             }}
+  //           />
+  //         );
+  //       },
+  //     },
+  //   },
+  //   {
+  //     name: "text",
+  //     label: "text",
+  //     options: {
+  //       setCellProps: () => ({
+  //         style: { height: "1rem", overflow: "hidden", maxHeight: "50px" },
+  //       }),
+  //       // customBodyRender: (data, type, row) => {
+  //       //   return <pre>{data}</pre>;
+  //       // },
+  //     },
+  //   },
+  // ];
+
+  // const options = {
+  //   filter: true,
+  //   selectableRows: "none",
+  //   responsive: "simple",
+  //   expandableRows: true,
+  //   rowsPerPage: 1,
+  //   renderExpandableRow: (rowData, rowMeta) => {
+  //     console.log(rowData, rowMeta);
+  //     return (
+  //       <TableRow>
+  //         <TableCell colSpan={rowData.length}>
+  //           {parse(JSON.stringify(rowData[4]))}
+  //         </TableCell>
+  //       </TableRow>
+  //     ); //how do I render the `text` here from firestore?
+  //   },
+  // };
 
   return (
     <div>
       {/* <MUIDataTable
-        title={"List"}
+        title={"List of the Announcement"}
         columns={columns}
         data={announcement}
         options={options}
       /> */}
-      {/* {isLoading ? (
+      {isLoading ? (
         <>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -122,8 +175,24 @@ const AnnounceTable = () => {
                         index.createdDate.seconds * 1000
                       ).toDateString()}
                     </TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>
+                      <IconButton
+                        style={{ color: "green" }}
+                        onClick={() => handleEdit(`${index.id}`)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        onClick={() => {
+                          handleDelete(`${index.id}`);
+                        }}
+                        color="secondary"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -131,9 +200,9 @@ const AnnounceTable = () => {
         </>
       ) : (
         <h1>Loading...</h1>
-      )} */}
+      )}
     </div>
   );
 };
 
-export default AnnounceTable;
+export default withRouter(AnnounceTable);
