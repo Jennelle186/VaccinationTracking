@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Card, CardContent, CardHeader } from "@material-ui/core";
+import {
+  Grid,
+  Card,
+  CardContent,
+  CardHeader,
+  GridList,
+} from "@material-ui/core";
 import { firestore } from "../../Firebase/utils";
 const AvailableVaccine = () => {
   const [vaccines, setVaccines] = useState([]);
@@ -33,20 +39,22 @@ const AvailableVaccine = () => {
       >
         <Card elevation={10} style={{ padding: "1rem" }}>
           <CardHeader title="Announcement" />
-          {vaccines &&
-            vaccines.map((index) => (
-              <>
-                {index.availability == true ? (
-                  <CardContent>
-                    Vaccine: {index.vaccine} <br />
-                    Dose: {index.dose} <br />
-                    Days Apart: {index.daysApart} days
-                  </CardContent>
-                ) : (
-                  <></>
-                )}
-              </>
-            ))}
+          <GridList cols={3}>
+            {vaccines &&
+              vaccines.map((index) => (
+                <>
+                  {index.availability == true ? (
+                    <CardContent>
+                      Vaccine: {index.vaccine} <br />
+                      Dose: {index.dose} <br />
+                      Days Apart: {index.daysApart} days
+                    </CardContent>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              ))}
+          </GridList>
         </Card>
       </Grid>
     </div>

@@ -32,7 +32,7 @@ const Scan = ({ scanResult }) => {
   // const [lastName, setLastName] = useState("");
   // const [birthdate, setBirthdate] = useState("");
   const [ctrlNumber, setCtrlNumber] = useState("");
-  const [firstDose, setFirstDose] = useState(new Date().toLocaleDateString());
+  const [firstDose, setFirstDose] = useState(new Date());
 
   const [selectedDate, handleDateChange] = useState(new Date());
 
@@ -91,6 +91,7 @@ const Scan = ({ scanResult }) => {
   useEffect(() => {
     const unsubscribe = firestore
       .collection("vaccines")
+      .where("availability", "==", true)
       .onSnapshot((snapshot) => {
         const arr = [];
         snapshot.forEach((doc) =>
@@ -109,21 +110,24 @@ const Scan = ({ scanResult }) => {
 
   const [selectedVaccine, setSelectedVaccine] = useState(0);
   const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
-  console.log(selectedVaccine);
   //--------------------------------------------------------------------
 
   //for the estimated 2nd Dose of vaccine logic--------------------------
-  const date = new Date();
-  var newdate = new Date(date);
-
-  newdate.setDate(newdate.getDate() + 28);
-
-  var dd = newdate.getDate();
-  var mm = newdate.getMonth() + 1;
-  var y = newdate.getFullYear();
-
-  const secondDose = mm + "/" + dd + "/" + y;
-  const [secDose, setSecDose] = useState(secondDose); //variable for 2nd dose
+  const [secDose, setSecDose] = useState(new Date().toISOString()); //variable for 2nd dose //could remove toISOString
+  useEffect(() => {
+    if (selectedVaccine) {
+      const { daysApart } = vaccines.find(
+        (vaccine) => vaccine.vaccine === selectedVaccine
+      );
+      const doseDate = new Date();
+      doseDate.setDate(doseDate.getDate() + daysApart);
+      setSecDose(
+        `${
+          doseDate.getMonth() + 1
+        }/${doseDate.getDate()}/${doseDate.getFullYear()}`
+      );
+    }
+  }, [selectedVaccine]);
   //for the estimated 2nd Dose of vaccine logic------------------------------
 
   const handleSubmit = (e) => {
@@ -133,8 +137,9 @@ const Scan = ({ scanResult }) => {
       selectedVaccine,
       ctrlNumber,
       firstDose,
+      secDose,
       firstVaccinator,
-      secDose.toLocaleDateString(),
+      secDose,
       secondVaccinator
     );
   };
