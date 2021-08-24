@@ -8,7 +8,7 @@ import EditVaccinator from "../../Pages/VaccinatorName/editVaccinator";
 import VaccinePage from "../../Pages/Vaccines/vaccinePage";
 import EditVaccine from "../../Pages/Vaccines/editVaccine";
 import AddAnnouncement from "../../Components/Announcement/addAnnouncement";
-
+import EditAnnouncement from "../../Pages/Announcement/editAnnouncement";
 import { AdminRoute } from "../../../Hooks/AdminRoute";
 
 import { createMuiTheme } from "@material-ui/core/styles";
@@ -41,6 +41,11 @@ const AdminLinks = () => {
             exact
             path="/add-announcement"
             component={AddAnnouncement}
+          />
+          <AdminRoute
+            exact
+            path="/edit-announcement"
+            component={EditAnnouncement}
           />
         </Switch>
       </ThemeProvider>

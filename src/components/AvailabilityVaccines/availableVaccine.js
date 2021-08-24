@@ -38,7 +38,7 @@ const AvailableVaccine = () => {
         justify="center"
       >
         <Card elevation={10} style={{ padding: "1rem" }}>
-          <CardHeader title="Announcement" />
+          <CardHeader title="Available Vaccines" />
           <GridList cols={3}>
             {vaccines &&
               vaccines.map((index) => (

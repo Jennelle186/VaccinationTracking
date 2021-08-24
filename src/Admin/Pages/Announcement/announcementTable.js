@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { firestore } from "../../../Firebase/utils";
 import MUIDataTable from "mui-datatables";
+import parse from "html-react-parser";
 const AnnounceTable = () => {
   const [announcement, setAnnouncement] = useState([]);
   const [isLoading, setIsLoading] = useState();
@@ -19,12 +20,16 @@ const AnnounceTable = () => {
       .collection("announcement")
       .onSnapshot((snapshot) => {
         const arr = [];
-        snapshot.forEach((doc) =>
+        snapshot.forEach((doc) => {
+          const data = doc.data();
           arr.push({
-            ...doc.data(),
-            id: doc.id,
-          })
-        );
+            text: parse(data.text),
+            Title: data.title,
+            "Created Date": new Date(
+              data.createdDate.seconds * 1000
+            ).toDateString(),
+          });
+        });
         setAnnouncement(arr);
         setIsLoading(true);
       });
@@ -35,6 +40,7 @@ const AnnounceTable = () => {
   }, []);
 
   const columns = [
+    "ID",
     "Title",
     "Created Date",
     {
@@ -93,7 +99,7 @@ const AnnounceTable = () => {
         data={announcement}
         options={options}
       /> */}
-      {isLoading ? (
+      {/* {isLoading ? (
         <>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -125,7 +131,7 @@ const AnnounceTable = () => {
         </>
       ) : (
         <h1>Loading...</h1>
-      )}
+      )} */}
     </div>
   );
 };
