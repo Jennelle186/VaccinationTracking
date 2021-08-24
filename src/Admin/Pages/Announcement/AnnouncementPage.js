@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { firestore } from "../../../Firebase/utils";
 import ButtonForm from "../../../components/Forms/Button/button";
+import Pagination from "@material-ui/lab/Pagination";
 
 //icons
 import AddIcon from "@material-ui/icons/Add";
@@ -28,6 +29,11 @@ const useStyles = makeStyles({
   },
   link: {
     textDecoration: "none",
+  },
+  paginator: {
+    justifyContent: "center",
+    padding: "10px",
+    margin: "0 auto",
   },
 });
 
@@ -54,6 +60,23 @@ const AnnouncementPage = () => {
       unsubscribe();
     };
   }, []);
+
+  //for pagination
+  const itemsPerPage = 1;
+  const [page, setPage] = useState(1);
+  const rawPages = announcement.length / itemsPerPage;
+  const noOfPages = Math.ceil(rawPages);
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+  //---------------------------------------------
+  const [expanded, setExpanded] = useState(false);
+  const [expandedId, setExpandedId] = useState(-1);
+  const handleExpandClick = (i) => {
+    setExpandedId(expandedId === i ? -1 : i);
+  };
+  //----------------------------------------------
+
   return (
     <div>
       <Card className={classes.root}>
@@ -64,13 +87,41 @@ const AnnouncementPage = () => {
               <AddIcon /> Add Announcement
             </ButtonForm>
           </Link>
-          <Card>
-            {announcement &&
-              announcement.map((index) => (
-                <CardContent>{parse(index.text)}</CardContent>
-              ))}
-          </Card>
         </Grid>
+
+        {isLoading ? (
+          <>
+            {announcement &&
+              announcement
+                .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+                .map((index) => (
+                  <>
+                    <CardHeader
+                      title={index.title}
+                      subheader={new Date(
+                        index.createdDate.seconds * 1000
+                      ).toDateString()}
+                    />
+                    <CardContent>{parse(index.text)}</CardContent>
+                  </>
+                ))}
+            <Pagination
+              count={noOfPages}
+              page={page}
+              onChange={handleChange}
+              variant="outlined"
+              defaultPage={1}
+              color="primary"
+              siblingCount={0}
+              size="large"
+              showFirstButton
+              showLastButton
+              classes={{ ul: classes.paginator }}
+            />
+          </>
+        ) : (
+          <h1>Loading...</h1>
+        )}
       </Card>
     </div>
   );

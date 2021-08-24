@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Card, makeStyles, Grid, CardHeader } from "@material-ui/core";
+import {
+  Card,
+  makeStyles,
+  Grid,
+  CardHeader,
+  TextField,
+} from "@material-ui/core";
 import ButtonForm from "../../../components/Forms/Button/button";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -23,6 +29,7 @@ const useStyles = makeStyles({
 const AddAnnouncement = () => {
   const classes = useStyles();
   const [text, setText] = useState("");
+  const [title, setTitle] = useState("");
   const createdDate = new Date();
 
   const handleSubmit = (e) => {
@@ -31,6 +38,7 @@ const AddAnnouncement = () => {
     try {
       const userRef = firestore.collection("announcement").doc();
       const ref = userRef.set({
+        title,
         text,
         createdDate,
       });
@@ -59,6 +67,15 @@ const AddAnnouncement = () => {
         <CardHeader title="Announcement" />
         <div className="editor">
           <form onSubmit={handleSubmit}>
+            <TextField
+              label="Title"
+              fullWidth
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <br />
+            <br />
             <CKEditor
               editor={ClassicEditor}
               data={text}
