@@ -32,7 +32,17 @@ class Users extends Component {
         snapshot.forEach((doc) => {
           const data = doc.data();
           users.push({
-            Name: data.firstName + " " + data.middleName + "." + data.lastName,
+            ...((data.firstName && data.lastName) || data.middleName == " "
+              ? {
+                  Name:
+                    data.firstName +
+                    " " +
+                    data.middleName +
+                    "." +
+                    data.lastName,
+                }
+              : {}),
+
             Email: data.email,
             "Phone Number": data.phoneNumber,
             Address: data.address,

@@ -185,8 +185,8 @@ const AnnounceTable = (props) => {
             </TableHead>
             <TableBody>
               {announcement &&
-                announcement.map((index) => (
-                  <TableRow hover>
+                announcement.map((index, i) => (
+                  <TableRow key={i} index={index}>
                     <TableCell>
                       <IconButton
                         aria-label="expand row"
@@ -227,11 +227,11 @@ const AnnounceTable = (props) => {
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell colSpan={6}>
+                    <TableBody>
                       <Collapse in={open} timeout="auto" unmountOnExit>
                         {parse(index.text)}
                       </Collapse>
-                    </TableCell>
+                    </TableBody>
                   </TableRow>
                 ))}
             </TableBody>
