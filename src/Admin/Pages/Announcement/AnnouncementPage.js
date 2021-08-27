@@ -4,7 +4,7 @@ import { Card, Typography, Grid, makeStyles } from "@material-ui/core";
 
 import ButtonForm from "../../../components/Forms/Button/button";
 import AnnounceTables from "./announcementTable";
-
+import AnnouncementList from "./AnnouncementList";
 //icons
 import AddIcon from "@material-ui/icons/Add";
 
@@ -33,7 +33,9 @@ const AnnouncementPage = () => {
             </ButtonForm>
           </Link>
         </Grid>
-        <AnnounceTables />
+
+        {/* <AnnounceTables /> */}
+        <AnnouncementList />
       </Card>
     </div>
   );
