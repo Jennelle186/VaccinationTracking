@@ -10,7 +10,6 @@ import {
   Container,
 } from "@material-ui/core";
 import ButtonForm from "./../Forms/Button/button";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import { useSelector } from "react-redux";
 
 const mapState = ({ user }) => ({
