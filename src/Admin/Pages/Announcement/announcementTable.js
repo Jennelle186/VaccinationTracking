@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { firestore } from "../../../Firebase/utils";
-import MUIDataTable from "mui-datatables";
 import parse from "html-react-parser";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -62,114 +61,8 @@ const AnnounceTable = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //   const unsubscribe = firestore
-  //     .collection("announcement")
-  //     .onSnapshot((snapshot) => {
-  //       const arr = [];
-  //       snapshot.forEach((doc) => {
-  //         const data = doc.data();
-  //         arr.push({
-  //           ID: doc.id,
-  //           text: parse(data.text),
-  //           Title: data.title,
-  //           "Created Date": new Date(
-  //             data.createdDate.seconds * 1000
-  //           ).toDateString(),
-  //         });
-  //       });
-  //       setAnnouncement(arr);
-  //       setIsLoading(true);
-  //     });
-
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, []);
-
-  // const columns = [
-  //   "ID",
-  //   "Title",
-  //   // "text",
-  //   "Created Date",
-  //   {
-  //     name: "Delete",
-  //     options: {
-  //       filter: true,
-  //       sort: false,
-  //       empty: true,
-  //       customBodyRender: (value, tableMeta) => {
-  //         return (
-  //           <FormControlLabel
-  //             value={value}
-  //             control={
-  //               <Button
-  //                 value={value}
-  //                 variant="outlined"
-  //                 style={{ borderColor: "#397D02", color: "#397D02" }}
-  //               >
-  //                 Delete
-  //               </Button>
-  //             }
-  //             onClick={(e) => {
-  //               e.stopPropagation();
-  //               try {
-  //                 firestore.collection("orders").doc(tableMeta.rowData[0]).set(
-  //                   {
-  //                     orderStatus: "Confirmed",
-  //                   },
-  //                   { merge: true }
-  //                 );
-  //               } catch (err) {
-  //                 console.log(err);
-  //               }
-  //               // this.handleOpen();
-  //             }}
-  //           />
-  //         );
-  //       },
-  //     },
-  //   },
-  //   {
-  //     name: "text",
-  //     label: "text",
-  //     options: {
-  //       setCellProps: () => ({
-  //         style: { height: "1rem", overflow: "hidden", maxHeight: "50px" },
-  //       }),
-  //       // customBodyRender: (data, type, row) => {
-  //       //   return <pre>{data}</pre>;
-  //       // },
-  //     },
-  //   },
-  // ];
-
-  // const options = {
-  //   filter: true,
-  //   selectableRows: "none",
-  //   responsive: "simple",
-  //   expandableRows: true,
-  //   rowsPerPage: 1,
-  //   renderExpandableRow: (rowData, rowMeta) => {
-  //     console.log(rowData, rowMeta);
-  //     return (
-  //       <TableRow>
-  //         <TableCell colSpan={rowData.length}>
-  //           {parse(JSON.stringify(rowData[4]))}
-  //         </TableCell>
-  //       </TableRow>
-  //     ); //how do I render the `text` here from firestore?
-  //   },
-  // };
-
   return (
     <div>
-      {/* <MUIDataTable
-        title={"List of the Announcement"}
-        columns={columns}
-        data={announcement}
-        options={options}
-      /> */}
       {isLoading ? (
         <>
           <Table stickyHeader aria-label="sticky table">
@@ -180,13 +73,12 @@ const AnnounceTable = (props) => {
                 <TableCell>Created Date</TableCell>
                 <TableCell>Edit</TableCell>
                 <TableCell>Delete</TableCell>
-                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {announcement &&
                 announcement.map((index, i) => (
-                  <TableRow key={i} index={index}>
+                  <TableRow key={i}>
                     <TableCell>
                       <IconButton
                         aria-label="expand row"
@@ -228,7 +120,7 @@ const AnnounceTable = (props) => {
                       </IconButton>
                     </TableCell>
                     <TableBody>
-                      <Collapse in={open} timeout="auto" unmountOnExit>
+                      <Collapse in={open} timeout="auto" unmountOnExit={true}>
                         {parse(index.text)}
                       </Collapse>
                     </TableBody>

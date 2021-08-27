@@ -113,7 +113,7 @@ const Scan = ({ scanResult }) => {
   //--------------------------------------------------------------------
 
   //for the estimated 2nd Dose of vaccine logic--------------------------
-  const [secDose, setSecDose] = useState(new Date().toISOString()); //variable for 2nd dose //could remove toISOString
+  const [secDose, setSecDose] = useState(new Date()); //variable for 2nd dose //could remove toISOString
   useEffect(() => {
     if (selectedVaccine) {
       const { daysApart } = vaccines.find(
@@ -132,17 +132,36 @@ const Scan = ({ scanResult }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      id,
-      selectedVaccine,
-      ctrlNumber,
-      firstDose,
-      secDose,
-      firstVaccinator,
-      secDose,
-      secondVaccinator
-    );
+    try {
+      const userRef = firestore.collection("users").doc(scanResult);
+      const ref = userRef.set(
+        {
+          selectedVaccine,
+          dose1,
+          dose2,
+        },
+        { merge: true }
+      );
+
+      console.log(" saved");
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  const [dose1, setDose1] = useState(false);
+  const [dose2, setDose2] = useState(false);
+  useEffect(() => {
+    if (firstVaccinator) {
+      setDose1(true);
+    }
+  }, [firstVaccinator]);
+
+  useEffect(() => {
+    if (secondVaccinator) {
+      setDose2(true);
+    }
+  }, [firstVaccinator]);
 
   return (
     <Card className={classes.root}>
@@ -235,7 +254,6 @@ const Scan = ({ scanResult }) => {
                           vaccines={vaccines}
                         />
                       </Grid>
-
                       <Grid item>
                         <TextField
                           type="text"
@@ -246,7 +264,6 @@ const Scan = ({ scanResult }) => {
                           onChange={(e) => setCtrlNumber(e.target.value)}
                         />
                       </Grid>
-
                       <Grid item>
                         <TextField
                           type="text"
@@ -289,7 +306,6 @@ const Scan = ({ scanResult }) => {
                           </Grid>
                         </>
                       )}
-
                       <br />
                       <Grid>
                         <ButtonForm type="submit" fullWidth>
