@@ -86,7 +86,6 @@ const VaccinatorTable = (props) => {
         { merge: true }
       );
       alert("Succesfull set to Inactive");
-      history.push("/");
     } catch (err) {
       console.log(err);
     }
@@ -102,7 +101,6 @@ const VaccinatorTable = (props) => {
         { merge: true }
       );
       alert("Succesfull set to Active");
-      history.push("/");
     } catch (err) {
       console.log(err);
     }
