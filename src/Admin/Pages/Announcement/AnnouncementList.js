@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "1.5rem",
     borderRadius: "12px",
     transition: "transform 1s",
-    "&:hover": { transform: "scale3d(1.05, 1.05, 1)", color: " #757ce8" },
+    "&:hover": { transform: "scale3d(1.05, 1.05, 1)" },
   },
   expand: {
     transform: "rotate(0deg)",
