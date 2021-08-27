@@ -14,6 +14,10 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { firestore } from "../../../Firebase/utils";
 import SelectVaccinator from "../SelectVaccinator/selectVaccinator";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
+
+import Scan2ndDose from "./scan2ndDose";
+import parse from "date-fns/parse";
+
 const useStyles = makeStyles({
   root: {
     maxWidth: 500,
@@ -25,17 +29,10 @@ const useStyles = makeStyles({
 const Scan = ({ scanResult }) => {
   const classes = useStyles();
   const [isLoading, setIsLoading] = useState(false);
-  //variables in the textfield
   const [id, setID] = useState("");
-  // const [firstName, setFirstName] = useState("");
-  // const [middleName, setMiddletName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [birthdate, setBirthdate] = useState("");
   const [ctrlNumber, setCtrlNumber] = useState("");
   const [firstDose, setFirstDose] = useState(new Date());
-
   const [selectedDate, handleDateChange] = useState(new Date());
-
   const [users, setUsers] = useState([]); //variable for storing user data info in an array
 
   useEffect(() => {
@@ -80,8 +77,8 @@ const Scan = ({ scanResult }) => {
   }, []);
 
   //first selected value vaccinator names
-  const [firstVaccinator, setFirstVaccinator] = useState(0);
-  const [secondVaccinator, setSecondVaccintor] = useState(0);
+  const [firstVaccinator, setFirstVaccinator] = useState("");
+  const [secondVaccinator, setSecondVaccintor] = useState("");
   const handleChange = (e) => setFirstVaccinator(e.target.value);
   const handleChange2 = (e) => setSecondVaccintor(e.target.value);
   //2nd selected value vaccinator names----------------------------
@@ -120,7 +117,11 @@ const Scan = ({ scanResult }) => {
         (vaccine) => vaccine.vaccine === selectedVaccine
       );
       const doseDate = new Date();
-      doseDate.setDate(doseDate.getDate() + daysApart);
+
+      let x = parseInt(daysApart);
+
+      //--------
+      doseDate.setDate(doseDate.getDate() + x);
       setSecDose(
         `${
           doseDate.getMonth() + 1
@@ -136,9 +137,15 @@ const Scan = ({ scanResult }) => {
       const userRef = firestore.collection("users").doc(scanResult);
       const ref = userRef.set(
         {
-          selectedVaccine,
-          dose1,
-          dose2,
+          doses: {
+            selectedVaccine,
+            dose1,
+            firstDose,
+            firstVaccinator,
+            dose2,
+            secDose,
+            secondVaccinator,
+          },
         },
         { merge: true }
       );
@@ -189,7 +196,6 @@ const Scan = ({ scanResult }) => {
                           label="First Name"
                           variant="outlined"
                           value={user.firstName}
-                          // onChange={(e) => setFirstName(e.target.value)}
                           fullWidth
                           disabled={true}
                         />
@@ -199,7 +205,6 @@ const Scan = ({ scanResult }) => {
                           label="Middle Name (Optional)"
                           variant="outlined"
                           value={user.middleName}
-                          // onChange={(e) => setMiddleName(e.target.value)}
                           fullWidth
                           disabled={true}
                         />
@@ -209,7 +214,6 @@ const Scan = ({ scanResult }) => {
                           label="Last Name"
                           variant="outlined"
                           value={user.lastName}
-                          // onChange={(e) => setLastName(e.target.value)}
                           fullWidth
                           disabled={true}
                         />
@@ -247,6 +251,7 @@ const Scan = ({ scanResult }) => {
                           disabled={true}
                         />
                       </Grid>
+
                       <Grid item>
                         <SelectVaccine
                           value={selectedVaccine}
@@ -281,31 +286,27 @@ const Scan = ({ scanResult }) => {
                           names={names}
                         />
                       </Grid>
-                      {selectedVaccine == "J&J" || selectedVaccine == "" ? (
-                        <></>
-                      ) : (
-                        <>
-                          <Grid item>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                              <DatePicker
-                                format="MM/dd/yyyy"
-                                value={secDose}
-                                onChange={setSecDose}
-                                fullWidth
-                                id="date-picker-inline"
-                                label="Estimated 2nd Dose of Vaccination"
-                              />
-                            </MuiPickersUtilsProvider>
-                          </Grid>
-                          <Grid item>
-                            <SelectVaccinator
-                              value={secondVaccinator}
-                              onChange={handleChange2}
-                              names={names}
-                            />
-                          </Grid>
-                        </>
-                      )}
+
+                      <Grid item>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <DatePicker
+                            format="MM/dd/yyyy"
+                            value={secDose}
+                            onChange={setSecDose}
+                            fullWidth
+                            id="date-picker-inline"
+                            label="Estimated 2nd Dose of Vaccination"
+                          />
+                        </MuiPickersUtilsProvider>
+                      </Grid>
+                      <Grid item>
+                        <SelectVaccinator
+                          value={secondVaccinator}
+                          onChange={handleChange2}
+                          names={names}
+                        />
+                      </Grid>
+
                       <br />
                       <Grid>
                         <ButtonForm type="submit" fullWidth>
