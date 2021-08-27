@@ -43,6 +43,7 @@ const AddAnnouncement = () => {
         createdDate,
       });
       setText("");
+      setTitle("");
       // console.log(" saved");
     } catch (err) {
       console.log(err);
