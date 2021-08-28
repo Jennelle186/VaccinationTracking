@@ -145,6 +145,7 @@ const Scan = ({ scanResult }) => {
             firstDose,
             firstVaccinator,
             dose2,
+            secondDose,
           },
         },
         { merge: true }
