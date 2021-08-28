@@ -15,7 +15,6 @@ import { firestore } from "../../../Firebase/utils";
 import SelectVaccinator from "../SelectVaccinator/selectVaccinator";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
 
-import Scan2ndDose from "./scan2ndDose";
 import parse from "date-fns/parse";
 
 const useStyles = makeStyles({
@@ -131,6 +130,8 @@ const Scan = ({ scanResult }) => {
   }, [selectedVaccine]);
   //for the estimated 2nd Dose of vaccine logic------------------------------
 
+  const secondDose = new Date(secDose); //covert secDose to timestamp
+
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
@@ -138,13 +139,12 @@ const Scan = ({ scanResult }) => {
       const ref = userRef.set(
         {
           doses: {
+            id,
             selectedVaccine,
             dose1,
             firstDose,
             firstVaccinator,
             dose2,
-            secDose,
-            secondVaccinator,
           },
         },
         { merge: true }
@@ -168,7 +168,29 @@ const Scan = ({ scanResult }) => {
     if (secondVaccinator) {
       setDose2(true);
     }
-  }, [firstVaccinator]);
+  }, [secondVaccinator]);
+
+  const handleSubmit2 = (e) => {
+    e.preventDefault();
+    e.preventDefault();
+    try {
+      const userRef = firestore.collection("users").doc(scanResult);
+      const ref = userRef.set(
+        {
+          doses: {
+            dose2,
+            secondDose,
+            secondVaccinator,
+          },
+        },
+        { merge: true }
+      );
+
+      console.log(" saved");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Card className={classes.root}>
@@ -179,142 +201,247 @@ const Scan = ({ scanResult }) => {
             {users &&
               users.map((user) => (
                 <li style={{ listStyle: "none" }}>
-                  <form onSubmit={handleSubmit}>
-                    <Grid container direction={"column"} spacing={2}>
-                      <Grid item>
-                        <TextField
-                          label="ID No"
-                          variant="outlined"
-                          value={id}
-                          onChange={(e) => setID(e.target.value)}
-                          fullWidth
-                          required
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          label="First Name"
-                          variant="outlined"
-                          value={user.firstName}
-                          fullWidth
-                          disabled={true}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          label="Middle Name (Optional)"
-                          variant="outlined"
-                          value={user.middleName}
-                          fullWidth
-                          disabled={true}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          label="Last Name"
-                          variant="outlined"
-                          value={user.lastName}
-                          fullWidth
-                          disabled={true}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <DatePicker
-                            format="MM/dd/yyyy"
-                            value={user.birthdate}
-                            onChange={handleDateChange}
-                            fullWidth
-                            id="date-picker-inline"
-                            label="BirthDate"
-                            disabled={true}
+                  {user.doses?.dose1 && user.doses?.dose2 === true ? ( //if dose1 and dose2 is true, show "Fully Vaccinated"
+                    <h1>Fully Vaccinated</h1>
+                  ) : (
+                    <></>
+                  )}
+
+                  {user.doses?.dose1 == true ? ( //if dose1 is true, only allow to edit the secondDose and the vaccinator
+                    <div>
+                      <form onSubmit={handleSubmit2}>
+                        <Grid container direction={"column"} spacing={2}>
+                          <CardHeader
+                            title={user.doses.id}
+                            subheader={
+                              user.firstName +
+                              " " +
+                              user.middleName +
+                              " " +
+                              user.lastName
+                            }
                           />
-                        </MuiPickersUtilsProvider>
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          type="text"
-                          value={user.address}
-                          label="Address"
-                          variant="outlined"
-                          fullWidth
-                          disabled={true}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          type="text"
-                          value={user.phoneNumber}
-                          label="Phone Number"
-                          variant="outlined"
-                          fullWidth
-                          disabled={true}
-                        />
-                      </Grid>
+                          <Grid item>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <DatePicker
+                                format="MM/dd/yyyy"
+                                value={user.birthdate}
+                                onChange={handleDateChange}
+                                fullWidth
+                                id="date-picker-inline"
+                                label="BirthDate"
+                                disabled={true}
+                              />
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.address}
+                              label="Address"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.phoneNumber}
+                              label="Phone Number"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.doses.selectedVaccine}
+                              label="Vaccine"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={new Date(
+                                user.doses.firstDose.seconds * 1000
+                              ).toDateString()}
+                              label="Date of First Dose"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.doses.firstVaccinator}
+                              label="Vaccinator"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <DatePicker
+                                format="MM/dd/yyyy"
+                                value={secDose}
+                                onChange={setSecDose}
+                                fullWidth
+                                id="date-picker-inline"
+                                label="Estimated 2nd Dose of Vaccination"
+                              />
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                          <Grid item>
+                            <SelectVaccinator
+                              value={secondVaccinator}
+                              onChange={handleChange2}
+                              names={names}
+                            />
+                          </Grid>{" "}
+                          <Grid item>
+                            <ButtonForm type="submit" fullWidth>
+                              Submit
+                            </ButtonForm>
+                          </Grid>
+                          <br />
+                        </Grid>
+                      </form>
+                    </div>
+                  ) : (
+                    // for those who does not have the object "doses" in firestore
+                    //or those who are to be vaccinated for the first time
+                    <div>
+                      <form onSubmit={handleSubmit}>
+                        <Grid container direction={"column"} spacing={2}>
+                          <Grid item>
+                            <TextField
+                              label="ID No"
+                              variant="outlined"
+                              value={id}
+                              onChange={(e) => setID(e.target.value)}
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              label="First Name"
+                              variant="outlined"
+                              value={user.firstName}
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              label="Middle Name (Optional)"
+                              variant="outlined"
+                              value={user.middleName}
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              label="Last Name"
+                              variant="outlined"
+                              value={user.lastName}
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <DatePicker
+                                format="MM/dd/yyyy"
+                                value={user.birthdate}
+                                onChange={handleDateChange}
+                                fullWidth
+                                id="date-picker-inline"
+                                label="BirthDate"
+                                disabled={true}
+                              />
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.address}
+                              label="Address"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.phoneNumber}
+                              label="Phone Number"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
 
-                      <Grid item>
-                        <SelectVaccine
-                          value={selectedVaccine}
-                          onChange={handleChangeVaccine}
-                          vaccines={vaccines}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          type="text"
-                          label="Control Number of the Vaccine "
-                          variant="outlined"
-                          fullWidth
-                          value={ctrlNumber}
-                          onChange={(e) => setCtrlNumber(e.target.value)}
-                        />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          type="text"
-                          label="1st Dosage"
-                          variant="outlined"
-                          value={firstDose}
-                          onChange={(e) => setFirstDose(e.target.value)}
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item>
-                        <SelectVaccinator
-                          value={firstVaccinator}
-                          onChange={handleChange}
-                          names={names}
-                        />
-                      </Grid>
+                          <Grid item>
+                            <SelectVaccine
+                              value={selectedVaccine}
+                              onChange={handleChangeVaccine}
+                              vaccines={vaccines}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              label="1st Dosage"
+                              variant="outlined"
+                              value={firstDose}
+                              onChange={(e) => setFirstDose(e.target.value)}
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item>
+                            <SelectVaccinator
+                              value={firstVaccinator}
+                              onChange={handleChange}
+                              names={names}
+                            />
+                          </Grid>
+                          {selectedVaccine == "J&J" ? (
+                            <></>
+                          ) : (
+                            <Grid item>
+                              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                  format="MM/dd/yyyy"
+                                  value={secDose}
+                                  onChange={setSecDose}
+                                  fullWidth
+                                  id="date-picker-inline"
+                                  label="Estimated 2nd Dose of Vaccination"
+                                />
+                              </MuiPickersUtilsProvider>
+                            </Grid>
+                          )}
+                        </Grid>
 
-                      <Grid item>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <DatePicker
-                            format="MM/dd/yyyy"
-                            value={secDose}
-                            onChange={setSecDose}
-                            fullWidth
-                            id="date-picker-inline"
-                            label="Estimated 2nd Dose of Vaccination"
-                          />
-                        </MuiPickersUtilsProvider>
-                      </Grid>
-                      <Grid item>
-                        <SelectVaccinator
-                          value={secondVaccinator}
-                          onChange={handleChange2}
-                          names={names}
-                        />
-                      </Grid>
-
-                      <br />
-                      <Grid>
-                        <ButtonForm type="submit" fullWidth>
-                          Submit
-                        </ButtonForm>
-                      </Grid>
-                    </Grid>
-                  </form>
+                        <br />
+                        <Grid item>
+                          <ButtonForm type="submit" fullWidth>
+                            Submit
+                          </ButtonForm>
+                        </Grid>
+                      </form>
+                    </div>
+                  )}
                 </li>
               ))}
           </>

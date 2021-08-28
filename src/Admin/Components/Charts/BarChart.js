@@ -1,7 +1,9 @@
 //sample bar chart from react-chart-js2
 //this bar chart will be used for the side effects
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
+
+import { firestore } from "../../../Firebase/utils";
 
 const state = {
   labels: ["Nausea", "Fever", "Muscle Pain"],
