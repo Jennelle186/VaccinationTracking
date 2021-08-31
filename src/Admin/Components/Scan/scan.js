@@ -195,7 +195,7 @@ const Scan = ({ scanResult }) => {
 
   return (
     <Card className={classes.root}>
-      <CardHeader title="Update Vaccination Status" />
+      <CardHeader title="Vaccination Status" />
       <CardContent>
         {isLoading ? (
           <>
@@ -288,44 +288,57 @@ const Scan = ({ scanResult }) => {
                             />
                           </Grid>
 
-                          <Grid item>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                              <DatePicker
-                                format="MM/dd/yyyy"
-                                value={secDose}
-                                onChange={setSecDose}
-                                fullWidth
-                                id="date-picker-inline"
-                                label="2nd Dose of Vaccination"
-                              />
-                            </MuiPickersUtilsProvider>
-                          </Grid>
-                          {user.doses?.secondVaccinator == " " ? (
-                            <Grid item>
-                              <SelectVaccinator
-                                value={secondVaccinator}
-                                onChange={handleChange2}
-                                names={names}
-                                placeholder={user.doses?.secondVaccinator}
-                              />
-                            </Grid>
+                          {user.doses?.selectedVaccine !== "J&J" ? (
+                            <>
+                              {" "}
+                              <Grid item>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                  <DatePicker
+                                    format="MM/dd/yyyy"
+                                    value={secDose}
+                                    onChange={setSecDose}
+                                    fullWidth
+                                    id="date-picker-inline"
+                                    label="2nd Dose of Vaccination"
+                                  />
+                                </MuiPickersUtilsProvider>
+                              </Grid>
+                              {user.doses?.secondVaccinator ? ( //if the field second vaccinator exist
+                                <>
+                                  {/* if it exist, shows the textfield with value of vaccinator name */}
+                                  <Grid item>
+                                    <TextField
+                                      label="Second Vaccinator"
+                                      variant="outlined"
+                                      value={user.doses?.secondVaccinator}
+                                      fullWidth
+                                      disabled
+                                    />
+                                  </Grid>
+                                </>
+                              ) : (
+                                <>
+                                  {/* else show the select component to select a vaccinator name */}
+                                  <Grid item>
+                                    <SelectVaccinator
+                                      value={secondVaccinator}
+                                      onChange={handleChange2}
+                                      names={names}
+                                      placeholder={user.doses?.secondVaccinator}
+                                    />
+                                  </Grid>
+                                  <Grid item>
+                                    <ButtonForm type="submit" fullWidth>
+                                      Submit
+                                    </ButtonForm>
+                                  </Grid>
+                                </>
+                              )}
+                            </>
                           ) : (
-                            <Grid item>
-                              <TextField
-                                label="Second Vaccinator"
-                                variant="outlined"
-                                value={user.doses?.secondVaccinator}
-                                fullWidth
-                                disabled
-                              />
-                            </Grid>
+                            <></>
                           )}
 
-                          <Grid item>
-                            <ButtonForm type="submit" fullWidth>
-                              Submit
-                            </ButtonForm>
-                          </Grid>
                           <br />
                         </Grid>
                       </form>
@@ -431,9 +444,10 @@ const Scan = ({ scanResult }) => {
                               names={names}
                             />
                           </Grid>
-                          {selectedVaccine == "J&J" ? (
-                            <></>
+                          {selectedVaccine == "J&J" ? ( //if selectedVaccine is J&J
+                            <></> // if yes, show nothing
                           ) : (
+                            // if selectedVaccine !== J&J, then show the expected date for the second dose
                             <Grid item>
                               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <DatePicker
