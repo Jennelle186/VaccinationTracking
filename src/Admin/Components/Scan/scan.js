@@ -287,6 +287,7 @@ const Scan = ({ scanResult }) => {
                               disabled={true}
                             />
                           </Grid>
+
                           <Grid item>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                               <DatePicker
@@ -295,17 +296,31 @@ const Scan = ({ scanResult }) => {
                                 onChange={setSecDose}
                                 fullWidth
                                 id="date-picker-inline"
-                                label="Estimated 2nd Dose of Vaccination"
+                                label="2nd Dose of Vaccination"
                               />
                             </MuiPickersUtilsProvider>
                           </Grid>
-                          <Grid item>
-                            <SelectVaccinator
-                              value={secondVaccinator}
-                              onChange={handleChange2}
-                              names={names}
-                            />
-                          </Grid>{" "}
+                          {user.doses?.secondVaccinator == " " ? (
+                            <Grid item>
+                              <SelectVaccinator
+                                value={secondVaccinator}
+                                onChange={handleChange2}
+                                names={names}
+                                placeholder={user.doses?.secondVaccinator}
+                              />
+                            </Grid>
+                          ) : (
+                            <Grid item>
+                              <TextField
+                                label="Second Vaccinator"
+                                variant="outlined"
+                                value={user.doses?.secondVaccinator}
+                                fullWidth
+                                disabled
+                              />
+                            </Grid>
+                          )}
+
                           <Grid item>
                             <ButtonForm type="submit" fullWidth>
                               Submit

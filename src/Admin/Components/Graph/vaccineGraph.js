@@ -24,6 +24,8 @@ const VaccineGraph = () => {
     };
   }, []);
 
+  // const [size, setSize] = useState(0);
+
   //AstraZeneca - at least 1 dose
   const [astra1, setAstra1] = useState(0);
   useEffect(async () => {
@@ -118,34 +120,6 @@ const VaccineGraph = () => {
           },
         }}
       />
-      {/* <Bar
-        height={400}
-        width={600}
-        data={{
-          labels: ["AstraZeneca", "Sinovac"],
-          datasets: [
-            {
-              label: "1stdose",
-              data: [astraSize, sinovac],
-              backgroundColor: ["red", "blue"],
-              borderColor: [`rgba(255, 99,132,1)`],
-            },
-          ],
-          borderWidth: 1,
-        }}
-        options={{
-          maintainAspectRatio: false,
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-        }}
-      /> */}
     </div>
   );
 };

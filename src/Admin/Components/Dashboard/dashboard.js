@@ -75,7 +75,7 @@ const Dashboard = () => {
       {/* Graph Below */}
       <h1>Graph Below Must be in a component</h1>
       <Card className={classes.graph}>
-        <Typography variant="h5">Percentage of the Ayala Population</Typography>
+        {/* <Typography variant="h5">Percentage of the Ayala Population</Typography> */}
       </Card>
     </div>
   );

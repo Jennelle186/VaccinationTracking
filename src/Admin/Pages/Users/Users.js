@@ -15,8 +15,8 @@ class Users extends Component {
     "Phone Number",
     "Address",
     "Vaccine",
-    "At least 1 dose",
-    "Fully Vaccinated",
+    "1st Dose",
+    "2nd Dose",
   ];
   options = {
     filter: true,
@@ -31,6 +31,7 @@ class Users extends Component {
         const users = [];
         snapshot.forEach((doc) => {
           const data = doc.data();
+          console.log("doses", data.doses);
           users.push({
             ...((data.firstName && data.lastName) || data.middleName == " "
               ? {
@@ -42,14 +43,12 @@ class Users extends Component {
                     data.lastName,
                 }
               : {}),
-
             Email: data.email,
             "Phone Number": data.phoneNumber,
             Address: data.address,
           });
         });
         this.setState({ users: users });
-        // console.log(snapshot)
       })
       .catch((error) => console.log(error));
   }
