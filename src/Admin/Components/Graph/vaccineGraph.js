@@ -1,10 +1,16 @@
+//graph for all of the total 1st dose and 2nd dose of vaccination
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../../Firebase/utils";
 import { Bar } from "react-chartjs-2";
+import SelectVaccine from "../SelectVaccine/selectVaccine";
 
-const VaccineGraph = () => {
+const VaccineGraph = (props) => {
+  const [size, setSize] = useState(0);
+  const [size2, setSize2] = useState(0);
+  const [selectedVaccine, setSelectedVaccine] = useState(0);
+  const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
+
   const [vaccines, setVaccines] = useState([]);
-
   useEffect(() => {
     const unsubscribe = firestore
       .collection("vaccines")
@@ -24,102 +30,96 @@ const VaccineGraph = () => {
     };
   }, []);
 
-  // const [size, setSize] = useState(0);
+  useEffect(() => {
+    let mounted = true;
 
-  //AstraZeneca - at least 1 dose
-  const [astra1, setAstra1] = useState(0);
-  useEffect(async () => {
-    const ref = firestore.collection("users");
-    const snapshot = await ref
-      .where("doses.selectedVaccine", "==", "AstraZeneca")
-      .where("doses.dose1", "==", true)
-      .where("doses.dose2", "==", false)
-      .onSnapshot((snap) => {
-        setAstra1(snap.size);
-      });
-  }, []);
+    const getData1 = async () => {
+      const citiesRef = firestore.collection("users");
+      const snapshot = await citiesRef
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .where("doses.dose1", "==", true)
+        .get();
 
-  //AstraZeneca - fully vaccinated
-  const [astraSize, setAstraSize] = useState(0);
+      if (mounted) {
+        setSize(snapshot.size);
+      }
+    };
 
-  useEffect(async () => {
-    const ref = firestore.collection("users");
-    const snapshot = await ref
-      .where("doses.selectedVaccine", "==", "AstraZeneca")
-      .where("doses.dose1", "==", true)
-      .where("doses.dose2", "==", true)
-      .onSnapshot((snap) => {
-        setAstraSize(snap.size);
-      });
-  }, []);
+    const getData2 = async () => {
+      const citiesRef = firestore.collection("users");
+      const snapshot = await citiesRef
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .where("doses.dose2", "==", true)
+        .get();
 
-  //sinovac at least 1 dose
-  const [sinovac, setSinovac] = useState(0);
-  useEffect(async () => {
-    const ref = firestore.collection("users");
-    const snapshot = await ref
-      .where("doses.selectedVaccine", "==", "Sinovac")
-      .where("doses.dose1", "==", true)
-      .where("doses.dose2", "==", false)
-      .onSnapshot((snap) => {
-        setSinovac(snap.size);
-      });
-  }, []);
+      if (mounted) {
+        setSize2(snapshot.size);
+      }
+    };
 
-  //sinovac fully vaccinated
-  const [sino2, setSino2] = useState(0);
-  useEffect(async () => {
-    const ref = firestore.collection("users");
-    const snapshot = await ref
-      .where("doses.selectedVaccine", "==", "Sinovac")
-      .where("doses.dose1", "==", true)
-      .where("doses.dose2", "==", true)
-      .onSnapshot((snap) => {
-        setSino2(snap.size);
-      });
-  }, []);
+    if (selectedVaccine) {
+      getData1();
+      getData2();
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [selectedVaccine]);
 
   return (
     <div>
-      <Bar
-        data={{
-          labels: ["AstraZeneca", "Sinovac"],
-          datasets: [
-            {
-              label: "At least 1 dose",
-              data: [astra1, sinovac],
-              backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-              borderColor: ["rgba(255, 99, 132, 1)"],
-              borderWidth: 1,
-            },
-            {
-              label: "Fully Vaccinated",
-              data: [astraSize, sino2],
-              backgroundColor: "orange",
-              borderColor: "red",
-            },
-          ],
-        }}
-        height={400}
-        width={600}
-        options={{
-          maintainAspectRatio: false,
-          scales: {
-            yAxes: [
+      <div>
+        <SelectVaccine
+          value={selectedVaccine}
+          onChange={handleChangeVaccine}
+          vaccines={vaccines}
+        />
+      </div>
+      {selectedVaccine == "J&J" ? (
+        <h5>J&J only has 1st dose of vaccine</h5>
+      ) : (
+        <></>
+      )}
+      <div>
+        <Bar
+          data={{
+            labels: ["1st Dose", "2nd Dose"],
+            datasets: [
               {
-                ticks: {
-                  beginAtZero: true,
-                },
+                label: "1st Dose",
+                data: [size, size2],
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(75, 192, 192, 0.2)",
+                ],
+                borderColor: ["rgba(255, 99, 132, 1)"],
+                borderWidth: 1,
+              },
+              {
+                label: "2nd Dose",
+                backgroundColor: ["rgba(75, 192, 192, 0.2)"],
+                borderColor: ["rgba(158,207,250,0.3)"],
               },
             ],
-          },
-          legend: {
-            labels: {
-              fontSize: 25,
+          }}
+          height={400}
+          width={600}
+          options={{
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: "Hello",
+              fontSize: 20,
             },
-          },
-        }}
-      />
+            legend: {
+              labels: {
+                fontSize: 25,
+              },
+            },
+          }}
+        />
+      </div>
     </div>
   );
 };

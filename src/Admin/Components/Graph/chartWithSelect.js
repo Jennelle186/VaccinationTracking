@@ -6,6 +6,9 @@ import SelectVaccine from "../SelectVaccine/selectVaccine";
 const ChartWithSelect = () => {
   //for the vaccines-------------------------------------------------
   const [vaccines, setVaccines] = useState([]);
+
+  const [selectedVaccine, setSelectedVaccine] = useState(0);
+  const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
   useEffect(() => {
     const unsubscribe = firestore
       .collection("vaccines")
@@ -25,180 +28,138 @@ const ChartWithSelect = () => {
     };
   }, []);
 
-  const [selectedVaccine, setSelectedVaccine] = useState(0);
-  const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
-
-  //--------------------------------------------------------------------
-
-  //first dose - fever
+  //------------------1st Dose--------------------------------------------------
   const [fever, setFever] = useState(0);
-  useEffect(async () => {
-    let ref = firestore.collection("users");
-    if (selectedVaccine) {
-      ref = ref
-        .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("1.sideEffects1.Fever", "==", true);
-
-      const query = await ref.get().then((snapshot) => {
-        const arr = [];
-        snapshot.forEach((doc) => {
-          arr.push({
-            ...doc.data(),
-          });
-        });
-
-        setFever(arr.length);
-      });
-    }
-  }, [selectedVaccine]);
-
   const [headache, setHeadache] = useState(0);
-  useEffect(async () => {
-    let ref = firestore.collection("users");
-    if (selectedVaccine) {
-      ref = ref
-        .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("1.sideEffects1.Headache", "==", true);
-
-      const query = await ref.get().then((snapshot) => {
-        const arr = [];
-        snapshot.forEach((doc) => {
-          arr.push({
-            ...doc.data(),
-          });
-        });
-
-        setHeadache(arr.length);
-      });
-    }
-  }, [selectedVaccine]);
-
   const [nausea, setNausea] = useState(0);
-  useEffect(async () => {
-    let ref = firestore.collection("users");
-    if (selectedVaccine) {
-      ref = ref
-        .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("1.sideEffects1.Nausea", "==", true);
-
-      const query = await ref.get().then((snapshot) => {
-        const arr = [];
-        snapshot.forEach((doc) => {
-          arr.push({
-            ...doc.data(),
-          });
-        });
-
-        setNausea(arr.length);
-      });
-    }
-  }, [selectedVaccine]);
-
   const [muscle, setMuscle] = useState(0);
-  useEffect(async () => {
-    let ref = firestore.collection("users");
-    if (selectedVaccine) {
-      ref = ref
+  //------------------2nd Dose--------------------------------------------------
+  const [fever2, setFever2] = useState(0);
+  const [headache2, setHeadache2] = useState(0);
+  const [nausea2, setNausea2] = useState(0);
+  const [muscle2, setMuscle2] = useState(0);
+
+  useEffect(() => {
+    let mounted = true;
+
+    // move these in here so they have access to `mounted`
+    const getData1 = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
         .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("1.sideEffects1.Muscle Pain", "==", true);
+        .where("1.sideEffects1.Fever", "==", true)
+        .get();
 
-      const query = await ref.get().then((snapshot) => {
-        const arr = [];
-        snapshot.forEach((doc) => {
-          arr.push({
-            ...doc.data(),
-          });
-        });
+      if (mounted) {
+        setFever(snapshot.size);
+      }
+    };
 
-        setMuscle(arr.length);
-      });
+    const getData2 = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .where("1.sideEffects1.Headache", "==", true)
+        .get();
+
+      if (mounted) {
+        setHeadache(snapshot.size);
+      }
+    };
+
+    const getData3 = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .where("1.sideEffects1.Nausea", "==", true)
+        .get();
+
+      if (mounted) {
+        setNausea(snapshot.size);
+      }
+    };
+
+    const getData4 = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .where("1.sideEffects1.Muscle Pain", "==", true)
+        .get();
+
+      if (mounted) {
+        setMuscle(snapshot.size);
+      }
+    };
+
+    //---------------------------------------------------------------------------------
+    const getData5 = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .where("2.sideEffects2.Fever", "==", true)
+        .get();
+
+      if (mounted) {
+        setFever2(snapshot.size);
+      }
+    };
+
+    const getData6 = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .where("2.sideEffects2.Headache", "==", true)
+        .get();
+
+      if (mounted) {
+        setHeadache2(snapshot.size);
+      }
+    };
+
+    const getData7 = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .where("2.sideEffects2.Nausea", "==", true)
+        .get();
+
+      if (mounted) {
+        setNausea2(snapshot.size);
+      }
+    };
+
+    const getData8 = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .where("2.sideEffects2.Muscle Pain", "==", true)
+        .get();
+
+      if (mounted) {
+        setMuscle2(snapshot.size);
+      }
+    };
+
+    //--------------------------------------------------------------------------
+
+    if (selectedVaccine) {
+      getData1();
+      getData3();
+      getData2();
+      getData4();
+      getData5();
+      getData6();
+      getData7();
+      getData8();
     }
+
+    return () => {
+      // avoid calling a state setter on an unmounted component
+      mounted = false;
+    };
   }, [selectedVaccine]);
 
   //2nd dose---------------------------------------------------------------------
-  const [fever2, setFever2] = useState(0);
-  useEffect(async () => {
-    let ref = firestore.collection("users");
-    if (selectedVaccine) {
-      ref = ref
-        .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("2.sideEffects2.Fever", "==", true);
-
-      const query = await ref.get().then((snapshot) => {
-        const arr = [];
-        snapshot.forEach((doc) => {
-          arr.push({
-            ...doc.data(),
-          });
-        });
-
-        setFever2(arr.length);
-      });
-    }
-  }, [selectedVaccine]);
-
-  const [headache2, setHeadache2] = useState(0);
-  useEffect(async () => {
-    let ref = firestore.collection("users");
-    if (selectedVaccine) {
-      ref = ref
-        .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("2.sideEffects2.Headache", "==", true);
-
-      const query = await ref.get().then((snapshot) => {
-        const arr = [];
-        snapshot.forEach((doc) => {
-          arr.push({
-            ...doc.data(),
-          });
-        });
-
-        setHeadache2(arr.length);
-      });
-    }
-  }, [selectedVaccine]);
-
-  const [nausea2, setNausea2] = useState(0);
-  useEffect(async () => {
-    let ref = firestore.collection("users");
-    if (selectedVaccine) {
-      ref = ref
-        .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("2.sideEffects2.Nausea", "==", true);
-
-      const query = await ref.get().then((snapshot) => {
-        const arr = [];
-        snapshot.forEach((doc) => {
-          arr.push({
-            ...doc.data(),
-          });
-        });
-
-        setNausea2(arr.length);
-      });
-    }
-  }, [selectedVaccine]);
-
-  const [muscle2, setMuscle2] = useState(0);
-  useEffect(async () => {
-    let ref = firestore.collection("users");
-    if (selectedVaccine) {
-      ref = ref
-        .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("2.sideEffects2.Muscle Pain", "==", true);
-
-      const query = await ref.get().then((snapshot) => {
-        const arr = [];
-        snapshot.forEach((doc) => {
-          arr.push({
-            ...doc.data(),
-          });
-        });
-
-        setMuscle2(arr.length);
-      });
-    }
-  }, [selectedVaccine]);
 
   return (
     <div>
