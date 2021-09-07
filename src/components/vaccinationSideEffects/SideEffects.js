@@ -150,19 +150,23 @@ const SideEffects = (props) => {
                 <li> Vaccine:{user.doses?.selectedVaccine}</li>
                 <li>
                   First Dose:
-                  {new Date(
-                    user.doses?.firstDose.seconds * 1000
-                  ).toDateString()}
+                  {user.doses?.firstDose
+                    ? new Date(
+                        user.doses?.firstDose.seconds * 1000
+                      ).toDateString()
+                    : ""}
                 </li>
                 <li>Vaccinator: {user.doses?.firstVaccinator}</li>
                 <li>
                   {user.doses?.selectedVaccine !== "J&J" ? (
                     <>
                       {" "}
-                      2nd dose:{" "}
-                      {new Date(
-                        user.doses?.secondDose.seconds * 1000
-                      ).toDateString()}{" "}
+                      2nd dose:
+                      {user.doses?.secondDose
+                        ? new Date(
+                            user.doses?.secondDose.seconds * 1000
+                          ).toDateString()
+                        : ""}
                       <li>Vaccinator: {user.doses?.secondVaccinator}</li>
                     </>
                   ) : (
