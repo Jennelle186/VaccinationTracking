@@ -1,3 +1,4 @@
+//side effects
 import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { firestore } from "../../../Firebase/utils";
@@ -33,6 +34,7 @@ const ChartWithSelect = () => {
   const [headache, setHeadache] = useState(0);
   const [nausea, setNausea] = useState(0);
   const [muscle, setMuscle] = useState(0);
+  const [others1, setOthers1] = useState(0);
   //------------------2nd Dose--------------------------------------------------
   const [fever2, setFever2] = useState(0);
   const [headache2, setHeadache2] = useState(0);
