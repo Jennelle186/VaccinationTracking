@@ -16,7 +16,9 @@ class Users extends Component {
     "Address",
     "Vaccine",
     "1st Dose",
+    "First Vaccinator",
     "2nd Dose",
+    "Second Vaccinator",
   ];
   options = {
     filter: true,
@@ -26,12 +28,12 @@ class Users extends Component {
   componentDidMount() {
     firestore
       .collection("users")
+      .orderBy("doses.firstDose", "desc") //with order by it will not show users who were not vaccinated
       .get()
       .then((snapshot) => {
         const users = [];
         snapshot.forEach((doc) => {
           const data = doc.data();
-          console.log("doses", data.doses);
           users.push({
             ...((data.firstName && data.lastName) || data.middleName == " "
               ? {
@@ -46,6 +48,25 @@ class Users extends Component {
             Email: data.email,
             "Phone Number": data.phoneNumber,
             Address: data.address,
+            Vaccine: data.doses?.selectedVaccine,
+
+            ...(data.doses?.selectedVaccine == "J&J"
+              ? {
+                  "1st Dose": new Date(
+                    data.doses?.firstDose.seconds * 1000
+                  ).toDateString(),
+                  "First Vaccinator": data.doses?.firstVaccinator,
+                }
+              : {
+                  "1st Dose": new Date(
+                    data.doses?.firstDose.seconds * 1000
+                  ).toDateString(),
+                  "First Vaccinator": data.doses?.firstVaccinator,
+                  "2nd Dose": new Date(
+                    data.doses?.secondDose.seconds * 1000
+                  ).toDateString(),
+                  "Second Vaccinator": data.doses?.secondVaccinator,
+                }),
           });
         });
         this.setState({ users: users });
