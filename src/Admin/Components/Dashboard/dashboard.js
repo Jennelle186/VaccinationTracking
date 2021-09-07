@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import ButtonForm from "../../../components/Forms/Button/button";
 import AvailableVaccine from "../../../components/AvailabilityVaccines/availableVaccine";
+import GraphMonth from "../Graph/graphMonth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,10 +73,9 @@ const Dashboard = () => {
           <AvailableVaccine className={classes.announcement} />
         </Grid>
       </Grid>
-      {/* Graph Below */}
-      <h1>Graph Below Must be in a component</h1>
+      {/*-----------------------Graph Below -----------------------------------------*/}
       <Card className={classes.graph}>
-        {/* <Typography variant="h5">Percentage of the Ayala Population</Typography> */}
+        <GraphMonth />
       </Card>
     </div>
   );
