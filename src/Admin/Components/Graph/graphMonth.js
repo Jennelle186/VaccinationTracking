@@ -44,6 +44,7 @@ const GraphMonth = () => {
         .get();
       if (snapshot.empty) {
         setError("No matching documents.");
+        setUsers([]); //for the sputnik where data is empty
         return;
       }
 
