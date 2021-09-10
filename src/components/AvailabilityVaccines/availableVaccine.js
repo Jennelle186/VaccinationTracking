@@ -43,7 +43,8 @@ const AvailableVaccine = () => {
             {vaccines &&
               vaccines.map((index) => (
                 <>
-                  {index.availability == true ? (
+                  {/* either index.availability == true or this */}
+                  {index.stocks > 0 ? (
                     <CardContent>
                       Vaccine: {index.vaccine} <br />
                       Dose: {index.dose} <br />

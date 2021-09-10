@@ -6,12 +6,14 @@ const AddVaccine = () => {
   const [vaccine, setVaccine] = useState("");
   const [dose, setDose] = useState("");
   const [daysApart, setDaysApart] = useState(0);
+  const [stocks, setStocks] = useState(0);
   const availability = true;
 
   const resetForm = () => {
     setVaccine("");
     setDose("");
     setDaysApart("");
+    setStocks(0);
   };
 
   const handleSubmit = (e) => {
@@ -24,6 +26,7 @@ const AddVaccine = () => {
         dose,
         daysApart,
         availability,
+        stocks: Number(stocks),
       });
       resetForm();
       console.log(" saved");
@@ -74,7 +77,16 @@ const AddVaccine = () => {
               />
             )}
           </Grid>
-
+          <Grid item>
+            <TextField
+              type="number"
+              label="Stocks"
+              fullWidth
+              required
+              value={stocks}
+              onChange={(e) => setStocks(e.target.value)}
+            />
+          </Grid>
           <br />
           <Grid>
             <ButtonForm type="submit" fullWidth>

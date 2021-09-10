@@ -15,7 +15,7 @@ import { firestore } from "../../../Firebase/utils";
 import SelectVaccinator from "../SelectVaccinator/selectVaccinator";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
 
-import parse from "date-fns/parse";
+import firebase from "firebase/app";
 
 const useStyles = makeStyles({
   root: {
@@ -87,7 +87,7 @@ const Scan = ({ scanResult }) => {
   useEffect(() => {
     const unsubscribe = firestore
       .collection("vaccines")
-      .where("availability", "==", true)
+      .where("stocks", ">", 0) //previously availability == true
       .onSnapshot((snapshot) => {
         const arr = [];
         snapshot.forEach((doc) =>
@@ -132,6 +132,24 @@ const Scan = ({ scanResult }) => {
 
   const secondDose = new Date(secDose); //covert secDose to timestamp
 
+  function incrementCounter() {
+    const collRef = firestore
+      .collection("vaccines")
+      .where("vaccine", "==", selectedVaccine);
+
+    collRef.get().then(async (qSnap) => {
+      const batch = firestore.batch();
+
+      qSnap.docs.forEach((doc) => {
+        batch.update(doc.ref, {
+          stocks: firebase.firestore.FieldValue.increment(-1),
+        });
+      });
+
+      await batch.commit();
+    });
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
@@ -148,10 +166,12 @@ const Scan = ({ scanResult }) => {
             secondDose,
           },
         },
+
         { merge: true }
       );
 
       console.log(" saved");
+      incrementCounter();
     } catch (err) {
       console.log(err);
     }
@@ -171,8 +191,37 @@ const Scan = ({ scanResult }) => {
     }
   }, [secondVaccinator]);
 
+  //2nd submit-----------------------------------------------------------
+
+  let ar2 = [];
+  const userItems2 = users[0]?.doses?.selectedVaccine;
+  if (userItems2) {
+    for (const [key, value] of Object.entries(userItems2)) {
+      ar2.push(value);
+    }
+  }
+
+  const selected2 = ar2.join("");
+
+  function incrementCounter2() {
+    const collRef = firestore
+      .collection("vaccines")
+      .where("vaccine", "==", selected2);
+
+    collRef.get().then(async (qSnap) => {
+      const batch = firestore.batch();
+
+      qSnap.docs.forEach((doc) => {
+        batch.update(doc.ref, {
+          stocks: firebase.firestore.FieldValue.increment(-1),
+        });
+      });
+
+      await batch.commit();
+    });
+  }
+
   const handleSubmit2 = (e) => {
-    e.preventDefault();
     e.preventDefault();
     try {
       const userRef = firestore.collection("users").doc(scanResult);
@@ -188,6 +237,7 @@ const Scan = ({ scanResult }) => {
       );
 
       console.log(" saved");
+      incrementCounter2();
     } catch (err) {
       console.log(err);
     }

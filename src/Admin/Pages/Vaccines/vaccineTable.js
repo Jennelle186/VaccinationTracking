@@ -120,6 +120,7 @@ const VaccinatorTable = (props) => {
                 <TableCell>Vaccine</TableCell>
                 <TableCell>No. of Dose</TableCell>
                 <TableCell>Days Apart</TableCell>
+                <TableCell>Stocks</TableCell>
                 <TableCell>Edit</TableCell>
                 <TableCell>Availability</TableCell>
               </TableRow>
@@ -133,6 +134,7 @@ const VaccinatorTable = (props) => {
                     </TableCell>
                     <TableCell>{index.dose}</TableCell>
                     <TableCell numeric>{index.daysApart}</TableCell>
+                    <TableCell numeric>{index.stocks}</TableCell>
                     <TableCell>
                       <IconButton
                         style={{ color: "green" }}
@@ -142,23 +144,18 @@ const VaccinatorTable = (props) => {
                       </IconButton>
                     </TableCell>
                     <TableCell>
-                      {index.availability == true ? (
+                      {index.stocks > 0 ? (
                         <Button
                           variant="outlined"
                           style={{
                             borderColor: "#397D02",
                             color: "#397D02",
                           }}
-                          onClick={() => toInactive(index.id)}
                         >
                           Available
                         </Button>
                       ) : (
-                        <Button
-                          variant="outlined"
-                          color="secondary"
-                          onClick={() => toActive(index.id)}
-                        >
+                        <Button variant="outlined" color="secondary">
                           Unavailable
                         </Button>
                       )}

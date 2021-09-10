@@ -16,8 +16,7 @@ const EditVaccine = () => {
   let history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [vaccines, setVaccines] = useState([]);
-  const [firstName, setFirstName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [stocks, setStocks] = useState(0);
 
   const goToPrevPath = () => {
     history.goBack();
@@ -62,7 +61,7 @@ const EditVaccine = () => {
     try {
       const userRef = firestore.collection("vaccines").doc(rowData);
       const ref = userRef.set(
-        { ...vaccines[index] }, // <-- user by index
+        { ...vaccines[index], stocks: Number(stocks) }, // <-- user by index
         { merge: true }
       );
       console.log(" saved");
@@ -140,6 +139,17 @@ const EditVaccine = () => {
                           name="daysApart" // <-- add name attribute
                           fullWidth
                           onChange={changeHandler(index)}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          type="number"
+                          value={stocks}
+                          variant="outlined"
+                          label="Stocks"
+                          // name="stocks" // <-- add name attribute
+                          fullWidth
+                          onChange={(e) => setStocks(Number(e.target.value))}
                         />
                       </Grid>
 
