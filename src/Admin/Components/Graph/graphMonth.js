@@ -107,6 +107,7 @@ const GraphMonth = () => {
     <div>
       <div>
         <Grid container>
+          {/* select a vaccine */}
           <Grid item xs={6}>
             <SelectVaccine
               value={selectedVaccine}
@@ -114,7 +115,6 @@ const GraphMonth = () => {
               vaccines={vaccines}
             />
           </Grid>
-
           <Grid item xs={6}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <DatePicker
