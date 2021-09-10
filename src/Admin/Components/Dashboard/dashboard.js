@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
   graph: {
     padding: "1rem",
+    marginTop: "1rem",
+    borderRadius: "12px",
   },
   link: {
     textDecoration: "none",
@@ -74,7 +76,7 @@ const Dashboard = () => {
         </Grid>
       </Grid>
       {/*-----------------------Graph Below -----------------------------------------*/}
-      <Card className={classes.graph}>
+      <Card className={classes.graph} elevation={10}>
         <GraphMonth />
       </Card>
     </div>

@@ -174,7 +174,7 @@ const ChartWithSelect = () => {
       <div>
         <Bar
           data={{
-            labels: ["Fever", "Headache", "Nausea", "Muscle Pain", "Others"],
+            labels: ["Fever", "Headache", "Nausea", "Muscle Pain"],
             datasets: [
               {
                 label: "1st Dose",
