@@ -10,6 +10,7 @@ import EditVaccine from "../../Pages/Vaccines/editVaccine";
 import AddAnnouncement from "../../Components/Announcement/addAnnouncement";
 import EditAnnouncement from "../../Pages/Announcement/editAnnouncement";
 import ReportsPage from "../../Pages/Reports/reportsPage";
+import UserDetails from "../../Pages/UserDetails/userDetails";
 import { AdminRoute } from "../../../Hooks/AdminRoute";
 
 import { createMuiTheme } from "@material-ui/core/styles";
@@ -49,6 +50,7 @@ const AdminLinks = () => {
             component={EditAnnouncement}
           />
           <AdminRoute exact path="/reports" component={ReportsPage} />
+          <AdminRoute exact path="/user-details" component={UserDetails} />
         </Switch>
       </ThemeProvider>
     </div>

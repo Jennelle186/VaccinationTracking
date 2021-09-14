@@ -1,15 +1,25 @@
 import React, { Component } from "react";
 import { firestore } from "../../../Firebase/utils";
 import MUIDataTable from "mui-datatables";
+import { withRouter } from "react-router-dom";
 
 class Users extends Component {
   constructor() {
     super();
-    this.state = { users: [] };
+
+    this.state = {
+      orders: [],
+      open: false,
+    };
   }
 
-  //d pa sure dito sa columns, just that nilagyan lang ng table dito
+  handleRowClick = (rowData, rowMeta) => {
+    this.props.history.push("/user-details", `${rowData[0]}`);
+  };
+
   columns = [
+    "ID",
+    "Vaccine No",
     "Name",
     "Email",
     "Phone Number",
@@ -20,9 +30,12 @@ class Users extends Component {
     "2nd Dose",
     "Second Vaccinator",
   ];
+
   options = {
     filter: true,
     selectableRows: "none",
+    responsive: "simple",
+    onRowClick: this.handleRowClick,
   };
 
   componentDidMount() {
@@ -45,6 +58,8 @@ class Users extends Component {
                     data.lastName,
                 }
               : {}),
+            ID: doc.id,
+            "Vaccine No": data.doses.id,
             Email: data.email,
             "Phone Number": data.phoneNumber,
             Address: data.address,
@@ -75,17 +90,19 @@ class Users extends Component {
   }
 
   render() {
-    return this.state.users ? (
-      <MUIDataTable
-        title={"List of Users"}
-        columns={this.columns}
-        data={this.state.users}
-        options={this.options}
-      />
+    const { open } = this.state;
+    return this.state.orders ? (
+      <div>
+        <MUIDataTable
+          title={"List of Users"}
+          columns={this.columns}
+          data={this.state.users}
+          options={this.options}
+        />
+      </div>
     ) : (
-      <div>Loading...</div>
+      <p>Loading...</p>
     );
   }
 }
-
-export default Users;
+export default withRouter(Users);
