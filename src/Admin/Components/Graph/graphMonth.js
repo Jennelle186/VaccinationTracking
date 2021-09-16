@@ -10,8 +10,8 @@ const GraphMonth = () => {
   const [users, setUsers] = useState([]);
   const [selectedVaccine, setSelectedVaccine] = useState(0);
   const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
-  const [error, setError] = useState("");
   const [selectedDate, handleDateChange] = useState(new Date());
+  const [usersSize, setUsersSize] = useState(0);
 
   const [vaccines, setVaccines] = useState([]);
   useEffect(() => {
@@ -37,13 +37,18 @@ const GraphMonth = () => {
   useEffect(() => {
     let mounted = true;
 
+    const getUsers = async () => {
+      const ref = firestore.collection("users").onSnapshot((snap) => {
+        setUsersSize(snap.size);
+      });
+    };
+
     const getData1 = async () => {
       const citiesRef = firestore.collection("users");
       const snapshot = await citiesRef
         .where("doses.selectedVaccine", "==", selectedVaccine)
         .get();
       if (snapshot.empty) {
-        setError("No matching documents.");
         setUsers([]); //for the sputnik where data is empty
         return;
       }
@@ -61,6 +66,7 @@ const GraphMonth = () => {
 
     if (selectedVaccine) {
       getData1();
+      getUsers();
     }
 
     return () => {
@@ -102,6 +108,14 @@ const GraphMonth = () => {
     },
     [...dosesTemplate]
   );
+
+  const realDoses = doses1.map((dose) => {
+    return ((dose / usersSize) * 100).toFixed();
+  });
+
+  const realDoses2 = doses2.map((dose) => {
+    return ((dose / usersSize) * 100).toFixed();
+  });
 
   return (
     <div>
@@ -150,14 +164,14 @@ const GraphMonth = () => {
             datasets: [
               {
                 label: "1st Dose",
-                data: doses1,
+                data: realDoses,
                 backgroundColor: ["red"],
 
                 borderWidth: 1,
               },
               {
                 label: "2nd Dose",
-                data: doses2,
+                data: realDoses2,
                 backgroundColor: ["orange"],
               },
             ],
@@ -170,6 +184,31 @@ const GraphMonth = () => {
               display: true,
               text: selectedVaccine,
               fontSize: 20,
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    var label = context.dataset.label || "";
+                    if (context.parsed.y !== null) {
+                      label += " " + context.parsed.y + "%";
+                    }
+                    return label;
+                  },
+                },
+              },
+            },
+            scales: {
+              y: {
+                min: 0,
+                max: 100,
+                ticks: {
+                  stepSize: 20,
+                  callback: function (value) {
+                    return ((value / this.max) * 100).toFixed(0) + "%"; // convert it to percentage
+                  },
+                },
+              },
             },
             legend: {
               labels: {

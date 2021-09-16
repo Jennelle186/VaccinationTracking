@@ -9,6 +9,7 @@ const VaccineGraph = (props) => {
   const [size2, setSize2] = useState(0);
   const [selectedVaccine, setSelectedVaccine] = useState(0);
   const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
+  const [usersSize, setUsersSize] = useState(0);
 
   const [vaccines, setVaccines] = useState([]);
   useEffect(() => {
@@ -32,6 +33,18 @@ const VaccineGraph = (props) => {
 
   useEffect(() => {
     let mounted = true;
+
+    //count number of users with this type of vaccine
+    const getUsers = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .get();
+
+      if (mounted) {
+        setUsersSize(snapshot.size);
+      }
+    };
 
     const getData1 = async () => {
       const citiesRef = firestore.collection("users");
@@ -58,6 +71,7 @@ const VaccineGraph = (props) => {
     };
 
     if (selectedVaccine) {
+      getUsers();
       getData1();
       getData2();
     }
@@ -66,6 +80,10 @@ const VaccineGraph = (props) => {
       mounted = false;
     };
   }, [selectedVaccine]);
+
+  //percentage computation
+  let dose1 = (size / usersSize) * 100;
+  let dose2 = (size2 / usersSize) * 100;
 
   return (
     <div>
@@ -88,7 +106,7 @@ const VaccineGraph = (props) => {
             datasets: [
               {
                 label: "1st Dose",
-                data: [size, size2],
+                data: [dose1, dose2],
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
                   "rgba(75, 192, 192, 0.2)",
@@ -111,6 +129,31 @@ const VaccineGraph = (props) => {
               display: true,
               text: "Hello",
               fontSize: 20,
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    var label = context.dataset.label || "";
+                    if (context.parsed.y !== null) {
+                      label += " " + context.parsed.y + "%";
+                    }
+                    return label;
+                  },
+                },
+              },
+            },
+            scales: {
+              y: {
+                min: 0,
+                max: 100,
+                ticks: {
+                  stepSize: 20,
+                  callback: function (value) {
+                    return ((value / this.max) * 100).toFixed(0) + "%"; // convert it to percentage
+                  },
+                },
+              },
             },
             legend: {
               labels: {

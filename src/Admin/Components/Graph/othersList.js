@@ -1,8 +1,23 @@
 //list of the others in side effects
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../../Firebase/utils";
-import { Grid, CardHeader } from "@material-ui/core";
+import { Grid, CardHeader, IconButton, Tooltip } from "@material-ui/core";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
+import HelpIcon from "@material-ui/icons/Help";
+
+function Title() {
+  return (
+    <div>
+      List of Others
+      <Tooltip title={<h3>List of other side effects entered by the user</h3>}>
+        <IconButton aria-label="help" color="primary">
+          <HelpIcon />
+        </IconButton>
+      </Tooltip>
+    </div>
+  );
+}
+
 const OthersList = () => {
   const [users, setUsers] = useState([]);
   const [vaccines, setVaccines] = useState([]);
@@ -77,13 +92,12 @@ const OthersList = () => {
 
   return (
     <div>
-      <CardHeader title="List of others" />
+      <CardHeader title={<Title />} />
       <SelectVaccine
         value={selectedVaccine}
         onChange={handleChangeVaccine}
         vaccines={vaccines}
       />
-
       <Grid container style={{ marginTop: "1rem" }}>
         {selectedVaccine == "J&J" ? ( //if selectedVaccine == J&j show only the 1st dose
           <Grid item xs={12}>

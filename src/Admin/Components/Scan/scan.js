@@ -8,6 +8,7 @@ import {
   CardContent,
   TextField,
 } from "@material-ui/core";
+import { withRouter, useHistory } from "react-router-dom";
 import ButtonForm from "../../../components/Forms/Button/button";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -27,6 +28,7 @@ const useStyles = makeStyles({
 
 const Scan = ({ scanResult }) => {
   const classes = useStyles();
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [id, setID] = useState("");
   const [ctrlNumber, setCtrlNumber] = useState("");
@@ -110,6 +112,7 @@ const Scan = ({ scanResult }) => {
 
   //for the estimated 2nd Dose of vaccine logic--------------------------
   const [secDose, setSecDose] = useState(new Date()); //variable for 2nd dose //could remove toISOString
+
   useEffect(() => {
     if (selectedVaccine) {
       const { daysApart } = vaccines.find(
@@ -172,6 +175,7 @@ const Scan = ({ scanResult }) => {
 
       console.log(" saved");
       incrementCounter();
+      alert("You have successfully submitted the form", history.push("/admin"));
     } catch (err) {
       console.log(err);
     }
@@ -243,6 +247,8 @@ const Scan = ({ scanResult }) => {
     }
   };
 
+  let date = new Date().toDateString();
+
   return (
     <Card className={classes.root}>
       <CardHeader title="Vaccination Status" />
@@ -258,9 +264,13 @@ const Scan = ({ scanResult }) => {
                     <></>
                   )}
 
-                  {user.doses?.dose1 == true ? ( //if dose1 is true, only allow to edit the secondDose and the vaccinator
+                  {/* not sure yet for the secondDose date */}
+
+                  {user.doses?.dose1 == true ? (
+                    //if dose1 is true, only allow to edit the secondDose and the vaccinator
                     <div>
                       <form onSubmit={handleSubmit2}>
+                        <Grid item>2nd dose of vaccine</Grid>
                         <Grid container direction={"column"} spacing={2}>
                           <CardHeader
                             title={user.doses.id}
@@ -533,4 +543,4 @@ const Scan = ({ scanResult }) => {
   );
 };
 
-export default Scan;
+export default withRouter(Scan);

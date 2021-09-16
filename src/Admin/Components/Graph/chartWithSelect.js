@@ -1,5 +1,5 @@
 //side effects
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Bar } from "react-chartjs-2";
 import { firestore } from "../../../Firebase/utils";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
@@ -29,12 +29,14 @@ const ChartWithSelect = () => {
     };
   }, []);
 
+  const [usersSize, setUsersSize] = useState(0);
+
   //------------------1st Dose--------------------------------------------------
   const [fever, setFever] = useState(0);
   const [headache, setHeadache] = useState(0);
   const [nausea, setNausea] = useState(0);
   const [muscle, setMuscle] = useState(0);
-  const [others1, setOthers1] = useState(0);
+
   //------------------2nd Dose--------------------------------------------------
   const [fever2, setFever2] = useState(0);
   const [headache2, setHeadache2] = useState(0);
@@ -45,6 +47,18 @@ const ChartWithSelect = () => {
     let mounted = true;
 
     // move these in here so they have access to `mounted`
+
+    const getUsers = async () => {
+      const ref = firestore.collection("users");
+      const snapshot = await ref
+        .where("doses.selectedVaccine", "==", selectedVaccine)
+        .get();
+
+      if (mounted) {
+        setUsersSize(snapshot.size);
+      }
+    };
+
     const getData1 = async () => {
       const ref = firestore.collection("users");
       const snapshot = await ref
@@ -145,9 +159,10 @@ const ChartWithSelect = () => {
     //--------------------------------------------------------------------------
 
     if (selectedVaccine) {
+      getUsers();
       getData1();
-      getData3();
       getData2();
+      getData3();
       getData4();
       getData5();
       getData6();
@@ -162,6 +177,20 @@ const ChartWithSelect = () => {
   }, [selectedVaccine]);
 
   //2nd dose---------------------------------------------------------------------
+
+  // const percent = useMemo(() => {
+  //   return (fever / usersSize) * 100;
+  // }, [fever]);
+
+  let f = (fever / usersSize) * 100;
+  let h = (headache / usersSize) * 100;
+  let n = (nausea / usersSize) * 100;
+  let m = (muscle / usersSize) * 100;
+  // ------------------------------------
+  let f2 = (fever2 / usersSize) * 100;
+  let h2 = (headache2 / usersSize) * 100;
+  let n2 = (nausea2 / usersSize) * 100;
+  let m2 = (muscle2 / usersSize) * 100;
 
   return (
     <div>
@@ -178,14 +207,14 @@ const ChartWithSelect = () => {
             datasets: [
               {
                 label: "1st Dose",
-                data: [fever, headache, nausea, muscle],
+                data: [f, h, n, m],
                 backgroundColor: ["rgba(255, 99, 132, 0.2)"],
                 borderColor: ["rgba(255, 99, 132, 1)"],
                 borderWidth: 1,
               },
               {
                 label: "2nd Dose",
-                data: [fever2, headache2, nausea2, muscle2],
+                data: [f2, h2, n2, m2],
                 backgroundColor: ["rgba(75, 192, 192, 0.2)"],
                 borderColor: ["rgba(255, 159, 64, 1)"],
                 borderWidth: 1,
@@ -202,13 +231,29 @@ const ChartWithSelect = () => {
               fontSize: 20,
             },
             scales: {
-              yAxes: [
-                {
-                  ticks: {
-                    beginAtZero: true,
+              y: {
+                min: 0,
+                max: 100,
+                ticks: {
+                  stepSize: 20,
+                  callback: function (value) {
+                    return ((value / this.max) * 100).toFixed(0) + "%"; // convert it to percentage
                   },
                 },
-              ],
+              },
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    var label = context.dataset.label || "";
+                    if (context.parsed.y !== null) {
+                      label += " " + context.parsed.y + "%";
+                    }
+                    return label;
+                  },
+                },
+              },
             },
             legend: {
               labels: {

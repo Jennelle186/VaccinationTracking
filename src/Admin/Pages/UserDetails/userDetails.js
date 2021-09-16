@@ -120,23 +120,56 @@ const UserDetails = () => {
                       <ListItem>
                         <Typography>First Dose : </Typography>
                         <ListItemText
-                          primary={new Date(
-                            user.doses?.firstDose.seconds * 1000
-                          ).toLocaleString()}
+                          primary={
+                            new Date(
+                              user.doses?.firstDose.seconds * 1000
+                            ).toDateString() +
+                            " at " +
+                            new Date(
+                              user.doses?.firstDose.seconds * 1000
+                            ).toLocaleTimeString()
+                          }
                         />
                       </ListItem>
                       <ListItem>
                         <Typography>First Vaccinator : </Typography>
                         <ListItemText primary={user.doses?.firstVaccinator} />
                       </ListItem>
-                      <ListItem>
-                        <Typography>Second Dose : </Typography>
-                        <ListItemText
-                          primary={new Date(
-                            user.doses?.secondDose.seconds * 1000
-                          ).toLocaleString()}
-                        />
-                      </ListItem>
+                      {user.doses?.secondVaccinator ? (
+                        <>
+                          <ListItem>
+                            <Typography>Second Dose : </Typography>
+                            <ListItemText
+                              primary={
+                                new Date(
+                                  user.doses?.secondDose.seconds * 1000
+                                ).toDateString() +
+                                " at " +
+                                new Date(
+                                  user.doses?.secondDose.seconds * 1000
+                                ).toLocaleTimeString()
+                              }
+                            />
+                          </ListItem>
+                          <ListItem>
+                            <Typography>Second Vaccinator: </Typography>
+                            <ListItemText
+                              primary={user.doses?.secondVaccinator}
+                            />
+                          </ListItem>
+                        </>
+                      ) : (
+                        <>
+                          <ListItem>
+                            <Typography>Expected Second Dose : </Typography>
+                            <ListItemText
+                              primary={new Date(
+                                user.doses?.secondDose.seconds * 1000
+                              ).toDateString()}
+                            />
+                          </ListItem>
+                        </>
+                      )}
                     </List>
                   </div>
                 </Grid>
