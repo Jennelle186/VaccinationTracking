@@ -6,7 +6,6 @@ const Homepage = (props) => {
     <section>
       <br />
       <h1>Homepage</h1>
-
       <ViewAnnouncement />
       <AvailableVaccine />
     </section>

@@ -9,6 +9,7 @@ import {
   Typography,
   Avatar,
   makeStyles,
+  Button,
 } from "@material-ui/core";
 import { auth } from "../../Firebase/utils";
 import { Alert, AlertTitle } from "@material-ui/lab";
@@ -109,6 +110,15 @@ const Login = (props) => {
             LOGIN
           </ButtonForm>
 
+          <Button
+            variant="outlined"
+            fullWidth
+            color="secondary"
+            onClick={signInWithGoogle}
+          >
+            CONTINUE WITH GMAIL
+          </Button>
+
           {/* if may other mode of login- https://colorlib.com/wp/wp-content/uploads/sites/2/login-form-v11.jpg */}
           {/* <Typography>Or login with</Typography> */}
 
@@ -120,9 +130,9 @@ const Login = (props) => {
             <Typography>Forgot Password?</Typography>
           </Link>
           {/* not sure here, just trying to see if firebase works */}
-          <ButtonForm onClick={signInWithGoogle}>
+          {/* <ButtonForm onClick={signInWithGoogle}>
             Continue with Gmail
-          </ButtonForm>
+          </ButtonForm> */}
         </form>
       </Paper>
     </Grid>
