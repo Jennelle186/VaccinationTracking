@@ -5,11 +5,8 @@ import { Bar } from "react-chartjs-2";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
 
 const VaccineGraph = (props) => {
-  const [size, setSize] = useState(0);
-  const [size2, setSize2] = useState(0);
   const [selectedVaccine, setSelectedVaccine] = useState(0);
   const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
-  const [usersSize, setUsersSize] = useState(0);
 
   const [vaccines, setVaccines] = useState([]);
   useEffect(() => {
@@ -31,49 +28,34 @@ const VaccineGraph = (props) => {
     };
   }, []);
 
+  const [users, setUsers] = useState([]);
+
   useEffect(() => {
     let mounted = true;
-
-    //count number of users with this type of vaccine
-    const getUsers = async () => {
-      const ref = firestore.collection("users");
-      const snapshot = await ref
-        .where("doses.selectedVaccine", "==", selectedVaccine)
-        .get();
-
-      if (mounted) {
-        setUsersSize(snapshot.size);
-      }
-    };
 
     const getData1 = async () => {
       const citiesRef = firestore.collection("users");
       const snapshot = await citiesRef
         .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("doses.dose1", "==", true)
         .get();
-
-      if (mounted) {
-        setSize(snapshot.size);
+      if (snapshot.empty) {
+        setUsers([]); //for the sputnik where data is empty
+        return;
       }
-    };
 
-    const getData2 = async () => {
-      const citiesRef = firestore.collection("users");
-      const snapshot = await citiesRef
-        .where("doses.selectedVaccine", "==", selectedVaccine)
-        .where("doses.dose2", "==", true)
-        .get();
-
-      if (mounted) {
-        setSize2(snapshot.size);
-      }
+      snapshot.forEach((doc) => {
+        if (mounted) {
+          const usersData = snapshot.docs.map((d) => ({
+            id: d.id,
+            ...d.data(),
+          }));
+          setUsers(usersData);
+        }
+      });
     };
 
     if (selectedVaccine) {
-      getUsers();
       getData1();
-      getData2();
     }
 
     return () => {
@@ -81,9 +63,16 @@ const VaccineGraph = (props) => {
     };
   }, [selectedVaccine]);
 
-  //percentage computation
-  let dose1 = (size / usersSize) * 100;
-  let dose2 = (size2 / usersSize) * 100;
+  const total = users.length;
+
+  const doses1 = users.filter((v) => v.doses?.dose1 == true);
+
+  const doses2 = users.filter(
+    (v) => v.doses?.dose1 == true && v.doses?.dose2 == true
+  );
+
+  let dose1Percent = ((doses1.length / total) * 100).toFixed(2);
+  let dose2Percent = ((doses2.length / total) * 100).toFixed(2);
 
   return (
     <div>
@@ -106,7 +95,7 @@ const VaccineGraph = (props) => {
             datasets: [
               {
                 label: "1st Dose",
-                data: [dose1, dose2],
+                data: [dose1Percent, dose2Percent],
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
                   "rgba(75, 192, 192, 0.2)",
