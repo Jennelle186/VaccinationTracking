@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Card,
@@ -7,7 +7,6 @@ import {
   CardContent,
   TextField,
   Snackbar,
-  theme,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import DateFnsUtils from "@date-io/date-fns";

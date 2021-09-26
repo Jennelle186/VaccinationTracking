@@ -55,11 +55,12 @@ const MobileView = (props) => {
       )}
 
       <div className={classes.grow} />
-
-      <IconButton edge="end" color="inherit">
-        <SettingsRoundedIcon />
-        Settings
-      </IconButton>
+      <Link to="/settings" className={classes.link}>
+        <IconButton edge="end" color="inherit">
+          <SettingsRoundedIcon />
+          Settings
+        </IconButton>
+      </Link>
     </BottomBar>
   );
 };

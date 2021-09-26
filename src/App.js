@@ -19,6 +19,7 @@ import AppBar from "./Admin/Components/AppBar/appBar";
 import ForgotPassword from "./components/ForgotPassword/forgotPass";
 import ProfilePage from "./pages/Profile/profile";
 import Users from "./Admin/Pages/Users/Users";
+import Settings from "./components/Settings/settings";
 
 import { setCurrentUser, setAuthPending } from "./redux/user/user.actions";
 import { checkUserAdmin } from "./Admin/AdminRoute/checkAdmin";
@@ -112,6 +113,15 @@ const App = (props) => {
         />
         <AuthRoute
           exact
+          path="/settings"
+          render={() => (
+            <MainLayout>
+              <Settings />
+            </MainLayout>
+          )}
+        />
+        <AuthRoute
+          exact
           path="/QR-Code"
           render={() => (
             <MainLayout>
@@ -123,37 +133,6 @@ const App = (props) => {
         <AdminRoute component={AppBar} />
         <AdminRoute exact path="/admin" component={AdminHome} />
         <AdminRoute exact path="/users" component={Users} />
-
-        {/* <Route
-          exact
-          path="/profile"
-          render={() => (
-            <WithAuth>
-              <MainLayout>
-                <ProfilePage />
-              </MainLayout>
-            </WithAuth>
-          )}
-        /> */}
-
-        {/* <Route
-          render={() => (
-            <WithAdmin>
-              {" "}
-              <AppBar />
-            </WithAdmin>
-          )}
-        /> */}
-
-        {/* <Route
-          exact
-          path="/admin"
-          render={() => (
-            <WithAdmin>
-              <AdminHome />
-            </WithAdmin>
-          )}
-        /> */}
       </Switch>
     </div>
   );
