@@ -43,12 +43,13 @@ const Settings = () => {
     textDecoration: "none",
   };
 
-  const name =
-    currentUser.firstName +
-    " " +
-    currentUser.middleName +
-    " " +
-    currentUser.lastName;
+  const name = [
+    currentUser?.firstName,
+    currentUser?.middleName,
+    currentUser?.lastName,
+  ]
+    .filter((part) => Boolean(part))
+    .join(" ");
 
   return (
     <Grid
@@ -60,7 +61,14 @@ const Settings = () => {
       style={{ minHeight: "100vh", padding: "1rem", marginBottom: "5rem" }}
     >
       <Grid align="center">
-        <Typography>Welcome, {name}</Typography>
+        {(currentUser?.firstName && currentUser?.lastName) ||
+        currentUser?.middleName ? (
+          <Typography>Hello, {name}</Typography>
+        ) : (
+          <Typography>
+            Please click the button below to update your profile
+          </Typography>
+        )}
       </Grid>
       <form>
         <Link to="/profile" style={link}>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import QRCode from "qrcode";
 import {
   makeStyles,
@@ -71,10 +72,25 @@ const GenerateQR = (props) => {
 
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  You may show your QR Code to complete your vaccination
+                  {(currentUser?.firstName && currentUser?.lastName) ||
+                  currentUser.middleName ? (
+                    <>
+                      <Typography>{name}</Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        You may show your QR Code to complete your vaccination
+                      </Typography>
+                    </>
+                  ) : (
+                    <Typography>
+                      <Link to="/profile">
+                        Please click the button below to update your profile
+                      </Link>
+                    </Typography>
+                  )}
                 </Typography>
               </CardContent>
             </CardActionArea>
