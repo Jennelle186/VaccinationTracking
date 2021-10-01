@@ -6,7 +6,6 @@ import {
   Card,
   Typography,
   CardContent,
-  CardHeader,
 } from "@material-ui/core";
 import ButtonForm from "../../../components/Forms/Button/button";
 import AvailableVaccine from "../../../components/AvailabilityVaccines/availableVaccine";

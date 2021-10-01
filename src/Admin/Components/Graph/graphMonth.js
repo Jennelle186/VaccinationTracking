@@ -119,6 +119,7 @@ const GraphMonth = () => {
 
   return (
     <div>
+      Total Users: {usersSize}
       <div>
         <Grid container>
           {/* select a vaccine */}
@@ -143,7 +144,6 @@ const GraphMonth = () => {
           </Grid>
         </Grid>
       </div>
-
       <div>
         <Line
           data={{

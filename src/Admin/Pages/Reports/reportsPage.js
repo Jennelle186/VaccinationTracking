@@ -2,6 +2,7 @@ import React from "react";
 import ChartWithSelect from "../../Components/Graph/chartWithSelect";
 import VaccineGraph from "../../Components/Graph/vaccineGraph";
 import OthersList from "../../Components/Graph/othersList";
+import PieGraph from "../../Components/Graph/pieGraph";
 import { Typography, Card, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,11 @@ const ReportsPage = () => {
       <div>
         <Card className={classes.card} elevation={10}>
           <OthersList />
+        </Card>
+      </div>
+      <div>
+        <Card className={classes.card} elevation={10}>
+          <PieGraph />
         </Card>
       </div>
     </div>

@@ -1,5 +1,5 @@
 //side effects
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { firestore } from "../../../Firebase/utils";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
@@ -123,6 +123,7 @@ const ChartWithSelect = () => {
         vaccines={vaccines}
       />
       {selectedVaccine == "J&J" ? <h5>J&J does not have a 2nd dose</h5> : <></>}
+      <h5>Total vaccinated : {total}</h5>
       <div>
         <Bar
           data={{

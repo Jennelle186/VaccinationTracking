@@ -1,14 +1,21 @@
-//graph for all of the total 1st dose and 2nd dose of vaccination
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../../Firebase/utils";
-import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
 
-const VaccineGraph = (props) => {
-  const [selectedVaccine, setSelectedVaccine] = useState(0);
-  const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
+import "chartjs-plugin-datalabels";
+import { Chart } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
+Chart.register(ChartDataLabels);
+
+const PieGraph = () => {
   const [vaccines, setVaccines] = useState([]);
+  const [selectedVaccine, setSelectedVaccine] = useState("");
+  const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
+  const [users, setUsers] = useState([]);
+  const [size, setSize] = useState([]);
+
   useEffect(() => {
     const unsubscribe = firestore
       .collection("vaccines")
@@ -28,11 +35,16 @@ const VaccineGraph = (props) => {
     };
   }, []);
 
-  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    return firestore.collection("users").onSnapshot((snap) => {
+      setSize(snap.size);
+    });
+  }, []);
 
   useEffect(() => {
     let mounted = true;
 
+    //dependin on the selected vacccine
     const getData1 = async () => {
       const citiesRef = firestore.collection("users");
       const snapshot = await citiesRef
@@ -63,16 +75,14 @@ const VaccineGraph = (props) => {
     };
   }, [selectedVaccine]);
 
-  const total = users.length;
-
   const doses1 = users.filter((v) => v.doses?.dose1 == true);
 
   const doses2 = users.filter(
     (v) => v.doses?.dose1 == true && v.doses?.dose2 == true
   );
 
-  let dose1Percent = ((doses1.length / total) * 100).toFixed(2);
-  let dose2Percent = ((doses2.length / total) * 100).toFixed(2);
+  let dose1Percent = ((doses1.length / size) * 100).toFixed(2);
+  let dose2Percent = ((doses2.length / size) * 100).toFixed(2);
 
   return (
     <div>
@@ -83,38 +93,17 @@ const VaccineGraph = (props) => {
           vaccines={vaccines}
         />
       </div>
-      {selectedVaccine == "J&J" ? (
-        <>
-          <h5>J&J only has 1st dose of vaccine</h5>
-          <h5>Total vaccinated: {doses1.length}</h5>
-        </>
-      ) : (
-        <>
-          {" "}
-          <h5>Total vaccinated with 1st dose: {doses1.length}</h5>
-          <h5>Total vaccinted with 2nd dose: {doses2.length}</h5>
-        </>
-      )}
-
+      {selectedVaccine == "J&J" ? <h5>J&J does not have a 2nd dose</h5> : <></>}
+      <h5>Total Registered Users: {size}</h5>
       <div>
-        <Bar
+        <Pie
           data={{
             labels: ["1st Dose", "2nd Dose"],
             datasets: [
               {
-                label: "1st Dose",
                 data: [dose1Percent, dose2Percent],
-                backgroundColor: [
-                  "rgba(255, 99, 132, 0.2)",
-                  "rgba(75, 192, 192, 0.2)",
-                ],
-                borderColor: ["rgba(255, 99, 132, 1)"],
+                backgroundColor: ["#ffa600", "#ff6361"],
                 borderWidth: 1,
-              },
-              {
-                label: "2nd Dose",
-                backgroundColor: ["rgba(75, 192, 192, 0.2)"],
-                borderColor: ["rgba(158,207,250,0.3)"],
               },
             ],
           }}
@@ -124,37 +113,34 @@ const VaccineGraph = (props) => {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "Hello",
+              text: "Selected",
               fontSize: 20,
-            },
-            plugins: {
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    var label = context.dataset.label || "";
-                    if (context.parsed.y !== null) {
-                      label += " " + context.parsed.y + "%";
-                    }
-                    return label;
-                  },
-                },
-              },
-            },
-            scales: {
-              y: {
-                min: 0,
-                max: 100,
-                ticks: {
-                  stepSize: 20,
-                  callback: function (value) {
-                    return ((value / this.max) * 100).toFixed(0) + "%"; // convert it to percentage
-                  },
-                },
-              },
             },
             legend: {
               labels: {
                 fontSize: 25,
+              },
+            },
+            plugins: {
+              datalabels: {
+                backgroundColor: function (context) {
+                  return context.dataset.backgroundColor;
+                },
+                formatter: (val, context) => `${val}%`,
+
+                borderRadius: 25,
+                borderWidth: 3,
+                color: "white",
+                font: {
+                  weight: "bold",
+                },
+                padding: 6,
+              },
+
+              tooltip: {
+                callbacks: {
+                  label: (ttItem) => `${ttItem.label}: ${ttItem.parsed}%`,
+                },
               },
             },
           }}
@@ -164,4 +150,4 @@ const VaccineGraph = (props) => {
   );
 };
 
-export default VaccineGraph;
+export default PieGraph;
