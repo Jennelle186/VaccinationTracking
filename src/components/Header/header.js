@@ -28,6 +28,7 @@ import { auth } from "../../Firebase/utils";
 import { checkUserAdmin } from "../../Admin/AdminRoute/checkAdmin";
 
 import MobileView from "./BottomBar/mobileView";
+import DrawerComponent from "./DrawerComponent/drawer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     [theme.breakpoints.up("md")]: {
       display: "flex",
+    },
+    header: {
+      position: "fixed",
+    },
+    toolbar: {
+      backgroundColor: "red",
     },
   },
 }));
@@ -116,21 +123,11 @@ const Header = (props) => {
   return (
     <div>
       {isMatch ? (
-        <MobileView />
+        <DrawerComponent />
       ) : (
-        <AppBar
-          style={{
-            position: "sticky",
-            top: "0",
-          }}
-        >
+        <AppBar className={classes.header}>
           <div style={{ width: "100%" }}>
-            <Toolbar
-              variant="dense"
-              style={{
-                backgroundColor: "#2196F3",
-              }}
-            >
+            <Toolbar variant="dense" className={classes.toolbar}>
               <Typography>Ayala Vaccination Tracker</Typography>
               <Grid
                 container

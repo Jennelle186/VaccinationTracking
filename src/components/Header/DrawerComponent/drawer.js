@@ -9,6 +9,7 @@ import {
   makeStyles,
   Drawer,
   Typography,
+  AppBar,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 
@@ -19,7 +20,7 @@ const DrawerComponent = () => {
     },
     iconButtonContainer: {
       marginLeft: "auto",
-      color: "white",
+      color: "black",
       float: "right",
       marginRight: theme.spacing(2),
     },
@@ -28,9 +29,19 @@ const DrawerComponent = () => {
     },
     link: {
       textDecoration: "none",
+      "&:hover": {
+        textDecoration: "none",
+      },
     },
     menuIconToggle: {
       marginRight: "1rem",
+      color: "black",
+    },
+    website: {
+      marginRight: "1rem",
+    },
+    header: {
+      backgroundColor: "transparent",
     },
   }));
 
@@ -40,18 +51,20 @@ const DrawerComponent = () => {
   const classes = useStyles();
   return (
     <div>
-      <IconButton
-        edge="end"
-        className={classes.iconButtonContainer}
-        onClick={() => setOpenDrawer(!openDrawer)}
-        disableRipple
-        aria-label="menu"
-      >
-        <MenuIcon fontSize="large" className={classes.menuIconToggle} />
-        <Typography variant="h6" color="inherit">
-          Website
-        </Typography>
-      </IconButton>
+      <AppBar className={classes.header}>
+        <IconButton
+          edge="start"
+          className={classes.iconButtonContainer}
+          onClick={() => setOpenDrawer(!openDrawer)}
+          disableRipple
+          aria-label="menu"
+        >
+          <Typography variant="h6" className={classes.website}>
+            Website Name
+          </Typography>
+          <MenuIcon fontSize="large" className={classes.menuIconToggle} />
+        </IconButton>
+      </AppBar>
 
       <Drawer
         anchor="left"
@@ -77,17 +90,21 @@ const DrawerComponent = () => {
             </ListItem>
           </Link>
 
-          <ListItem divider button onClick={() => setOpenDrawer(false)}>
-            <ListItemIcon>
-              <ListItemText>Sample</ListItemText>
-            </ListItemIcon>
-          </ListItem>
+          <Link to="/Sample1" className={classes.link}>
+            <ListItem divider button onClick={() => setOpenDrawer(false)}>
+              <ListItemIcon>
+                <ListItemText>Sample1</ListItemText>
+              </ListItemIcon>
+            </ListItem>
+          </Link>
 
-          <ListItem divider button onClick={() => setOpenDrawer(false)}>
-            <ListItemIcon>
-              <ListItemText> Sample</ListItemText>
-            </ListItemIcon>
-          </ListItem>
+          <Link to="/Sample2" className={classes.link}>
+            <ListItem divider button onClick={() => setOpenDrawer(false)}>
+              <ListItemIcon>
+                <ListItemText> Sample2</ListItemText>
+              </ListItemIcon>
+            </ListItem>
+          </Link>
         </List>
       </Drawer>
     </div>

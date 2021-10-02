@@ -26,6 +26,10 @@ import { checkUserAdmin } from "./Admin/AdminRoute/checkAdmin";
 
 import { AuthRoute } from "./Hooks/AuthRoute";
 import { AdminRoute } from "./Hooks/AdminRoute";
+
+import Header2 from "./components/Layout/header2";
+import Footer from "./components/Footer/footer";
+
 const App = (props) => {
   const {
     setAuthPending, // <-- access action
@@ -79,6 +83,7 @@ const App = (props) => {
               <Redirect to="/" />
             ) : (
               <MainLayout>
+                <br />
                 <LoginPage />
               </MainLayout>
             )
@@ -89,6 +94,7 @@ const App = (props) => {
           path="/registration"
           render={() => (
             <MainLayout>
+              <br />
               <Registration />
             </MainLayout>
           )}

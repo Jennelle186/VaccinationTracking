@@ -64,6 +64,8 @@ const ProfilePage = () => {
 
   return (
     <section>
+      <br />
+      <br />
       <Container fixed>
         <div className={classes.root}>
           <AppBar

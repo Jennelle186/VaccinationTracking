@@ -13,7 +13,7 @@
   }
 }
 
-.App-header {
+/* .App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -22,11 +22,11 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
+} */
 
-.App-link {
+/* .App-link {
   color: #61dafb;
-}
+} */
 
 
 @keyframes App-logo-spin {
@@ -37,3 +37,130 @@
     transform: rotate(360deg);
   }
 }
+
+/**************************Header and Navigator*************/
+#header {
+  height: 100vh;
+  background-size: cover;
+  background-attachment: fixed;
+  max-width: 100%;
+  z-index: 3;
+
+
+  /* background-image: url(" https://www.claphamparkgp.com/media/content/images/covid_vaccine_grid_image.jpg"); */
+  /* background-image: url("https://wallpaperaccess.com/full/2409545.jpg"); */
+  /* background-image: url("https://www.promegaconnections.com/wp-content/uploads/2021/02/61282461-COVID-Vaccine-Blog-image-1200x630-1-1024x538.jpg"); */
+  background-image: url("https://www.news-medical.net/image.axd?picture=2021%2F5%2Fshutterstock_735742660-1.jpg");
+}
+
+/****************Navigator*******************/
+#navigator {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  position: fixed;
+  z-index: 1000;
+}
+
+#navigator .nav-logo img {
+  width: 80px;
+  height: 80px;
+}
+
+#mobile-nav {
+  display: none;
+}
+
+.nav-link {
+  font-size: 16px;
+  color: black;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: blue;
+}
+
+/****************Header*******************/
+/* header {
+  padding-top: 100px;
+} */
+
+header .banner-content h1 {
+  font-size: 80px;
+  font-weight: bold;
+  color: #fff;
+}
+
+header .banner-content .btn-rounded {
+  width: 200px;
+}
+
+
+
+/******************Footer*************/
+footer {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #3498db;
+  color: #fff;
+  position: relative;
+}
+
+footer:before {
+  content: "";
+  position: absolute;
+  /* top: -60px;
+  height: 60px;
+  left: 0;
+  right: 0; */
+  background: linear-gradient(to bottom right, transparent 49%, #3498db 50%);
+}
+
+.footer-item {
+  padding-top: 30px;
+}
+
+.footer-item a {
+  color: #fff;
+}
+
+.footer-sm {
+  margin-top: 50px;
+}
+
+.footer-sm ul {
+  margin: auto;
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-sm a {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  background-color: #2c3e50;
+  border-radius: 50%;
+  border: 1px solid #3498db;
+  transition: all 0.3s ease-out 0s;
+}
+
+.footer-sm a span {
+  line-height: 40px;
+  font-size: 20px;
+  color: #fff;
+  transition: all 0.3s ease-out 0s;
+}
+
+.footer-sm a:hover {
+  background-color: #fff;
+}
+
+.footer-sm a:hover span {
+  color: #3498db;
+}
+
