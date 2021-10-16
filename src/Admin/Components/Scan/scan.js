@@ -15,6 +15,7 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { firestore } from "../../../Firebase/utils";
 import SelectVaccinator from "../SelectVaccinator/selectVaccinator";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
+import Category from '../Select/selectCategory';
 
 import firebase from "firebase/app";
 
@@ -31,7 +32,7 @@ const Scan = ({ scanResult }) => {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [id, setID] = useState("");
-  const [ctrlNumber, setCtrlNumber] = useState("");
+  const [batchNo, setBatchNo] = useState("");
   const [firstDose, setFirstDose] = useState(new Date());
   const [selectedDate, handleDateChange] = useState(new Date());
   const [users, setUsers] = useState([]); //variable for storing user data info in an array
@@ -110,6 +111,13 @@ const Scan = ({ scanResult }) => {
   const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
   //--------------------------------------------------------------------
 
+  //for selecting a category--------------------------------------------
+  const [category, setCategory] = useState(0);
+  const handleCategory = (e) => setCategory(e.target.value);
+
+
+  //--------------------------------------------------------------------
+
   //for the estimated 2nd Dose of vaccine logic--------------------------
   const [secDose, setSecDose] = useState(new Date()); //variable for 2nd dose //could remove toISOString
 
@@ -160,8 +168,10 @@ const Scan = ({ scanResult }) => {
       const ref = userRef.set(
         {
           doses: {
+            category,
             id,
             selectedVaccine,
+            batchNo,
             dose1,
             firstDose,
             firstVaccinator,
@@ -247,7 +257,9 @@ const Scan = ({ scanResult }) => {
     }
   };
 
-  let date = new Date().toDateString();
+  // let date = new Date().toDateString();
+
+ 
 
   return (
     <Card className={classes.root}>
@@ -271,6 +283,7 @@ const Scan = ({ scanResult }) => {
                     <div>
                       <form onSubmit={handleSubmit2}>
                         <Grid item>2nd dose of vaccine</Grid>
+                        <Grid item>Category: {user.doses?.category}</Grid>
                         <Grid container direction={"column"} spacing={2}>
                           <CardHeader
                             title={user.doses.id}
@@ -332,6 +345,16 @@ const Scan = ({ scanResult }) => {
                                 user.doses.firstDose.seconds * 1000
                               ).toDateString()}
                               label="Date of First Dose"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.doses?.batchNo}
+                              label="Batch Number"
                               variant="outlined"
                               fullWidth
                               disabled={true}
@@ -409,6 +432,9 @@ const Scan = ({ scanResult }) => {
                     <div>
                       <form onSubmit={handleSubmit}>
                         <Grid container direction={"column"} spacing={2}>
+                        <Grid item>
+                           <Category value={category} onChange={handleCategory}/>
+                          </Grid>
                           <Grid item>
                             <TextField
                               label="ID No"
@@ -487,6 +513,16 @@ const Scan = ({ scanResult }) => {
                               vaccines={vaccines}
                             />
                           </Grid>
+                          <Grid item>
+                           <TextField 
+                            value={batchNo} 
+                            type="text" 
+                            label="Batch Number"
+                             variant="outlined" 
+                             onChange={(e) => setBatchNo(e.target.value)}
+                             fullWidth/>
+                          </Grid>
+                          
                           <Grid item>
                             <TextField
                               type="text"

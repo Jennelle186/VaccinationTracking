@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "1rem",
     marginTop: "1rem",
     borderRadius: "12px",
+    backgroundColor: "#add8e6",
   },
   link: {
     textDecoration: "none",

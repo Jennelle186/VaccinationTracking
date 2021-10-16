@@ -42,11 +42,6 @@ const ReportsPage = () => {
           <OthersList />
         </Card>
       </div>
-      <div>
-        <Card className={classes.card} elevation={10}>
-          <PieGraph />
-        </Card>
-      </div>
     </div>
   );
 };

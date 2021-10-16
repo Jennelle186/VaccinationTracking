@@ -32,7 +32,8 @@ import DrawerComponent from "./DrawerComponent/drawer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    backgroundColor: "whitesmoke",
+    color: "black",
   },
   link: {
     textDecoration: "none",
@@ -125,7 +126,7 @@ const Header = (props) => {
       {isMatch ? (
         <DrawerComponent />
       ) : (
-        <AppBar className={classes.header}>
+        <AppBar className={classes.root}>
           <div style={{ width: "100%" }}>
             <Toolbar variant="dense" className={classes.toolbar}>
               <Typography>Ayala Vaccination Tracker</Typography>
