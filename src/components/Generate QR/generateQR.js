@@ -87,7 +87,7 @@ const GenerateQR = (props) => {
                   ) : (
                     <Typography>
                       <Link to="/profile">
-                        Please click the button below to update your profile
+                        Please click the link to update your profile
                       </Link>
                     </Typography>
                   )}
