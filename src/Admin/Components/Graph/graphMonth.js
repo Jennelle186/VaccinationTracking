@@ -166,13 +166,15 @@ const GraphMonth = () => {
                 label: "1st Dose",
                 data: realDoses,
                 backgroundColor: ["red"],
-
-                borderWidth: 1,
+                borderWidth: 2,
+                borderColor: "black",
               },
               {
                 label: "2nd Dose",
                 data: realDoses2,
                 backgroundColor: ["orange"],
+                borderWidth: 2,
+                borderColor: "black"
               },
             ],
           }}

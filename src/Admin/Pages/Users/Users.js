@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Grid} from '@material-ui/core'
 import { firestore } from "../../../Firebase/utils";
 import MUIDataTable from "mui-datatables";
 import { withRouter } from "react-router-dom";
@@ -18,10 +19,10 @@ class Users extends Component {
   };
 
   columns = [
-    "ID",
-    "Vaccine No",
+    "User ID",
+    "ID No",
+    "Category",
     "Name",
-    "Email",
     "Phone Number",
     "Address",
     "Vaccine",
@@ -58,9 +59,9 @@ class Users extends Component {
                     data.lastName,
                 }
               : {}),
-            ID: doc.id,
-            "Vaccine No": data.doses.id,
-            Email: data.email,
+            "User ID": doc.id,
+            "ID No": data.doses.id,
+            Category: data.doses?.category,
             "Phone Number": data.phoneNumber,
             Address: data.address,
             Vaccine: data.doses?.selectedVaccine,
@@ -90,11 +91,16 @@ class Users extends Component {
   }
 
   render() {
-    const { open } = this.state;
+    
     return this.state.orders ? (
+     
       <div>
+         <div style={{ float: 'left'}}>
+       
+          <h2>List of Users</h2>
+        </div>
+     <br/><br/> <br/>
         <MUIDataTable
-          title={"List of Users"}
           columns={this.columns}
           data={this.state.users}
           options={this.options}

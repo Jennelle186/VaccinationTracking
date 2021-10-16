@@ -79,7 +79,9 @@ const UserDetails = () => {
               subheader={user.doses?.id}
             />
             <CardContent>
+              <Grid item><h4>Category {user.doses?.category}</h4></Grid>
               <Grid container spacing={2}>
+               
                 <Grid item xs={12} md={6}>
                   <div>
                     <List>
@@ -113,9 +115,14 @@ const UserDetails = () => {
                       <Typography variant="h6">
                         Vaccine Information:{" "}
                       </Typography>
+                      
                       <ListItem>
                         <Typography>Vaccine : </Typography>
                         <ListItemText primary={user.doses?.selectedVaccine} />
+                      </ListItem>
+                      <ListItem>
+                        <Typography>Batch Number : </Typography>
+                        <ListItemText primary={user.doses?.batchNo} />
                       </ListItem>
                       <ListItem>
                         <Typography>First Dose : </Typography>
