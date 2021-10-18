@@ -10,11 +10,18 @@ import {
   Drawer,
   Typography,
   AppBar,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  Dialog,
+  Button,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { checkUserAdmin } from "../../../Admin/AdminRoute/checkAdmin";
 
+import { auth } from "../../../Firebase/utils";
 import { useSelector } from "react-redux";
+import { DialogBtn } from "../../Forms/DialogButton/dialogBtn";
 
 const mapState = ({ user }) => ({
   currentUser: user.currentUser,
@@ -22,6 +29,7 @@ const mapState = ({ user }) => ({
 
 const DrawerComponent = () => {
   const { currentUser } = useSelector(mapState);
+  const [open, setOpen] = useState(false);
   const admin = checkUserAdmin(currentUser);
   const useStyles = makeStyles((theme) => ({
     drawerContainer: {
@@ -57,6 +65,15 @@ const DrawerComponent = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   //Css
   const classes = useStyles();
+
+  //Dialog or modal for loggin out
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  //-------------------------------
   return (
     <div>
       <AppBar className={classes.header}>
@@ -115,6 +132,16 @@ const DrawerComponent = () => {
                   </ListItemIcon>
                 </ListItem>
               </Link>
+
+              <ListItem
+                divider
+                button
+                onClick={(() => setOpenDrawer(false), handleClickOpen)}
+              >
+                <ListItemIcon>
+                  <ListItemText>Logout</ListItemText>
+                </ListItemIcon>
+              </ListItem>
             </>
           ) : (
             <>
@@ -129,6 +156,25 @@ const DrawerComponent = () => {
           )}
         </List>
       </Drawer>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle id="alert-dialog-title">{"Log Out"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to logout?
+          </DialogContentText>
+        </DialogContent>
+        <DialogBtn handleClose={handleClose}>
+          <Button
+            onClick={() => {
+              auth.signOut();
+              handleClose();
+            }}
+            color="primary"
+          >
+            Yes
+          </Button>
+        </DialogBtn>
+      </Dialog>
     </div>
   );
 };
