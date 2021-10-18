@@ -106,7 +106,7 @@ const Profile = () => {
       <CardContent>
         <form onSubmit={handleSubmit}>
           <Grid container direction={"column"} spacing={2}>
-            <Grid item>
+            <Grid item xs>
               <TextField
                 label="First Name"
                 variant="outlined"
@@ -116,7 +116,7 @@ const Profile = () => {
                 required
               />
             </Grid>
-            <Grid item>
+            <Grid item xs>
               <TextField
                 label="Middle Name (Optional)"
                 variant="outlined"
@@ -125,7 +125,7 @@ const Profile = () => {
                 fullWidth
               />
             </Grid>
-            <Grid item>
+            <Grid item xs>
               <TextField
                 label="Last Name"
                 variant="outlined"
@@ -135,7 +135,7 @@ const Profile = () => {
                 required
               />
             </Grid>
-            <Grid item>
+            <Grid item xs>
               <TextField
                 label="Address"
                 variant="outlined"
@@ -145,7 +145,7 @@ const Profile = () => {
                 required
               />
             </Grid>
-            <Grid item>
+            <Grid item xs>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
                   format="MM/dd/yyyy"
@@ -157,17 +157,21 @@ const Profile = () => {
                 />
               </MuiPickersUtilsProvider>
             </Grid>
-            <Grid>
+            <Grid item xs={12}>
               <ReactPhoneInput
                 value={phoneNumber}
                 defaultCountry="us"
                 onlyCountries={["ph"]}
                 onChange={handleValue}
                 placeholder="Phone Number"
+                inputStyle={{
+                  width: "100%",
+                }}
               />
             </Grid>
+
             <br />
-            <Grid>
+            <Grid item xs>
               <ButtonForm type="submit" fullWidth onClick={() => handleClick()}>
                 Submit
               </ButtonForm>

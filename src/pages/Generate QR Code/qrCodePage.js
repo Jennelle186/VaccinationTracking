@@ -5,6 +5,8 @@ const QrCodePage = (props) => {
     <div>
       <br />
       <br />
+      <br />
+      <br />
       <GenerateQR />
     </div>
   );
