@@ -49,7 +49,7 @@ const UserDetails = () => {
   }
 
   let sideEffects2 = [];
-  const userItems2 = user[2]?.sideEffects1;
+  const userItems2 = user[2]?.sideEffects2;
   if (userItems2) {
     for (const [key, value] of Object.entries(userItems2)) {
       sideEffects2.push(key, ",");
@@ -79,9 +79,10 @@ const UserDetails = () => {
               subheader={user.doses?.id}
             />
             <CardContent>
-              <Grid item><h4>Category {user.doses?.category}</h4></Grid>
+              <Grid item>
+                <h4>Category {user.doses?.category}</h4>
+              </Grid>
               <Grid container spacing={2}>
-               
                 <Grid item xs={12} md={6}>
                   <div>
                     <List>
@@ -115,7 +116,7 @@ const UserDetails = () => {
                       <Typography variant="h6">
                         Vaccine Information:{" "}
                       </Typography>
-                      
+
                       <ListItem>
                         <Typography>Vaccine : </Typography>
                         <ListItemText primary={user.doses?.selectedVaccine} />
