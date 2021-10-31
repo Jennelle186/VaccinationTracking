@@ -101,15 +101,7 @@ const OthersList = () => {
       <Grid container style={{ marginTop: "1rem" }}>
         {selectedVaccine == "J&J" ? ( //if selectedVaccine == J&j show only the 1st dose
           <Grid item xs={12}>
-            {objToString() == null ? ( //if objToString is null or empty
-              <>
-                {/* then show here the J&J side effects */}
-                {objToString()} <br />
-              </>
-            ) : (
-              // else show this display
-              <h5>No result</h5>
-            )}
+            {objToString()}
           </Grid>
         ) : (
           //else show 1st dose and 2nd dose
