@@ -176,7 +176,7 @@ const UserDetails = () => {
                         </>
                       ) : (
                         <>
-                          {user.doses?.selectedVaccine == "J&J" ? (
+                          {user.doses?.selectedVaccine === "J&J" ? (
                             <></>
                           ) : (
                             <>
@@ -209,14 +209,22 @@ const UserDetails = () => {
                         <Typography>Others : </Typography>
                         <ListItemText primary={user[1]?.others} />
                       </ListItem>
-                      <ListItem>
-                        <Typography>Second Dose : </Typography>
-                        <ListItemText primary={sideEffects2} />
-                      </ListItem>
-                      <ListItem>
-                        <Typography>Others : </Typography>
-                        <ListItemText primary={user[2]?.others} />
-                      </ListItem>
+
+                      {user.doses?.selectedVaccine === "J&J" ? ( //if selectedVaccine is equals to J&J
+                        <></> //if yes, show nothing
+                      ) : (
+                        <>
+                          {/* if not, then show the second dose  */}
+                          <ListItem>
+                            <Typography>Second Dose : </Typography>
+                            <ListItemText primary={sideEffects2} />
+                          </ListItem>
+                          <ListItem>
+                            <Typography>Others : </Typography>
+                            <ListItemText primary={user[2]?.others} />
+                          </ListItem>
+                        </>
+                      )}
                     </List>
                   </div>
                 </Grid>
