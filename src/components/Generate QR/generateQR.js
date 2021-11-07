@@ -55,11 +55,11 @@ const GenerateQR = (props) => {
         {/* <ButtonForm startIcon={<GetAppIcon />}>Download</ButtonForm> */}
         <br />
 
-        {imgURL ? (
+        {/* {imgURL ? (
           <a href={imgURL} download>
             <img src={imgURL} alt="img" />{" "}
           </a>
-        ) : null}
+        ) : null} */}
 
         {imgURL ? (
           <Card className={classes.root} elevation={5}>

@@ -10,6 +10,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Divider,
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Loading from "../../../components/Loading/loading";
@@ -121,10 +122,7 @@ const UserDetails = () => {
                         <Typography>Vaccine : </Typography>
                         <ListItemText primary={user.doses?.selectedVaccine} />
                       </ListItem>
-                      <ListItem>
-                        <Typography>Batch Number : </Typography>
-                        <ListItemText primary={user.doses?.batchNo} />
-                      </ListItem>
+
                       <ListItem>
                         <Typography>First Dose : </Typography>
                         <ListItemText
@@ -140,9 +138,15 @@ const UserDetails = () => {
                         />
                       </ListItem>
                       <ListItem>
+                        <Typography>Batch Number : </Typography>
+                        <ListItemText primary={user.doses?.batchNo} />
+                      </ListItem>
+                      <ListItem>
                         <Typography>First Vaccinator : </Typography>
                         <ListItemText primary={user.doses?.firstVaccinator} />
                       </ListItem>
+
+                      <Divider />
                       {user.doses?.secondVaccinator ? (
                         <>
                           <ListItem>
@@ -160,6 +164,10 @@ const UserDetails = () => {
                             />
                           </ListItem>
                           <ListItem>
+                            <Typography>Batch Number : </Typography>
+                            <ListItemText primary={user.doses?.batchNo2} />
+                          </ListItem>
+                          <ListItem>
                             <Typography>Second Vaccinator: </Typography>
                             <ListItemText
                               primary={user.doses?.secondVaccinator}
@@ -168,14 +176,21 @@ const UserDetails = () => {
                         </>
                       ) : (
                         <>
-                          <ListItem>
-                            <Typography>Expected Second Dose : </Typography>
-                            <ListItemText
-                              primary={new Date(
-                                user.doses?.secondDose.seconds * 1000
-                              ).toDateString()}
-                            />
-                          </ListItem>
+                          {user.doses?.selectedVaccine == "J&J" ? (
+                            <></>
+                          ) : (
+                            <>
+                              {" "}
+                              <ListItem>
+                                <Typography>Expected Second Dose : </Typography>
+                                <ListItemText
+                                  primary={new Date(
+                                    user.doses?.secondDose.seconds * 1000
+                                  ).toDateString()}
+                                />
+                              </ListItem>
+                            </>
+                          )}
                         </>
                       )}
                     </List>

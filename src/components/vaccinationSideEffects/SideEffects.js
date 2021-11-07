@@ -147,6 +147,7 @@ const SideEffects = (props) => {
           <li className={classes.li}>
             <Grid container spacing={3}>
               <Grid item xs={6}>
+                <li>ID No. : {user.doses?.id}</li>
                 <li> Vaccine:{user.doses?.selectedVaccine}</li>
                 <li>
                   First Dose:
@@ -156,11 +157,14 @@ const SideEffects = (props) => {
                       ).toDateString()
                     : ""}
                 </li>
+                <li>Batch No. : {user.doses?.batchNo}</li>
                 <li>Vaccinator: {user.doses?.firstVaccinator}</li>
+                <Divider />
                 <li>
                   {user.doses?.selectedVaccine !== "J&J" ? (
                     <>
                       {" "}
+                      <li>Batch No. : {user.doses?.batchNo2} </li>
                       2nd dose:
                       {user.doses?.secondDose
                         ? new Date(
@@ -183,9 +187,16 @@ const SideEffects = (props) => {
                 </Typography>
                 <Divider />
                 <Typography>
-                  Second dosage:
-                  <li>{user["2"]?.others}</li>
-                  {ar2 && <li>{ar2}</li>}
+                  {ar2.length == 0 ? ( //if array of ar2 is == 0
+                    <></> //if true, show nothing
+                  ) : (
+                    <>
+                      {/* if false show the 2nd dosage  */}
+                      Second dosage:
+                      <li>{user["2"]?.others}</li>
+                      {ar2 && <li>{ar2}</li>}
+                    </>
+                  )}
                 </Typography>
               </Grid>
 

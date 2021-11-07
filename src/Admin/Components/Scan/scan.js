@@ -15,7 +15,7 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { firestore } from "../../../Firebase/utils";
 import SelectVaccinator from "../SelectVaccinator/selectVaccinator";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
-import Category from '../Select/selectCategory';
+import Category from "../Select/selectCategory";
 
 import firebase from "firebase/app";
 
@@ -33,6 +33,7 @@ const Scan = ({ scanResult }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [id, setID] = useState("");
   const [batchNo, setBatchNo] = useState("");
+  const [batchNo2, setBatchNo2] = useState("");
   const [firstDose, setFirstDose] = useState(new Date());
   const [selectedDate, handleDateChange] = useState(new Date());
   const [users, setUsers] = useState([]); //variable for storing user data info in an array
@@ -114,7 +115,6 @@ const Scan = ({ scanResult }) => {
   //for selecting a category--------------------------------------------
   const [category, setCategory] = useState(0);
   const handleCategory = (e) => setCategory(e.target.value);
-
 
   //--------------------------------------------------------------------
 
@@ -243,6 +243,7 @@ const Scan = ({ scanResult }) => {
         {
           doses: {
             dose2,
+            batchNo2,
             secondDose,
             secondVaccinator,
           },
@@ -258,8 +259,6 @@ const Scan = ({ scanResult }) => {
   };
 
   // let date = new Date().toDateString();
-
- 
 
   return (
     <Card className={classes.root}>
@@ -383,8 +382,22 @@ const Scan = ({ scanResult }) => {
                                     fullWidth
                                     id="date-picker-inline"
                                     label="2nd Dose of Vaccination"
+                                    required
+                                    disablePast
                                   />
                                 </MuiPickersUtilsProvider>
+                              </Grid>
+                              <Grid item>
+                                {" "}
+                                <TextField
+                                  value={batchNo2}
+                                  type="text"
+                                  label="Batch Number"
+                                  variant="outlined"
+                                  onChange={(e) => setBatchNo2(e.target.value)}
+                                  fullWidth
+                                  required
+                                />
                               </Grid>
                               {user.doses?.secondVaccinator ? ( //if the field second vaccinator exist
                                 <>
@@ -408,8 +421,10 @@ const Scan = ({ scanResult }) => {
                                       onChange={handleChange2}
                                       names={names}
                                       placeholder={user.doses?.secondVaccinator}
+                                      required
                                     />
                                   </Grid>
+
                                   <Grid item>
                                     <ButtonForm type="submit" fullWidth>
                                       Submit
@@ -432,8 +447,12 @@ const Scan = ({ scanResult }) => {
                     <div>
                       <form onSubmit={handleSubmit}>
                         <Grid container direction={"column"} spacing={2}>
-                        <Grid item>
-                           <Category value={category} onChange={handleCategory}/>
+                          <Grid item>
+                            <Category
+                              value={category}
+                              onChange={handleCategory}
+                              required
+                            />
                           </Grid>
                           <Grid item>
                             <TextField
@@ -511,18 +530,21 @@ const Scan = ({ scanResult }) => {
                               value={selectedVaccine}
                               onChange={handleChangeVaccine}
                               vaccines={vaccines}
+                              required
                             />
                           </Grid>
                           <Grid item>
-                           <TextField 
-                            value={batchNo} 
-                            type="text" 
-                            label="Batch Number"
-                             variant="outlined" 
-                             onChange={(e) => setBatchNo(e.target.value)}
-                             fullWidth/>
+                            <TextField
+                              value={batchNo}
+                              type="text"
+                              label="Batch Number"
+                              variant="outlined"
+                              onChange={(e) => setBatchNo(e.target.value)}
+                              fullWidth
+                              required
+                            />
                           </Grid>
-                          
+
                           <Grid item>
                             <TextField
                               type="text"
@@ -531,6 +553,7 @@ const Scan = ({ scanResult }) => {
                               value={firstDose}
                               onChange={(e) => setFirstDose(e.target.value)}
                               fullWidth
+                              required
                             />
                           </Grid>
                           <Grid item>
@@ -538,6 +561,7 @@ const Scan = ({ scanResult }) => {
                               value={firstVaccinator}
                               onChange={handleChange}
                               names={names}
+                              required
                             />
                           </Grid>
                           {selectedVaccine == "J&J" ? ( //if selectedVaccine is J&J
