@@ -139,6 +139,9 @@ const VaccineGraph = (props) => {
                   },
                 },
               },
+              datalabels: {
+                formatter: (val, context) => `${val || 0}%`,
+              },
             },
             scales: {
               y: {

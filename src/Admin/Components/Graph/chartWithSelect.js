@@ -178,6 +178,9 @@ const ChartWithSelect = () => {
                   },
                 },
               },
+              datalabels: {
+                formatter: (val, context) => `${val || 0}%`,
+              }, // for the label percentage symbol inside the graph
             },
             legend: {
               labels: {
