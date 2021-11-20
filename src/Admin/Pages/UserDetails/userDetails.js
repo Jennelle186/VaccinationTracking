@@ -228,6 +228,12 @@ const UserDetails = () => {
                     </List>
                   </div>
                 </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="h6">Complaints or Concerns </Typography>
+                  <ListItem>
+                    <ListItemText primary={user?.complaints} />
+                  </ListItem>
+                </Grid>
               </Grid>
             </CardContent>
           </Card>

@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import Profile from "../../components/Profile/profile";
 import SideEffects from "../../components/vaccinationSideEffects/SideEffects";
+import Complaints from "../../components/Complaints/complaints";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -85,6 +86,7 @@ const ProfilePage = () => {
             >
               <Tab label="Profile" {...a11yProps(0)} />
               <Tab label="Vaccination Status" {...a11yProps(1)} />
+              <Tab label="Complaints" {...a11yProps(1)} />
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
@@ -92,6 +94,9 @@ const ProfilePage = () => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             <SideEffects />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <Complaints />
           </TabPanel>
         </div>
       </Container>

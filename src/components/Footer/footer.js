@@ -72,6 +72,7 @@ const Footer = (props) => {
           </Grid>
           {/* change name of the website here */}
           <Box textAlign="center" pt={{ xs: 5, sm: 10 }} pb={{ xs: 5, sm: 0 }}>
+            Contact Us at +(63) 9530 452 140 {<br />}
             AyalaVaccinationTracker &reg; {new Date().getFullYear()}
           </Box>
         </Container>

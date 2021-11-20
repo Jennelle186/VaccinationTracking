@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import {Grid} from '@material-ui/core'
 import { firestore } from "../../../Firebase/utils";
 import MUIDataTable from "mui-datatables";
 import { withRouter } from "react-router-dom";
@@ -91,15 +90,13 @@ class Users extends Component {
   }
 
   render() {
-    
     return this.state.orders ? (
-     
       <div>
-         <div style={{ float: 'left'}}>
-       
+        <div style={{ float: "left" }}>
           <h2>List of Users</h2>
         </div>
-     <br/><br/> <br/>
+        <br />
+        <br /> <br />
         <MUIDataTable
           columns={this.columns}
           data={this.state.users}
