@@ -8,6 +8,7 @@ import {
   TextField,
   Snackbar,
 } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import MuiAlert from "@material-ui/lab/Alert";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -17,6 +18,9 @@ import ButtonForm from "./../Forms/Button/button";
 import { firestore } from "../../Firebase/utils";
 
 import { useSelector } from "react-redux";
+
+import { Barangay } from "./Barangay"; //Barangay
+import { Cities } from "./City"; //city
 
 const mapState = ({ user }) => ({
   currentUser: user.currentUser,
@@ -56,6 +60,9 @@ const Profile = () => {
   const [selectedDate, handleDateChange] = useState(currentUser.birthdate);
   const [phoneNumber, setphoneNumber] = useState(currentUser.phoneNumber);
 
+  const [barangay, setBarangay] = useState("Ayala"); //barangay
+  const [city, setCity] = useState("Zamboanga City"); //City
+
   //for Mui alert---
   const [open, setOpen] = useState(false); //for MUI ALERT
 
@@ -89,6 +96,8 @@ const Profile = () => {
           middleName,
           lastName,
           address,
+          barangay,
+          city,
           birthdate,
           phoneNumber,
         },
@@ -99,6 +108,8 @@ const Profile = () => {
       console.log(err);
     }
   };
+
+  console.log("b", barangay);
 
   return (
     <Card className={classes.root} elevation={5}>
@@ -137,7 +148,7 @@ const Profile = () => {
             </Grid>
             <Grid item xs>
               <TextField
-                label="Address"
+                label="Block/Street Name/Street No."
                 variant="outlined"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
@@ -145,6 +156,41 @@ const Profile = () => {
                 required
               />
             </Grid>
+
+            <Grid item xs>
+              <Autocomplete
+                disablePortal
+                isOptionEqualToValue={(option, value) =>
+                  option?.label === value?.label
+                }
+                id="combo-box-demo"
+                options={Barangay}
+                fullWidth
+                value={barangay}
+                onChange={(event, value) => setBarangay(value)}
+                renderInput={(params) => (
+                  <TextField {...params} label="Barangay" />
+                )}
+                required
+              />
+            </Grid>
+
+            <Grid item xs>
+              <Autocomplete
+                disablePortal
+                isOptionEqualToValue={(option, value) =>
+                  option?.label === value?.label
+                }
+                id="combo-box-demo"
+                options={Cities}
+                fullWidth
+                value={city}
+                onChange={(event, value) => setCity(value)}
+                renderInput={(params) => <TextField {...params} label="City" />}
+                required
+              />
+            </Grid>
+
             <Grid item xs>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
@@ -154,6 +200,7 @@ const Profile = () => {
                   fullWidth
                   id="date-picker-inline"
                   label="BirthDate"
+                  required
                 />
               </MuiPickersUtilsProvider>
             </Grid>
@@ -167,6 +214,7 @@ const Profile = () => {
                 inputStyle={{
                   width: "100%",
                 }}
+                required
               />
             </Grid>
 

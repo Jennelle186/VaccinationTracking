@@ -62,7 +62,7 @@ class Users extends Component {
             "ID No": data.doses.id,
             Category: data.doses?.category,
             "Phone Number": data.phoneNumber,
-            Address: data.address,
+            Address: data.address + ", " + data.barangay + ", " + data.city,
             Vaccine: data.doses?.selectedVaccine,
 
             ...(data.doses?.selectedVaccine == "J&J"

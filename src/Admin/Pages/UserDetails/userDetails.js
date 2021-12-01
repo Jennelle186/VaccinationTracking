@@ -97,8 +97,16 @@ const UserDetails = () => {
                         <ListItemText primary={user.email} />
                       </ListItem>
                       <ListItem>
-                        <Typography>Address : </Typography>
-                        <ListItemText primary={user.address} />
+                        <Typography>Address: </Typography>
+                        <ListItemText
+                          primary={
+                            user.address +
+                            ", " +
+                            user.barangay +
+                            ", " +
+                            user.city
+                          }
+                        />
                       </ListItem>
                       <ListItem>
                         <Typography>Birthdate : </Typography>

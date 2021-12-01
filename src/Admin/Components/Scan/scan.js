@@ -311,7 +311,27 @@ const Scan = ({ scanResult }) => {
                             <TextField
                               type="text"
                               value={user.address}
-                              label="Address"
+                              label="Block/Street Name/Street No"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.barangay}
+                              label="Barangay"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.city}
+                              label="City"
                               variant="outlined"
                               fullWidth
                               disabled={true}
@@ -508,7 +528,27 @@ const Scan = ({ scanResult }) => {
                             <TextField
                               type="text"
                               value={user.address}
-                              label="Address"
+                              label="Block/Street Name/Street No"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.barangay}
+                              label="Barangay"
+                              variant="outlined"
+                              fullWidth
+                              disabled={true}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              type="text"
+                              value={user.city}
+                              label="City"
                               variant="outlined"
                               fullWidth
                               disabled={true}
