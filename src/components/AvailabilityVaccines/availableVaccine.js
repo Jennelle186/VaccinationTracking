@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Card,
-  CardContent,
-  CardHeader,
-  GridList,
-} from "@material-ui/core";
+import { Grid, Card, GridList, Typography } from "@material-ui/core";
 import { firestore } from "../../Firebase/utils";
 const AvailableVaccine = () => {
   const [vaccines, setVaccines] = useState([]);
@@ -32,31 +26,41 @@ const AvailableVaccine = () => {
     <div>
       <Grid
         container
-        spacing={0}
-        direction="row"
+        direction="column"
+        justifyContent="center"
         alignItems="center"
-        justify="center"
       >
-        <Card elevation={10} style={{ padding: "1rem" }}>
-          <CardHeader title="Available Vaccines" />
+        <Grid item xs="6">
+          <Typography variant="h5">Available Vaccine(s)</Typography>
+        </Grid>
+        <Grid item xs="6">
           <GridList cols={3}>
             {vaccines &&
               vaccines.map((index) => (
                 <>
                   {/* either index.availability == true or this */}
                   {index.stocks > 0 ? (
-                    <CardContent>
-                      Vaccine: {index.vaccine} <br />
-                      Dose: {index.dose} <br />
-                      Days Apart: {index.daysApart} days
-                    </CardContent>
+                    <Card
+                      style={{
+                        margin: "1rem",
+                        padding: "1.5rem",
+                        justifyContent: "center",
+                        borderRadius: "12px",
+                      }}
+                    >
+                      <Typography variant="body">
+                        Vaccine: {index.vaccine} <br />
+                        Dose: {index.dose} <br />
+                        Days Apart: {index.daysApart} days
+                      </Typography>
+                    </Card>
                   ) : (
                     <></>
                   )}
                 </>
               ))}
           </GridList>
-        </Card>
+        </Grid>
       </Grid>
     </div>
   );
