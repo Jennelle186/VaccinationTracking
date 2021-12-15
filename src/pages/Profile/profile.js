@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "transparent",
     marginTop: "1rem",
   },
+  tab: {
+    justifyContent: "center",
+  },
 }));
 
 const ProfilePage = () => {
@@ -70,25 +73,21 @@ const ProfilePage = () => {
       <br />
       <Container fixed>
         <div className={classes.root}>
-          <AppBar
-            position="static"
-            color="default"
-            style={{ background: "transparent", boxShadow: "none" }}
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            aria-label="scrollable auto tabs example"
+            // variant="scrollable"
+            // scrollButtons={"on"}
+            centered
           >
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              scrollButtons="auto"
-              aria-label="scrollable auto tabs example"
-              centered
-            >
-              <Tab label="Profile" {...a11yProps(0)} />
-              <Tab label="Vaccination Status" {...a11yProps(1)} />
-              <Tab label="Complaints" {...a11yProps(1)} />
-            </Tabs>
-          </AppBar>
+            <Tab label=" Profile" {...a11yProps(0)} />
+            <Tab label="Vaccination Status" {...a11yProps(1)} />
+            <Tab label="Complaints" {...a11yProps(1)} />
+          </Tabs>
+
           <TabPanel value={value} index={0}>
             <Profile />
           </TabPanel>

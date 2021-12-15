@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Typography,
   TextField,
   Container,
   FormGroup,
@@ -8,8 +7,14 @@ import {
   Checkbox,
   makeStyles,
   Card,
-  Divider,
   Grid,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  TableCell,
+  Paper,
 } from "@material-ui/core";
 import ButtonForm from "./../Forms/Button/button";
 import { firestore } from "../../Firebase/utils";
@@ -146,61 +151,90 @@ const SideEffects = (props) => {
         users.map((user) => (
           <li className={classes.li}>
             <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <li>ID No. : {user.doses?.id}</li>
-                <li> Vaccine:{user.doses?.selectedVaccine}</li>
-                <li>
-                  First Dose:
-                  {user.doses?.firstDose
-                    ? new Date(
-                        user.doses?.firstDose.seconds * 1000
-                      ).toDateString()
-                    : ""}
-                </li>
-                <li>Batch No. : {user.doses?.batchNo}</li>
-                <li>Vaccinator: {user.doses?.firstVaccinator}</li>
-                <Divider />
-                <li>
-                  {user.doses?.selectedVaccine !== "J&J" ? (
-                    <>
-                      {" "}
-                      <li>Batch No. : {user.doses?.batchNo2} </li>
-                      2nd dose:
-                      {user.doses?.secondDose
-                        ? new Date(
-                            user.doses?.secondDose.seconds * 1000
-                          ).toDateString()
-                        : ""}
-                      <li>Vaccinator: {user.doses?.secondVaccinator}</li>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </li>
+              {/* <Grid item xs={6}> */}
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableCell></TableCell>
+                    <TableCell>Vaccine Information</TableCell>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>ID</TableCell>
+                      <TableCell>{user.doses?.id}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Vaccine</TableCell>
+                      <TableCell>{user.doses?.selectedVaccine}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>First Dose</TableCell>
+                      <TableCell>
+                        {user.doses?.firstDose
+                          ? new Date(
+                              user.doses?.firstDose.seconds * 1000
+                            ).toDateString()
+                          : ""}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Batch No.</TableCell>
+                      <TableCell>{user.doses?.batchNo}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>First Dose Vaccinator</TableCell>
+                      <TableCell>{user.doses?.firstVaccinator}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Side Effects</TableCell>
+                      <TableCell>
+                        {user["1"]?.others} {ar && <li>{ar}</li>}{" "}
+                      </TableCell>
+                    </TableRow>
+                    {user.doses?.selectedVaccine !== "J&J" ? (
+                      <>
+                        <TableRow>
+                          <TableCell>Second Dose</TableCell>
+                          <TableCell>
+                            {" "}
+                            {user.doses?.secondDose
+                              ? new Date(
+                                  user.doses?.secondDose.seconds * 1000
+                                ).toDateString()
+                              : ""}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Batch No</TableCell>
+                          <TableCell>{user.doses?.batchNo2}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Second Dose Vaccinator</TableCell>
+                          <TableCell>{user.doses?.secondVaccinator}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Side Effects</TableCell>
+                          <TableCell>
+                            {ar2.length == 0 ? ( //if array of ar2 is == 0
+                              <></> //if true, show nothing
+                            ) : (
+                              <>
+                                <li>{user["2"]?.others}</li>
+                                {ar2 && <li>{ar2}</li>}
+                              </>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              {/* </Grid> */}
 
-                <Divider />
-                <Typography>Side Effects you've experienced: </Typography>
-                <Typography>
-                  First dosage:
-                  <li>{user["1"]?.others}</li>
-                  {ar && <li>{ar}</li>}
-                </Typography>
-                <Divider />
-                <Typography>
-                  {ar2.length == 0 ? ( //if array of ar2 is == 0
-                    <></> //if true, show nothing
-                  ) : (
-                    <>
-                      {/* if false show the 2nd dosage  */}
-                      Second dosage:
-                      <li>{user["2"]?.others}</li>
-                      {ar2 && <li>{ar2}</li>}
-                    </>
-                  )}
-                </Typography>
-              </Grid>
-
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 {user.doses?.dose1 == true && user.doses?.dose2 == false ? (
                   <div>
                     <form onSubmit={handleSubmit}>
