@@ -73,20 +73,22 @@ const ProfilePage = () => {
       <br />
       <Container fixed>
         <div className={classes.root}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            aria-label="scrollable auto tabs example"
-            // variant="scrollable"
-            // scrollButtons={"on"}
-            centered
-          >
-            <Tab label=" Profile" {...a11yProps(0)} />
-            <Tab label="Vaccination Status" {...a11yProps(1)} />
-            <Tab label="Complaints" {...a11yProps(1)} />
-          </Tabs>
+          <Box display="flex" justifyContent="center" width="100%">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              aria-label="scrollable auto tabs example"
+              variant="scrollable"
+              scrollButtons={"on"}
+              centered
+            >
+              <Tab label=" Profile" {...a11yProps(0)} />
+              <Tab label="Vaccination Status" {...a11yProps(1)} />
+              <Tab label="Complaints" {...a11yProps(1)} />
+            </Tabs>
+          </Box>
 
           <TabPanel value={value} index={0}>
             <Profile />
