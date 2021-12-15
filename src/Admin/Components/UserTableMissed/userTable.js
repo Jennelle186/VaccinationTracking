@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import { firestore } from "../../../Firebase/utils";
 import { withRouter } from "react-router-dom";
+import { Typography } from "@material-ui/core";
 
 const UserTable = (props) => {
   const [users, setUsers] = useState([]);
@@ -134,10 +135,12 @@ const UserTable = (props) => {
   return (
     <div>
       <div style={{ float: "left" }}>
-        <h4>Date of today: {new Date().toDateString()}</h4>
+        <Typography variant="subtitle1">
+          Date of today: {new Date().toDateString()}
+        </Typography>
       </div>
       <br />
-      <br /> <br />
+      <br />
       <MUIDataTable columns={columns} data={selection} options={options} />
     </div>
   );
