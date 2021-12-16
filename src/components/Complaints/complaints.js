@@ -56,8 +56,6 @@ const Complaints = () => {
   };
   //--------------------------------
 
-  console.log(uid);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
