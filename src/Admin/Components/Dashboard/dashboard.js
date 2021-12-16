@@ -36,10 +36,10 @@ const Dashboard = () => {
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        justifyContent="center"
+        alignItems="center"
       >
-        <Grid item>
+        <Grid item xs="6">
           <Card elevation={10}>
             <CardContent>
               <CardContent>
@@ -71,10 +71,13 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid className={classes.announcement}>
-          <AvailableVaccine className={classes.announcement} />
-        </Grid>
       </Grid>
+      <br />
+      <Grid item xs="12">
+        {" "}
+        <AvailableVaccine className={classes.announcement} />
+      </Grid>
+
       {/*-----------------------Graph Below -----------------------------------------*/}
       <Card className={classes.graph} elevation={10}>
         <GraphMonth />
