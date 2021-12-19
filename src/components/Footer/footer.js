@@ -4,6 +4,8 @@ import {
   Grid,
   useTheme,
   useMediaQuery,
+  Divider,
+  Typography,
 } from "@material-ui/core";
 
 const Footer = (props) => {
@@ -15,18 +17,20 @@ const Footer = (props) => {
       {/* not sure with these yet */}
 
       <Box
-      // bgcolor="text.secondary"
-      // color="white"
-      // padding="1rem"
-      // color="text.secondary"
-      // bgcolor="#E3F2FD"
-      // marginTop=" 1rem"
+        // bgcolor="text.secondary"
+        padding="1rem"
+        color="text.primary"
+        // color="text.secondary"
+        bgcolor="#E3F2FD"
+        marginTop=" 1rem"
       >
         <Container maxWidth="lg">
           <Grid container spacing={2}>
             {/* change the sm={6} to sm{4} if it needs another section */}
             <Grid item xs={12} sm={6}>
-              <Box borderBottom={1}>International Covid News</Box>
+              International Covid News
+              <Divider style={{ width: "50%", margin: "0 auto" }} />
+              {/* <Box borderBottom={1}>International Covid News</Box> */}
               <Box>
                 <a
                   href="https://www.unicef.org/coronavirus/covid-19"
@@ -49,7 +53,9 @@ const Footer = (props) => {
 
             {/* https://doh.gov.ph/Vaccines/What-you-can-safely-do-after-receiving-the-COVID-19-vaccine */}
             <Grid item xs={12} sm={6}>
-              <Box borderBottom={1}>Local Covid News</Box>
+              Local Covid News
+              <Divider style={{ width: "50%", margin: "0 auto" }} />
+              {/* <Box borderBottom={1}>Local Covid News</Box> */}
               <Box>
                 <a
                   href="https://doh.gov.ph/"

@@ -104,7 +104,7 @@ header .banner-content .btn-rounded {
 footer {
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: #3498db;
+  /* background-color: #3498db; */
   color: #fff;
   position: relative;
 }

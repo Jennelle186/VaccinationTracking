@@ -19,6 +19,8 @@ import Category from "../Select/selectCategory";
 
 import firebase from "firebase/app";
 
+import Booster from "./booster";
+
 const useStyles = makeStyles({
   root: {
     maxWidth: 500,
@@ -260,6 +262,11 @@ const Scan = ({ scanResult }) => {
 
   // let date = new Date().toDateString();
 
+  const handleRowClick = (e) => {
+    history.push("/booster", scanResult);
+  };
+  const [isBooster, setIsBooster] = useState(false);
+
   return (
     <Card className={classes.root}>
       <CardHeader title="Vaccination Status" />
@@ -270,7 +277,17 @@ const Scan = ({ scanResult }) => {
               users.map((user) => (
                 <li style={{ listStyle: "none" }}>
                   {user.doses?.dose1 && user.doses?.dose2 === true ? ( //if dose1 and dose2 is true, show "Fully Vaccinated"
-                    <h1>Fully Vaccinated</h1>
+                    <>
+                      {/* <ButtonForm onClick={() => handleRowClick()}>
+                        Booster
+                      </ButtonForm> */}
+
+                      <ButtonForm onClick={() => setIsBooster(true)}>
+                        Booster
+                      </ButtonForm>
+
+                      <h1>Fully Vaccinated</h1>
+                    </>
                   ) : (
                     <></>
                   )}
@@ -637,6 +654,17 @@ const Scan = ({ scanResult }) => {
           </>
         ) : (
           <h1>Loading...</h1>
+        )}
+
+        {isBooster == true ? (
+          <Booster
+            data={scanResult}
+            vaccine={vaccines}
+            vaccinator={names}
+            users={users}
+          />
+        ) : (
+          <div></div>
         )}
       </CardContent>
     </Card>
