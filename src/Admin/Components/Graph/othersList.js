@@ -1,19 +1,15 @@
 //list of the others in side effects
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../../Firebase/utils";
-import { Grid, CardHeader, IconButton, Tooltip } from "@material-ui/core";
+import { Grid, CardHeader, Typography } from "@material-ui/core";
 import SelectVaccine from "../SelectVaccine/selectVaccine";
-import HelpIcon from "@material-ui/icons/Help";
 
 function Title() {
   return (
     <div>
-      List of Others
-      <Tooltip title={<h3>List of other side effects entered by the user</h3>}>
-        <IconButton aria-label="help" color="primary">
-          <HelpIcon />
-        </IconButton>
-      </Tooltip>
+      <Typography variant="h5">
+        List of other side effects entered by the user
+      </Typography>
     </div>
   );
 }
