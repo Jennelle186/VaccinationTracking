@@ -151,88 +151,121 @@ const SideEffects = (props) => {
         users.map((user) => (
           <li className={classes.li}>
             <Grid container spacing={3}>
-              {/* <Grid item xs={6}> */}
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableCell></TableCell>
-                    <TableCell>Vaccine Information</TableCell>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>ID</TableCell>
-                      <TableCell>{user.doses?.id}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Vaccine</TableCell>
-                      <TableCell>{user.doses?.selectedVaccine}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>First Dose</TableCell>
-                      <TableCell>
-                        {user.doses?.firstDose
-                          ? new Date(
-                              user.doses?.firstDose.seconds * 1000
-                            ).toDateString()
-                          : ""}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Batch No.</TableCell>
-                      <TableCell>{user.doses?.batchNo}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>First Dose Vaccinator</TableCell>
-                      <TableCell>{user.doses?.firstVaccinator}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Side Effects</TableCell>
-                      <TableCell>
-                        {user["1"]?.others} {ar && <li>{ar}</li>}{" "}
-                      </TableCell>
-                    </TableRow>
-                    {user.doses?.selectedVaccine !== "J&J" ? (
-                      <>
-                        <TableRow>
-                          <TableCell>Second Dose</TableCell>
-                          <TableCell>
-                            {" "}
-                            {user.doses?.secondDose
-                              ? new Date(
-                                  user.doses?.secondDose.seconds * 1000
-                                ).toDateString()
-                              : ""}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Batch No</TableCell>
-                          <TableCell>{user.doses?.batchNo2}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Second Dose Vaccinator</TableCell>
-                          <TableCell>{user.doses?.secondVaccinator}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Side Effects</TableCell>
-                          <TableCell>
-                            {ar2.length == 0 ? ( //if array of ar2 is == 0
-                              <></> //if true, show nothing
-                            ) : (
-                              <>
-                                <li>{user["2"]?.others}</li>
-                                {ar2 && <li>{ar2}</li>}
-                              </>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              {/* </Grid> */}
+              <Grid item xs={12}>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableCell></TableCell>
+                      <TableCell>Vaccine Information</TableCell>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell>{user.doses?.id}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Vaccine</TableCell>
+                        <TableCell>{user.doses?.selectedVaccine}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>
+                          <b>First Dose</b>
+                        </TableCell>
+                        <TableCell>
+                          {user.doses?.firstDose
+                            ? new Date(
+                                user.doses?.firstDose.seconds * 1000
+                              ).toDateString()
+                            : ""}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Batch No.</TableCell>
+                        <TableCell>{user.doses?.batchNo}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>First Dose Vaccinator</TableCell>
+                        <TableCell>{user.doses?.firstVaccinator}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Side Effects</TableCell>
+                        <TableCell>
+                          {user["1"]?.others} {ar && <li>{ar}</li>}{" "}
+                        </TableCell>
+                      </TableRow>
+                      {user.doses?.selectedVaccine !== "J&J" ? (
+                        <>
+                          <TableRow>
+                            <TableCell>
+                              <b>Second Dose</b>
+                            </TableCell>
+                            <TableCell>
+                              {" "}
+                              {user.doses?.secondDose
+                                ? new Date(
+                                    user.doses?.secondDose.seconds * 1000
+                                  ).toDateString()
+                                : ""}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Batch No</TableCell>
+                            <TableCell>{user.doses?.batchNo2}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Second Dose Vaccinator</TableCell>
+                            <TableCell>
+                              {user.doses?.secondVaccinator}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Side Effects</TableCell>
+                            <TableCell>
+                              {ar2.length == 0 ? ( //if array of ar2 is == 0
+                                <></> //if true, show nothing
+                              ) : (
+                                <>
+                                  <li>{user["2"]?.others}</li>
+                                  {ar2 && <li>{ar2}</li>}
+                                </>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>
+                              <b>Booster Vaccine</b>
+                            </TableCell>
+                            <TableCell>
+                              {" "}
+                              {user.doses?.selectedBooster}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Booster Date</TableCell>
+                            <TableCell>
+                              {" "}
+                              {user.doses?.boosterDate
+                                ? new Date(
+                                    user.doses?.boosterDate.seconds * 1000
+                                  ).toDateString()
+                                : ""}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Vaccinator</TableCell>
+                            <TableCell>
+                              {" "}
+                              {user.doses?.boosterVaccinator}
+                            </TableCell>
+                          </TableRow>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
 
               <Grid item xs={12}>
                 {user.doses?.dose1 == true && user.doses?.dose2 == false ? (
