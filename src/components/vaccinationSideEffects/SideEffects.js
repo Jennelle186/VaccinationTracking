@@ -241,6 +241,10 @@ const SideEffects = (props) => {
                             </TableCell>
                           </TableRow>
                           <TableRow>
+                            <TableCell>Batch No</TableCell>
+                            <TableCell> {user.doses?.batchNo3}</TableCell>
+                          </TableRow>
+                          <TableRow>
                             <TableCell>Booster Date</TableCell>
                             <TableCell>
                               {" "}
