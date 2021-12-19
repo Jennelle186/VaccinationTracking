@@ -201,6 +201,27 @@ const UserDetails = () => {
                           )}
                         </>
                       )}
+                      <Divider />
+                      <ListItem>
+                        <Typography>Vaccine Booster : </Typography>
+                        <ListItemText primary={user.doses?.selectedBooster} />
+                      </ListItem>
+                      <ListItem>
+                        <Typography>Booster Date : </Typography>
+                        <ListItemText
+                          primary={new Date(
+                            user.doses?.boosterDate * 1000
+                          ).toDateString()}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <Typography>Batch No : </Typography>
+                        <ListItemText primary={user.doses?.batchNo3} />
+                      </ListItem>
+                      <ListItem>
+                        <Typography>Vaccinator : </Typography>
+                        <ListItemText primary={user.doses?.boosterVaccinator} />
+                      </ListItem>
                     </List>
                   </div>
                 </Grid>
