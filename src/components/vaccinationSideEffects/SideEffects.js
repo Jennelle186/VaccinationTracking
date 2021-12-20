@@ -344,7 +344,8 @@ const SideEffects = (props) => {
                 ) : (
                   <div></div>
                 )}
-                {user.doses?.dose2 == true ? (
+                {user.doses?.dose2 == true &&
+                user.doses?.selectedBooster == null ? (
                   <div>
                     <form onSubmit={handleSubmit2}>
                       <Card className={classes.root} elevation={5}>
@@ -413,6 +414,13 @@ const SideEffects = (props) => {
                       <br />
                     </form>
                   </div>
+                ) : (
+                  <div></div>
+                )}
+
+                {(user.doses?.dose1 && user.doses?.dose2) == true &&
+                user.doses?.selectedBooster != null ? (
+                  <div>-----booster vaccine side effects here-----</div>
                 ) : (
                   <div></div>
                 )}
