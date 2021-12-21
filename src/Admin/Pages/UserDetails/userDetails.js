@@ -209,9 +209,17 @@ const UserDetails = () => {
                       <ListItem>
                         <Typography>Booster Date : </Typography>
                         <ListItemText
-                          primary={new Date(
-                            user.doses?.boosterDate * 1000
-                          ).toDateString()}
+                          primary={
+                            user.doses?.boosterDate
+                              ? new Date(
+                                  user.doses?.boosterDate?.seconds * 1000
+                                ).toDateString() +
+                                " at " +
+                                new Date(
+                                  user.doses?.boosterDate?.seconds * 1000
+                                ).toLocaleTimeString()
+                              : ""
+                          }
                         />
                       </ListItem>
                       <ListItem>

@@ -420,7 +420,7 @@ const SideEffects = (props) => {
 
                 {(user.doses?.dose1 && user.doses?.dose2) == true &&
                 user.doses?.selectedBooster != null ? (
-                  <div>-----booster vaccine side effects here-----</div>
+                  <div>{/* booster side effects here  */}</div>
                 ) : (
                   <div></div>
                 )}
