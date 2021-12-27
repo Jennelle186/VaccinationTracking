@@ -100,8 +100,8 @@ const VaccineGraph = (props) => {
         <>
           {" "}
           <h5>Total vaccinated with 1st dose: {doses1.length}</h5>
-          <h5>Total vaccinted with 2nd dose: {doses2.length}</h5>
-          <h5>Total vaccinted with Booster: {booster.length}</h5>{" "}
+          <h5>Total vaccinated with 2nd dose: {doses2.length}</h5>
+          <h5>Total vaccinated with Booster: {booster.length}</h5>{" "}
           {/**  //-----booster*/}
         </>
       )}
