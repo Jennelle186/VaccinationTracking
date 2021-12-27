@@ -330,7 +330,7 @@ const SideEffects = (props) => {
                           />
                           <TextField
                             type="text"
-                            label="Ohers:"
+                            label="Others:"
                             value={others}
                             onChange={(e) => setOthers(e.target.value)}
                             multiline
@@ -403,7 +403,7 @@ const SideEffects = (props) => {
                           />
                           <TextField
                             type="text"
-                            label="Ohers:"
+                            label="Others:"
                             value={others}
                             onChange={(e) => setOthers(e.target.value)}
                             multiline
