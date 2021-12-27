@@ -71,8 +71,16 @@ const VaccineGraph = (props) => {
     (v) => v.doses?.dose1 == true && v.doses?.dose2 == true
   );
 
+  const booster = users.filter(
+    (v) =>
+      v.doses?.dose1 == true &&
+      v.doses?.dose2 == true &&
+      v.doses.selectedBooster !== undefined
+  );
+
   let dose1Percent = ((doses1.length / total) * 100).toFixed(2);
   let dose2Percent = ((doses2.length / total) * 100).toFixed(2);
+  let boosterPercent = ((booster.length / total) * 100).toFixed(2); //-----booster
 
   return (
     <div>
@@ -93,20 +101,23 @@ const VaccineGraph = (props) => {
           {" "}
           <h5>Total vaccinated with 1st dose: {doses1.length}</h5>
           <h5>Total vaccinted with 2nd dose: {doses2.length}</h5>
+          <h5>Total vaccinted with Booster: {booster.length}</h5>{" "}
+          {/**  //-----booster*/}
         </>
       )}
 
       <div>
         <Bar
           data={{
-            labels: ["1st Dose", "2nd Dose"],
+            labels: ["1st Dose", "2nd Dose", "Booster"],
             datasets: [
               {
                 label: "1st Dose",
-                data: [dose1Percent, dose2Percent],
+                data: [dose1Percent, dose2Percent, boosterPercent],
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
                   "rgba(75, 192, 192, 0.2)",
+                  "rgba(255, 159, 64, 0.2)", //-----booster
                 ],
                 borderColor: ["rgba(255, 99, 132, 1)"],
                 borderWidth: 1,
@@ -115,6 +126,11 @@ const VaccineGraph = (props) => {
                 label: "2nd Dose",
                 backgroundColor: ["rgba(75, 192, 192, 0.2)"],
                 borderColor: ["rgba(158,207,250,0.3)"],
+              },
+              {
+                label: "Booster", //-----booster
+                backgroundColor: [" rgba(255, 159, 64, 0.2)"], //-----booster
+                borderColor: ["rgba(255, 159, 64, 0.2)"], //-----booster
               },
             ],
           }}

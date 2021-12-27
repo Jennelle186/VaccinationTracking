@@ -109,11 +109,29 @@ const GraphMonth = () => {
     [...dosesTemplate]
   );
 
+  //-------------booster------------------------------------------------------------
+  const booster = d2.reduce(
+    (acc, cur) => {
+      if (!cur.doses.dose2) return acc;
+      const month = new Date(cur.doses?.boosterDate?.seconds * 1000).getMonth();
+      acc[month] = acc[month] + 1;
+
+      return acc;
+    },
+    [...dosesTemplate]
+  );
+  //-------------booster------------------------------------------------------------
+
   const realDoses = doses1.map((dose) => {
     return ((dose / usersSize) * 100).toFixed();
   });
 
   const realDoses2 = doses2.map((dose) => {
+    return ((dose / usersSize) * 100).toFixed();
+  });
+
+  //---booster-------------------------------------------------------
+  const realBooster = booster.map((dose) => {
     return ((dose / usersSize) * 100).toFixed();
   });
 
@@ -174,7 +192,14 @@ const GraphMonth = () => {
                 data: realDoses2,
                 backgroundColor: ["orange"],
                 borderWidth: 2,
-                borderColor: "black"
+                borderColor: "black",
+              },
+              {
+                label: "Booster", //-----------booster
+                data: realBooster,
+                backgroundColor: ["green"],
+                borderWidth: 2,
+                borderColor: "black",
               },
             ],
           }}
