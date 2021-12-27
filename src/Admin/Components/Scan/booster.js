@@ -7,6 +7,7 @@ import {
   Divider,
   Button,
 } from "@material-ui/core";
+import firebase from "firebase/app"; //---------------------booster increment counter
 import SelectVaccine from "./../SelectVaccine/selectVaccine";
 import SelectVaccinator from "../SelectVaccinator/selectVaccinator";
 
@@ -30,6 +31,26 @@ const Booster = ({ data, vaccine, vaccinator, users }) => {
 
   const [batchNo3, setBatchNo3] = useState("");
 
+  //---------------------booster increment counter
+  function incrementCounter() {
+    const collRef = firestore
+      .collection("vaccines")
+      .where("vaccine", "==", selectedBooster);
+
+    collRef.get().then(async (qSnap) => {
+      const batch = firestore.batch();
+
+      qSnap.docs.forEach((doc) => {
+        batch.update(doc.ref, {
+          stocks: firebase.firestore.FieldValue.increment(-1),
+        });
+      });
+
+      await batch.commit();
+    });
+  }
+  //----------------------------------------------------------
+
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
@@ -45,7 +66,7 @@ const Booster = ({ data, vaccine, vaccinator, users }) => {
         },
         { merge: true }
       );
-
+      incrementCounter(); //---------------------booster increment counter
       console.log(" saved");
     } catch (err) {
       console.log(err);
