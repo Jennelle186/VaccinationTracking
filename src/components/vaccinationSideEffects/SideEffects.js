@@ -20,6 +20,7 @@ import ButtonForm from "./../Forms/Button/button";
 import { firestore } from "../../Firebase/utils";
 
 import { useSelector } from "react-redux";
+import firebase from "firebase/app";
 
 const mapState = ({ user }) => ({
   currentUser: user.currentUser,
@@ -95,7 +96,7 @@ const SideEffects = (props) => {
         {
           1: {
             sideEffects1,
-            others,
+            others: firebase.firestore.FieldValue.arrayUnion(others),
           },
         },
         { merge: true }
@@ -118,7 +119,30 @@ const SideEffects = (props) => {
         {
           2: {
             sideEffects2,
-            others,
+            others: firebase.firestore.FieldValue.arrayUnion(others),
+          },
+        },
+        { merge: true }
+      );
+      console.log(" saved");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit3 = (e) => {
+    e.preventDefault();
+    const sideEffects3 = { ...state };
+    for (const p in sideEffects3) {
+      if (!sideEffects3[p]) delete sideEffects3[p];
+    }
+    try {
+      const userRef = firestore.collection("users").doc(currentUser.id);
+      const ref = userRef.set(
+        {
+          3: {
+            sideEffects3,
+            others: firebase.firestore.FieldValue.arrayUnion(others),
           },
         },
         { merge: true }
@@ -142,6 +166,14 @@ const SideEffects = (props) => {
   if (userItems2) {
     for (const [key, value] of Object.entries(userItems2)) {
       ar2.push(key, <br />);
+    }
+  }
+
+  let ar3 = [];
+  const userItems3 = users[0]?.[3]?.sideEffects3;
+  if (userItems3) {
+    for (const [key, value] of Object.entries(userItems2)) {
+      ar3.push(key, <br />);
     }
   }
 
@@ -190,7 +222,8 @@ const SideEffects = (props) => {
                       <TableRow>
                         <TableCell>Side Effects</TableCell>
                         <TableCell>
-                          {user["1"]?.others} {ar && <li>{ar}</li>}{" "}
+                          {user["1"]?.others.join(", \n")}
+                          {ar && <li>{ar}</li>}{" "}
                         </TableCell>
                       </TableRow>
                       {user.doses?.selectedVaccine !== "J&J" ? (
@@ -225,7 +258,7 @@ const SideEffects = (props) => {
                                 <></> //if true, show nothing
                               ) : (
                                 <>
-                                  <li>{user["2"]?.others}</li>
+                                  <li> {user["2"]?.others.join(", \n")}</li>
                                   {ar2 && <li>{ar2}</li>}
                                 </>
                               )}
@@ -262,6 +295,13 @@ const SideEffects = (props) => {
                               {user.doses?.boosterVaccinator}
                             </TableCell>
                           </TableRow>
+                          <TableRow>
+                            <TableCell>Side Effects</TableCell>
+                            <TableCell>
+                              {user["3"]?.others.join(", \n")}
+                              {ar3 && <li>{ar3}</li>}{" "}
+                            </TableCell>
+                          </TableRow>
                         </>
                       ) : (
                         <></>
@@ -276,7 +316,7 @@ const SideEffects = (props) => {
                   <div>
                     <form onSubmit={handleSubmit}>
                       <Card className={classes.root} elevation={5}>
-                        {user.doses?.selectedVaccine} - 1st Dose side effects
+                        1st Dose side effects
                         <FormGroup
                           style={{ alignContent: "center", padding: "1rem" }}
                         >
@@ -349,7 +389,7 @@ const SideEffects = (props) => {
                   <div>
                     <form onSubmit={handleSubmit2}>
                       <Card className={classes.root} elevation={5}>
-                        {user.doses?.selectedVaccine} - 2nd Dose side effects
+                        2nd Dose side effects
                         <FormGroup
                           style={{ alignContent: "center", padding: "1rem" }}
                         >
@@ -420,7 +460,75 @@ const SideEffects = (props) => {
 
                 {(user.doses?.dose1 && user.doses?.dose2) == true &&
                 user.doses?.selectedBooster != null ? (
-                  <div>{/* booster side effects here  */}</div>
+                  <div>
+                    {/* booster side effects here  */}
+                    <form onSubmit={handleSubmit3}>
+                      <Card className={classes.root} elevation={5}>
+                        Booster side effects
+                        <FormGroup
+                          style={{ alignContent: "center", padding: "1rem" }}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={state.Fever}
+                                name="Fever"
+                                color="primary"
+                                value="Fever"
+                                onChange={handleCheckbox}
+                              />
+                            }
+                            label="Fever"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={state.Headache}
+                                name="Headache"
+                                color="primary"
+                                value="Headache"
+                                onChange={handleCheckbox}
+                              />
+                            }
+                            label="Headache"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={state.Nausea}
+                                name="Nausea"
+                                color="primary"
+                                value="Nausea"
+                                onChange={handleCheckbox}
+                              />
+                            }
+                            label="Nausea"
+                          />
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={state["Muscle Pain"]}
+                                name="Muscle Pain"
+                                color="primary"
+                                value="Muscle Pain"
+                                onChange={handleCheckbox}
+                              />
+                            }
+                            label="Muscle Pain"
+                          />
+                          <TextField
+                            type="text"
+                            label="Others:"
+                            value={others}
+                            onChange={(e) => setOthers(e.target.value)}
+                            multiline
+                          />
+                        </FormGroup>
+                        <ButtonForm type="submit">Submit</ButtonForm>
+                      </Card>
+                      <br />
+                    </form>
+                  </div>
                 ) : (
                   <div></div>
                 )}
