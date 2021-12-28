@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import { firestore } from "../../Firebase/utils";
 import {
   TextField,
@@ -7,8 +7,10 @@ import {
   Paper,
   Avatar,
   InputAdornment,
+  Typography,
 } from "@material-ui/core";
 import firebase from "firebase/app";
+import { Link } from "react-router-dom";
 
 class MobileLogin extends Component {
   handleChange = (e) => {
@@ -136,7 +138,7 @@ class MobileLogin extends Component {
 
               <br />
               <Grid item xs>
-                <Button type="submit" color="primary">
+                <Button type="submit" color="primary" variant="outlined">
                   Submit
                 </Button>
               </Grid>
@@ -155,11 +157,18 @@ class MobileLogin extends Component {
               </Grid>
               <br />
               <Grid item xs>
-                <Button type="submit" color="primary">
+                <Button type="submit" color="primary" variant="outlined">
                   Submit
                 </Button>
               </Grid>
             </form>
+            <br /> <br />
+            <Typography>
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                {" "}
+                Back to email login?
+              </Link>
+            </Typography>
           </Paper>
         </Grid>
       </div>

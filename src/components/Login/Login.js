@@ -10,9 +10,13 @@ import {
   Avatar,
   makeStyles,
   Button,
+  Divider,
+  Tooltip,
 } from "@material-ui/core";
 import { auth } from "../../Firebase/utils";
 import { Alert, AlertTitle } from "@material-ui/lab";
+import PhoneIcon from "@material-ui/icons/Phone";
+import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -109,26 +113,38 @@ const Login = (props) => {
           <ButtonForm fullWidth style={btn} type="submit">
             LOGIN
           </ButtonForm>
-          <Grid item>
-            {" "}
-            <Button
-              variant="outlined"
-              fullWidth
-              color="secondary"
-              onClick={signInWithGoogle}
-            >
-              CONTINUE WITH GMAIL
-            </Button>
-          </Grid>
-          <br />
 
-          <Grid item>
-            <Link to="/loginMobile" style={{ textDecoration: "none" }}>
-              <Button variant="outlined" fullWidth color="secondary">
-                CONTINUE WITH MOBILE
-              </Button>
-            </Link>
+          <Typography variant="caption">or continue with</Typography>
+          <Divider />
+          <br />
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              {" "}
+              <Tooltip title="Continue with Gmail">
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  color="secondary"
+                  onClick={signInWithGoogle}
+                >
+                  GMAIL
+                </Button>
+              </Tooltip>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Link to="/loginMobile" style={{ textDecoration: "none" }}>
+                <Tooltip title="Continue with Phone Number Sign in">
+                  <Button variant="outlined" fullWidth color="secondary">
+                    {/* Phone number */}
+                    <PhoneAndroidIcon />
+                  </Button>
+                </Tooltip>
+              </Link>
+            </Grid>
           </Grid>
+
+          <br />
 
           {/* if may other mode of login- https://colorlib.com/wp/wp-content/uploads/sites/2/login-form-v11.jpg */}
           {/* <Typography>Or login with</Typography> */}
