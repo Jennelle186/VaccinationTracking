@@ -7,6 +7,7 @@ import SelectVaccine from "../SelectVaccine/selectVaccine";
 const VaccineGraph = (props) => {
   const [selectedVaccine, setSelectedVaccine] = useState(0);
   const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
+  const [boosterUser, setBoosterUser] = useState([]);
 
   const [vaccines, setVaccines] = useState([]);
   useEffect(() => {
@@ -54,8 +55,32 @@ const VaccineGraph = (props) => {
       });
     };
 
+    //2nd try for the selectedBooster---------------------------------
+    const getData2 = async () => {
+      const citiesRef = firestore.collection("users");
+      const snapshot = await citiesRef
+        .where("doses.selectedBooster", "==", selectedVaccine)
+        .get();
+      if (snapshot.empty) {
+        setBoosterUser([]); //for the sputnik where data is empty
+        return;
+      }
+
+      snapshot.forEach((doc) => {
+        if (mounted) {
+          const usersData = snapshot.docs.map((d) => ({
+            id: d.id,
+            ...d.data(),
+          }));
+          setBoosterUser(usersData);
+        }
+      });
+    };
+    //2nd try for the selectedBooster---------------------------------
+
     if (selectedVaccine) {
       getData1();
+      getData2(); //2nd try for the selectedBooster---------------------------------
     }
 
     return () => {
@@ -82,6 +107,9 @@ const VaccineGraph = (props) => {
   let dose2Percent = ((doses2.length / total) * 100).toFixed(2);
   let boosterPercent = ((booster.length / total) * 100).toFixed(2); //-----booster
 
+  //2nd try for the selectedBooster---------------------------------
+  let percentage = ((boosterUser.length / total) * 100).toFixed(2);
+
   return (
     <div>
       <div>
@@ -93,7 +121,7 @@ const VaccineGraph = (props) => {
       </div>
       {selectedVaccine == "J&J" ? (
         <>
-          <h5>J&J only has 1st dose of vaccine</h5>
+          <h5>Only the first dosage is available from J&J</h5>
           <h5>Total vaccinated: {doses1.length}</h5>
         </>
       ) : (
@@ -101,7 +129,7 @@ const VaccineGraph = (props) => {
           {" "}
           <h5>Total vaccinated with 1st dose: {doses1.length}</h5>
           <h5>Total vaccinated with 2nd dose: {doses2.length}</h5>
-          <h5>Total vaccinated with Booster: {booster.length}</h5>{" "}
+          <h5>Total vaccinated with Booster: {boosterUser.length}</h5>{" "}
           {/**  //-----booster*/}
         </>
       )}
@@ -113,7 +141,7 @@ const VaccineGraph = (props) => {
             datasets: [
               {
                 label: "1st Dose",
-                data: [dose1Percent, dose2Percent, boosterPercent],
+                data: [dose1Percent, dose2Percent, percentage],
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
                   "rgba(75, 192, 192, 0.2)",

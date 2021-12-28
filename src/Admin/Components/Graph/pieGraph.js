@@ -16,6 +16,8 @@ const PieGraph = () => {
   const [users, setUsers] = useState([]);
   const [size, setSize] = useState([]);
 
+  const [boosterUser, setBoosterUser] = useState([]);
+
   useEffect(() => {
     const unsubscribe = firestore
       .collection("vaccines")
@@ -66,8 +68,30 @@ const PieGraph = () => {
       });
     };
 
+    const getData2 = async () => {
+      const citiesRef = firestore.collection("users");
+      const snapshot = await citiesRef
+        .where("doses.selectedBooster", "==", selectedVaccine)
+        .get();
+      if (snapshot.empty) {
+        setBoosterUser([]); //for the sputnik where data is empty
+        return;
+      }
+
+      snapshot.forEach((doc) => {
+        if (mounted) {
+          const usersData = snapshot.docs.map((d) => ({
+            id: d.id,
+            ...d.data(),
+          }));
+          setBoosterUser(usersData);
+        }
+      });
+    };
+
     if (selectedVaccine) {
       getData1();
+      getData2();
     }
 
     return () => {
@@ -83,6 +107,7 @@ const PieGraph = () => {
 
   let dose1Percent = ((doses1.length / size) * 100).toFixed(2);
   let dose2Percent = ((doses2.length / size) * 100).toFixed(2);
+  let dose3Percent = ((boosterUser.length / size) * 100).toFixed(2);
 
   return (
     <div>
@@ -93,16 +118,20 @@ const PieGraph = () => {
           vaccines={vaccines}
         />
       </div>
-      {selectedVaccine == "J&J" ? <h5>J&J does not have a 2nd dose</h5> : <></>}
+      {selectedVaccine == "J&J" ? (
+        <h5>Only the first dosage is available from J&J</h5>
+      ) : (
+        <></>
+      )}
       <h5>Total Registered Users: {size}</h5>
       <div>
         <Pie
           data={{
-            labels: ["1st Dose", "2nd Dose"],
+            labels: ["1st Dose", "2nd Dose", "Booster"],
             datasets: [
               {
-                data: [dose1Percent, dose2Percent],
-                backgroundColor: ["#ffa600", "#ff6361"],
+                data: [dose1Percent, dose2Percent, dose3Percent],
+                backgroundColor: ["#ffa600", "#ff6361", "yellowgreen"],
                 borderWidth: 1,
               },
             ],
