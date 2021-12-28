@@ -109,19 +109,29 @@ const Login = (props) => {
           <ButtonForm fullWidth style={btn} type="submit">
             LOGIN
           </ButtonForm>
+          <Grid item>
+            {" "}
+            <Button
+              variant="outlined"
+              fullWidth
+              color="secondary"
+              onClick={signInWithGoogle}
+            >
+              CONTINUE WITH GMAIL
+            </Button>
+          </Grid>
+          <br />
 
-          <Button
-            variant="outlined"
-            fullWidth
-            color="secondary"
-            onClick={signInWithGoogle}
-          >
-            CONTINUE WITH GMAIL
-          </Button>
+          <Grid item>
+            <Link to="/loginMobile" style={{ textDecoration: "none" }}>
+              <Button variant="outlined" fullWidth color="secondary">
+                CONTINUE WITH MOBILE
+              </Button>
+            </Link>
+          </Grid>
 
           {/* if may other mode of login- https://colorlib.com/wp/wp-content/uploads/sites/2/login-form-v11.jpg */}
           {/* <Typography>Or login with</Typography> */}
-
           <Typography>
             Do you have an account?
             <Link to="/registration">Sign Up</Link>

@@ -27,8 +27,7 @@ import { checkUserAdmin } from "./Admin/AdminRoute/checkAdmin";
 import { AuthRoute } from "./Hooks/AuthRoute";
 import { AdminRoute } from "./Hooks/AdminRoute";
 
-import Header2 from "./components/Layout/header2";
-import Footer from "./components/Footer/footer";
+import MobileLogin from "./components/Login/MobileLogin";
 
 const App = (props) => {
   const {
@@ -89,6 +88,22 @@ const App = (props) => {
             )
           }
         />
+
+        <Route
+          exact
+          path="/loginMobile"
+          render={() =>
+            currentUser ? (
+              <Redirect to="/" />
+            ) : (
+              <MainLayout>
+                <br />
+                <MobileLogin />{" "}
+              </MainLayout>
+            )
+          }
+        />
+
         <Route
           exact
           path="/registration"
