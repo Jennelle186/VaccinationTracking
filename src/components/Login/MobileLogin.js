@@ -1,6 +1,13 @@
 import React, { useState, Component } from "react";
 import { firestore } from "../../Firebase/utils";
-import { TextField, Button, Grid, Paper, Avatar } from "@material-ui/core";
+import {
+  TextField,
+  Button,
+  Grid,
+  Paper,
+  Avatar,
+  InputAdornment,
+} from "@material-ui/core";
 import firebase from "firebase/app";
 
 class MobileLogin extends Component {
@@ -119,8 +126,14 @@ class MobileLogin extends Component {
                   required
                   onChange={this.handleChange}
                   fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">+63</InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
+
               <br />
               <Grid item xs>
                 <Button type="submit" color="primary">
@@ -137,6 +150,7 @@ class MobileLogin extends Component {
                   required
                   onChange={this.handleChange}
                   fullWidth
+                  helperText="Please wait for the OTP"
                 />
               </Grid>
               <br />
@@ -154,38 +168,3 @@ class MobileLogin extends Component {
 }
 
 export default MobileLogin;
-// const MobileLogin = () => {
-//   const [mobile, setMobile] = useState(0);
-//   const [opt, setOtp] = useState(0);
-//   return (
-//     <div>
-//       <br /> <br /> <br /> mobile login here
-//       <h2>Login Form</h2>
-//       <form>
-//         <TextField
-//           type="number"
-//           label="Mobile Number"
-//           name="mobile"
-//           required
-//           value={mobile}
-//           onChange={(e) => setMobile(e.target.value)}
-//         />
-//         <Button type="submit">Submit</Button>
-//       </form>
-//       <h2>OTP</h2>
-//       <form>
-//         <TextField
-//           type="number"
-//           label="OTP Number"
-//           name="otp"
-//           required
-//           value={otp}
-//           onChange={(e) => setOtp(e.target.value)}
-//         />
-//         <Button type="submit">Submit</Button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default MobileLogin;
