@@ -57,6 +57,14 @@ const UserDetails = () => {
     }
   }
 
+  let sideEffects3 = [];
+  const userItems3 = user[3]?.sideEffects3;
+  if (userItems3) {
+    for (const [key, value] of Object.entries(userItems3)) {
+      sideEffects3.push(key, ",");
+    }
+  }
+
   const goToPreviousPath = () => {
     history.goBack();
   };
@@ -244,7 +252,7 @@ const UserDetails = () => {
                       </ListItem>
                       <ListItem>
                         <Typography>Others : </Typography>
-                        <ListItemText primary={user[1]?.others} />
+                        <ListItemText primary={user[1]?.others.join(", \n")} />
                       </ListItem>
 
                       {user.doses?.selectedVaccine === "J&J" ? ( //if selectedVaccine is equals to J&J
@@ -258,10 +266,21 @@ const UserDetails = () => {
                           </ListItem>
                           <ListItem>
                             <Typography>Others : </Typography>
-                            <ListItemText primary={user[2]?.others} />
+                            <ListItemText
+                              primary={user[2]?.others.join(", \n")}
+                            />
                           </ListItem>
                         </>
                       )}
+
+                      <ListItem>
+                        <Typography>Booster : </Typography>
+                        <ListItemText primary={sideEffects3} />
+                      </ListItem>
+                      <ListItem>
+                        <Typography>Others : </Typography>
+                        <ListItemText primary={user[3]?.others.join(", \n")} />
+                      </ListItem>
                     </List>
                   </div>
                 </Grid>

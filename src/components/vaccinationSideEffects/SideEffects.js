@@ -101,7 +101,7 @@ const SideEffects = (props) => {
         },
         { merge: true }
       );
-      console.log(" saved");
+      // console.log(" saved");
     } catch (error) {
       console.log(error);
     }
@@ -124,7 +124,7 @@ const SideEffects = (props) => {
         },
         { merge: true }
       );
-      console.log(" saved");
+      // console.log(" saved");
     } catch (error) {
       console.log(error);
     }
@@ -147,7 +147,7 @@ const SideEffects = (props) => {
         },
         { merge: true }
       );
-      console.log(" saved");
+      // console.log(" saved");
     } catch (error) {
       console.log(error);
     }
@@ -172,7 +172,7 @@ const SideEffects = (props) => {
   let ar3 = [];
   const userItems3 = users[0]?.[3]?.sideEffects3;
   if (userItems3) {
-    for (const [key, value] of Object.entries(userItems2)) {
+    for (const [key, value] of Object.entries(userItems3)) {
       ar3.push(key, <br />);
     }
   }
