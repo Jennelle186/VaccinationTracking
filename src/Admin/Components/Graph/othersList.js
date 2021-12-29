@@ -48,16 +48,33 @@ const OthersList = () => {
     });
   };
 
+  //----booster--------------------------
+  const getBoosters = async () => {
+    const users = await firestore
+      .collection("users")
+      .where("doses.selectedBooster", "==", selectedVaccine);
+    users.get().then((querysnapshot) => {
+      const tempDoc = [];
+      querysnapshot.forEach((doc) => {
+        tempDoc.push({ id: doc.id, ...doc.data() });
+      });
+      setUsers(tempDoc);
+    });
+  };
+  //------------------------------------
+
   useEffect(() => {
     getVaccines();
     getUsers();
+    getBoosters(); //booster
   }, [selectedVaccine]);
 
   const others1 = users.filter((d) => d["1"]?.others !== "");
   const others2 = users.filter((d) => d["2"]?.others !== "");
+  const others3 = users.filter((d) => d["3"]?.others !== ""); //booster
 
   let red = others1.reduce(
-    (a, c) => ((a[c["1"]?.others] = (a[c["1"]?.others] || 0) + 1), a),
+    (a, c) => ((a[c["1"]?.others] = a[c["1"]?.others] || " "), a), //-----sample to only show the list and does not count it
     {}
   );
 
@@ -65,6 +82,13 @@ const OthersList = () => {
     (a, c) => ((a[c["2"]?.others] = (a[c["2"]?.others] || 0) + 1), a),
     {}
   );
+
+  //booster-------------------------------------------------
+  let red3 = others3.reduce(
+    (a, c) => ((a[c["3"]?.others] = (a[c["3"]?.others] || 0) + 1), a),
+    {}
+  );
+  //---------------------------------------------------------
 
   function objToString(obj) {
     let str = "";
@@ -86,6 +110,18 @@ const OthersList = () => {
     return str;
   }
 
+  //-----booster-------------------------------------
+  function objToString3(obj) {
+    let str = "";
+    for (const [p, val] of Object.entries(red3)) {
+      if (p !== "undefined") {
+        str += `${p}:${val}\n`;
+      }
+    }
+    return str;
+  }
+  //--------------------------------------------
+
   return (
     <div>
       <CardHeader title={<Title />} />
@@ -106,12 +142,22 @@ const OthersList = () => {
               <>
                 {/* then show here all the 1st dose and 2nd dose */}
                 <Grid item xs={6}>
-                  1st Dose <br />
+                  <Typography variant="h6">
+                    1st Dose <br />
+                  </Typography>
                   {objToString()} <br />
                 </Grid>
                 <Grid item xs={6}>
-                  2nd Dose <br />
+                  <Typography variant="h6">
+                    2nd Dose <br />
+                  </Typography>
                   {objToString2()}
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="h6">
+                    Booster <br />
+                  </Typography>
+                  {objToString3()}
                 </Grid>
               </>
             ) : (

@@ -30,6 +30,7 @@ const ChartWithSelect = () => {
   }, []);
 
   const [users, setUsers] = useState([]);
+  const [boosterUsers, setBoosterUsers] = useState([]); //--------booster
 
   useEffect(() => {
     let mounted = true;
@@ -55,8 +56,32 @@ const ChartWithSelect = () => {
       });
     };
 
+    //----for booster---------------------------------------
+    const getData2 = async () => {
+      const citiesRef = firestore.collection("users");
+      const snapshot = await citiesRef
+        .where("doses.selectedBooster", "==", selectedVaccine)
+        .get();
+      if (snapshot.empty) {
+        setBoosterUsers([]); //for the sputnik where data is empty
+        return;
+      }
+
+      snapshot.forEach((doc) => {
+        if (mounted) {
+          const usersData = snapshot.docs.map((d) => ({
+            id: d.id,
+            ...d.data(),
+          }));
+          setBoosterUsers(usersData);
+        }
+      });
+    };
+    //-------------------------------------------------------
+
     if (selectedVaccine) {
       getData1();
+      getData2();
     }
 
     return () => {
@@ -90,6 +115,19 @@ const ChartWithSelect = () => {
         }, acc);
   }, {});
 
+  //----------------------booster-------------------------------------------------
+  const counts3 = users.reduce((acc, cur) => {
+    return !cur["3"]?.sideEffects3
+      ? acc
+      : Object.entries(cur["3"]?.sideEffects3).reduce((acc, [key, value]) => {
+          if (value) {
+            acc[key] = (acc[key] || 0) + (1 / total) * 100;
+          }
+          return acc;
+        }, acc);
+  }, {});
+  //----------------------booster-------------------------------------------------
+
   const dose1 = Object.entries(counts).reduce((acc, [key, value]) => {
     return { ...acc, [key]: value.toFixed(2) };
   }, {});
@@ -97,6 +135,12 @@ const ChartWithSelect = () => {
   const dose2 = Object.entries(counts2).reduce((acc, [key, value]) => {
     return { ...acc, [key]: value.toFixed(2) };
   }, {});
+
+  //-----------boooster
+  const dose3 = Object.entries(counts3).reduce((acc, [key, value]) => {
+    return { ...acc, [key]: value.toFixed(2) };
+  }, {});
+  //------------------------------------------------------------
 
   const others1 = users.filter(
     (v) => v["1"]?.others !== undefined && v["1"]?.others !== ""
@@ -106,8 +150,15 @@ const ChartWithSelect = () => {
     (v) => v["2"]?.others !== undefined && v["2"]?.others !== ""
   );
 
+  //-----------booster
+  const others3 = users.filter(
+    (v) => v["3"]?.others !== undefined && v["3"]?.others !== ""
+  );
+  //--------------------------------------------------------------
+
   dose1.others = ((others1.length / total) * 100).toFixed(2);
   dose2.others = ((others2.length / total) * 100).toFixed(2);
+  dose3.others = ((others3.length / total) * 100).toFixed(2); //----booster
 
   const labels = [...new Set([...Object.keys(dose1), ...Object.keys(dose2)])];
 
@@ -140,6 +191,13 @@ const ChartWithSelect = () => {
                 label: "2nd Dose",
                 data: getData(dose2),
                 backgroundColor: ["rgba(75, 192, 192, 0.2)"],
+                borderColor: ["rgba(255, 159, 64, 1)"],
+                borderWidth: 1,
+              },
+              {
+                label: "Booster",
+                data: getData(dose3),
+                backgroundColor: ["rgba(255, 159, 64, 0.2)"],
                 borderColor: ["rgba(255, 159, 64, 1)"],
                 borderWidth: 1,
               },
