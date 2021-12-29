@@ -8,6 +8,7 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 const GraphMonth = () => {
   const [users, setUsers] = useState([]);
+  const [boosterUsers, setBoosterUsers] = useState([]);
   const [selectedVaccine, setSelectedVaccine] = useState(0);
   const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
   const [selectedDate, handleDateChange] = useState(new Date());
@@ -64,9 +65,34 @@ const GraphMonth = () => {
       });
     };
 
+    //----booster------------------------------------------
+
+    const getBooster = async () => {
+      const citiesRef = firestore.collection("users");
+      const snapshot = await citiesRef
+        .where("doses.selectedBooster", "==", selectedVaccine)
+        .get();
+      if (snapshot.empty) {
+        setBoosterUsers([]); //for the sputnik where data is empty
+        return;
+      }
+
+      snapshot.forEach((doc) => {
+        if (mounted) {
+          const usersData = snapshot.docs.map((d) => ({
+            id: d.id,
+            ...d.data(),
+          }));
+          setBoosterUsers(usersData);
+        }
+      });
+    };
+    //-----------------------------------------------------
+
     if (selectedVaccine) {
       getData1();
       getUsers();
+      getBooster();
     }
 
     return () => {
@@ -109,18 +135,25 @@ const GraphMonth = () => {
     [...dosesTemplate]
   );
 
-  //-------------booster------------------------------------------------------------
-  const booster = d2.reduce(
-    (acc, cur) => {
-      if (!cur.doses.dose2) return acc;
-      const month = new Date(cur.doses?.boosterDate?.seconds * 1000).getMonth();
-      acc[month] = acc[month] + 1;
+  //---booster------------------------------------------------------------------
 
+  const d3 = boosterUsers.filter(
+    (d) =>
+      new Date(d.doses.boosterDate.seconds * 1000).getFullYear() ==
+      selectedDate.getFullYear()
+  );
+
+  const doses3 = d3.reduce(
+    (acc, cur) => {
+      if (!cur.doses.selectedBooster) return acc;
+      const month = new Date(cur.doses.boosterDate.seconds * 1000).getMonth();
+      acc[month] = acc[month] + 1;
       return acc;
     },
     [...dosesTemplate]
   );
-  //-------------booster------------------------------------------------------------
+
+  //-----------------------------------------------------------------------------
 
   const realDoses = doses1.map((dose) => {
     return ((dose / usersSize) * 100).toFixed();
@@ -130,8 +163,7 @@ const GraphMonth = () => {
     return ((dose / usersSize) * 100).toFixed();
   });
 
-  //---booster-------------------------------------------------------
-  const realBooster = booster.map((dose) => {
+  const realDoses3 = doses3.map((dose) => {
     return ((dose / usersSize) * 100).toFixed();
   });
 
@@ -195,8 +227,8 @@ const GraphMonth = () => {
                 borderColor: "black",
               },
               {
-                label: "Booster", //-----------booster
-                data: realBooster,
+                label: "Booster",
+                data: realDoses3,
                 backgroundColor: ["green"],
                 borderWidth: 2,
                 borderColor: "black",
