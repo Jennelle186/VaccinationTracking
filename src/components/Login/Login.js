@@ -15,7 +15,6 @@ import {
 } from "@material-ui/core";
 import { auth } from "../../Firebase/utils";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import PhoneIcon from "@material-ui/icons/Phone";
 import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
 
 const useStyles = makeStyles((theme) => ({
@@ -136,7 +135,6 @@ const Login = (props) => {
               <Link to="/loginMobile" style={{ textDecoration: "none" }}>
                 <Tooltip title="Continue with Phone Number Sign in">
                   <Button variant="outlined" fullWidth color="secondary">
-                    {/* Phone number */}
                     <PhoneAndroidIcon />
                   </Button>
                 </Tooltip>
@@ -146,8 +144,6 @@ const Login = (props) => {
 
           <br />
 
-          {/* if may other mode of login- https://colorlib.com/wp/wp-content/uploads/sites/2/login-form-v11.jpg */}
-          {/* <Typography>Or login with</Typography> */}
           <Typography>
             Do you have an account?
             <Link to="/registration">Sign Up</Link>
@@ -155,10 +151,6 @@ const Login = (props) => {
           <Link to="/resetPassword">
             <Typography>Forgot Password?</Typography>
           </Link>
-          {/* not sure here, just trying to see if firebase works */}
-          {/* <ButtonForm onClick={signInWithGoogle}>
-            Continue with Gmail
-          </ButtonForm> */}
         </form>
       </Paper>
     </Grid>
