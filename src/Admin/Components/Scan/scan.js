@@ -276,7 +276,8 @@ const Scan = ({ scanResult }) => {
             {users &&
               users.map((user) => (
                 <li style={{ listStyle: "none" }}>
-                  {user.doses?.dose1 && user.doses?.dose2 === true ? ( //if dose1 and dose2 is true, show "Fully Vaccinated"
+                  {user.doses?.dose2 === true ||
+                  user.doses?.selectedVaccine == "J&J" ? ( //if dose1 and dose2 is true, show "Fully Vaccinated"
                     <>
                       {/* <ButtonForm onClick={() => handleRowClick()}>
                         Booster
@@ -409,12 +410,18 @@ const Scan = ({ scanResult }) => {
 
                           {user.doses?.selectedVaccine !== "J&J" ? (
                             <>
-                              {" "}
                               <Grid item>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                   <DatePicker
                                     format="MM/dd/yyyy"
-                                    value={secDose}
+                                    value={
+                                      user.doses.secondVaccinator
+                                        ? new Date(
+                                            user.doses?.secondDose.seconds *
+                                              1000
+                                          ).toDateString()
+                                        : secDose
+                                    }
                                     onChange={setSecDose}
                                     fullWidth
                                     id="date-picker-inline"
@@ -425,9 +432,8 @@ const Scan = ({ scanResult }) => {
                                 </MuiPickersUtilsProvider>
                               </Grid>
                               <Grid item>
-                                {" "}
                                 <TextField
-                                  value={batchNo2}
+                                  value={user.doses?.batchNo2}
                                   type="text"
                                   label="Batch Number"
                                   variant="outlined"
@@ -439,6 +445,7 @@ const Scan = ({ scanResult }) => {
                               {user.doses?.secondVaccinator ? ( //if the field second vaccinator exist
                                 <>
                                   {/* if it exist, shows the textfield with value of vaccinator name */}
+
                                   <Grid item>
                                     <TextField
                                       label="Second Vaccinator"
