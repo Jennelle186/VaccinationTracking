@@ -79,13 +79,13 @@ const OthersList = () => {
   );
 
   let red2 = others2.reduce(
-    (a, c) => ((a[c["2"]?.others] = (a[c["2"]?.others] || 0) + 1), a),
+    (a, c) => ((a[c["2"]?.others] = a[c["2"]?.others] || " "), a), //-----sample to only show the list and does not count it
     {}
   );
 
   //booster-------------------------------------------------
   let red3 = others3.reduce(
-    (a, c) => ((a[c["3"]?.others] = (a[c["3"]?.others] || 0) + 1), a),
+    (a, c) => ((a[c["3"]?.others] = a[c["3"]?.others] || " "), a), //-----sample to only show the list and does not count it
     {}
   );
   //---------------------------------------------------------
@@ -94,7 +94,7 @@ const OthersList = () => {
     let str = "";
     for (const [p, val] of Object.entries(red)) {
       if (p !== "undefined") {
-        str += `${p}:${val}\n`;
+        str += `${p},${val}\n`;
       }
     }
     return str;
@@ -104,7 +104,7 @@ const OthersList = () => {
     let str = "";
     for (const [p, val] of Object.entries(red2)) {
       if (p !== "undefined") {
-        str += `${p}:${val}\n`;
+        str += `${p} ,${val}\n`;
       }
     }
     return str;
@@ -115,7 +115,7 @@ const OthersList = () => {
     let str = "";
     for (const [p, val] of Object.entries(red3)) {
       if (p !== "undefined") {
-        str += `${p}:${val}\n`;
+        str += `${p},${val}\n`;
       }
     }
     return str;
