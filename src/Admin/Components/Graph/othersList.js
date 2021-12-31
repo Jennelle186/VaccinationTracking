@@ -20,6 +20,8 @@ const OthersList = () => {
   const [selectedVaccine, setSelectedVaccine] = useState(0);
   const handleChangeVaccine = (e) => setSelectedVaccine(e.target.value);
 
+  const [boosterUsers, setBoosterUsers] = useState([]);
+
   const getVaccines = async () => {
     const vaccines = await firestore
       .collection("vaccines")
@@ -58,7 +60,7 @@ const OthersList = () => {
       querysnapshot.forEach((doc) => {
         tempDoc.push({ id: doc.id, ...doc.data() });
       });
-      setUsers(tempDoc);
+      setBoosterUsers(tempDoc);
     });
   };
   //------------------------------------
@@ -71,7 +73,7 @@ const OthersList = () => {
 
   const others1 = users.filter((d) => d["1"]?.others !== "");
   const others2 = users.filter((d) => d["2"]?.others !== "");
-  const others3 = users.filter((d) => d["3"]?.others !== ""); //booster
+  const others3 = boosterUsers.filter((d) => d["3"]?.others !== ""); //booster
 
   let red = others1.reduce(
     (a, c) => ((a[c["1"]?.others] = a[c["1"]?.others] || " "), a), //-----sample to only show the list and does not count it
@@ -132,8 +134,20 @@ const OthersList = () => {
       />
       <Grid container style={{ marginTop: "1rem" }}>
         {selectedVaccine == "J&J" ? ( //if selectedVaccine == J&j show only the 1st dose
-          <Grid item xs={12}>
-            {objToString()}
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="h6">
+                First Dose <br />
+              </Typography>
+              {objToString()}
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <Typography variant="h6">
+                Booster <br />
+              </Typography>
+              {objToString3()}
+            </Grid>
           </Grid>
         ) : (
           //else show 1st dose and 2nd dose
