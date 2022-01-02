@@ -433,7 +433,7 @@ const SideEffects = (props) => {
                   <div></div>
                 )}
                 {user.doses?.dose2 == true &&
-                user.doses?.selectedBooster === null ? (
+                user.doses?.selectedBooster === undefined ? (
                   <div>
                     <form onSubmit={handleSubmit2}>
                       <Card className={classes.root} elevation={5}>
@@ -506,8 +506,7 @@ const SideEffects = (props) => {
                   <div></div>
                 )}
 
-                {(user.doses?.dose1 && user.doses?.dose2) == true ||
-                user.doses?.selectedBooster != null ? (
+                {user.doses?.selectedBooster ? (
                   <div>
                     {/* booster side effects here  */}
                     <form onSubmit={handleSubmit3}>
