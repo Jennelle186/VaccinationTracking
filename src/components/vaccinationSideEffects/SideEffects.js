@@ -177,6 +177,11 @@ const SideEffects = (props) => {
     }
   }
 
+  function display(others) {
+    if (typeof others === "string") return others;
+    return others?.join(", ");
+  }
+
   return (
     <Container>
       {users &&
@@ -222,10 +227,11 @@ const SideEffects = (props) => {
                       <TableRow>
                         <TableCell>Side Effects</TableCell>
                         <TableCell>
-                          {user["1"]?.others.join(", \n")}
+                          {display(user[1]?.others)}
                           {ar && <li>{ar}</li>}{" "}
                         </TableCell>
                       </TableRow>
+
                       {user.doses?.selectedVaccine !== "J&J" ? (
                         <>
                           <TableRow>
@@ -258,7 +264,7 @@ const SideEffects = (props) => {
                                 <></> //if true, show nothing
                               ) : (
                                 <>
-                                  <li> {user["2"]?.others.join(", \n")}</li>
+                                  <li> {display(user[2]?.others)}</li>
                                   {ar2 && <li>{ar2}</li>}
                                 </>
                               )}
@@ -298,13 +304,53 @@ const SideEffects = (props) => {
                           <TableRow>
                             <TableCell>Side Effects</TableCell>
                             <TableCell>
-                              {user["3"]?.others.join(", \n")}
+                              {display(user[3]?.others)}
                               {ar3 && <li>{ar3}</li>}{" "}
                             </TableCell>
                           </TableRow>
                         </>
                       ) : (
-                        <></>
+                        <>
+                          {" "}
+                          <TableRow>
+                            <TableCell>
+                              <b>Booster Vaccine</b>
+                            </TableCell>
+                            <TableCell>
+                              {" "}
+                              {user.doses?.selectedBooster}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Batch No</TableCell>
+                            <TableCell> {user.doses?.batchNo3}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Booster Date</TableCell>
+                            <TableCell>
+                              {" "}
+                              {user.doses?.boosterDate
+                                ? new Date(
+                                    user.doses?.boosterDate.seconds * 1000
+                                  ).toDateString()
+                                : ""}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Vaccinator</TableCell>
+                            <TableCell>
+                              {" "}
+                              {user.doses?.boosterVaccinator}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>Side Effects</TableCell>
+                            <TableCell>
+                              {display(user[3]?.others)}
+                              {ar3 && <li>{ar3}</li>}{" "}
+                            </TableCell>
+                          </TableRow>
+                        </>
                       )}
                     </TableBody>
                   </Table>
@@ -312,7 +358,9 @@ const SideEffects = (props) => {
               </Grid>
 
               <Grid item xs={12}>
-                {user.doses?.dose1 == true && user.doses?.dose2 == false ? (
+                {user.doses?.dose1 == true &&
+                user.doses?.dose2 == false &&
+                user.doses?.selectedBooster === undefined ? (
                   <div>
                     <form onSubmit={handleSubmit}>
                       <Card className={classes.root} elevation={5}>
@@ -385,7 +433,7 @@ const SideEffects = (props) => {
                   <div></div>
                 )}
                 {user.doses?.dose2 == true &&
-                user.doses?.selectedBooster == null ? (
+                user.doses?.selectedBooster === null ? (
                   <div>
                     <form onSubmit={handleSubmit2}>
                       <Card className={classes.root} elevation={5}>
@@ -458,7 +506,7 @@ const SideEffects = (props) => {
                   <div></div>
                 )}
 
-                {(user.doses?.dose1 && user.doses?.dose2) == true &&
+                {(user.doses?.dose1 && user.doses?.dose2) == true ||
                 user.doses?.selectedBooster != null ? (
                   <div>
                     {/* booster side effects here  */}
