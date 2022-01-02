@@ -69,6 +69,11 @@ const UserDetails = () => {
     history.goBack();
   };
 
+  function display(others) {
+    if (typeof others === "string") return others;
+    return others?.join(", ");
+  }
+
   return (
     <>
       {loading ? (
@@ -252,7 +257,8 @@ const UserDetails = () => {
                       </ListItem>
                       <ListItem>
                         <Typography>Others : </Typography>
-                        <ListItemText primary={user[1]?.others.join(", \n")} />
+
+                        <ListItemText primary={display(user[1]?.others)} />
                       </ListItem>
 
                       {user.doses?.selectedVaccine === "J&J" ? ( //if selectedVaccine is equals to J&J
@@ -266,9 +272,7 @@ const UserDetails = () => {
                           </ListItem>
                           <ListItem>
                             <Typography>Others : </Typography>
-                            <ListItemText
-                              primary={user[2]?.others.join(", \n")}
-                            />
+                            <ListItemText primary={display(user[2]?.others)} />
                           </ListItem>
                         </>
                       )}
@@ -279,7 +283,7 @@ const UserDetails = () => {
                       </ListItem>
                       <ListItem>
                         <Typography>Others : </Typography>
-                        <ListItemText primary={user[3]?.others.join(", \n")} />
+                        <ListItemText primary={display(user[3]?.others)} />
                       </ListItem>
                     </List>
                   </div>
