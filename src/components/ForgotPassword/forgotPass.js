@@ -24,14 +24,21 @@ const ForgotPassword = (props) => {
   const [errors, setErrors] = useState([]);
 
   const paperStyle = {
-    padding: 20,
+    //padding: 20,
     // width: 350,
-    margin: "20px auto",
-    padding: "3rem",
+    //margin: "20px auto",
+    //padding: "3rem",
+
+    height: "30%",
+    width: "35%",
+    margin: "13px auto",
+    padding: "2rem",
+    marginTop: "8%",
   };
 
   const btn = {
-    margin: "1.5rem 0",
+    margin: "1rem 0",
+    width: "100%",
   };
 
   const resetForm = () => {
@@ -100,6 +107,11 @@ const ForgotPassword = (props) => {
           <ButtonForm fullWidth style={btn} type="submit">
             Reset Password
           </ButtonForm>
+
+          <Typography>
+            Return to Login page?
+            <Link to="/login">Log In</Link>
+          </Typography>
         </form>
       </Paper>
     </Grid>
