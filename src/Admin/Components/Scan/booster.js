@@ -83,9 +83,12 @@ const Booster = ({ data, vaccine, vaccinator, users }) => {
             {user.doses?.selectedBooster ? (
               <>
                 <Grid item>
-                  <SelectVaccine
-                    vaccines={vaccine}
+                  <TextField
                     value={user.doses?.selectedBooster}
+                    type="text"
+                    label="Vaccine"
+                    variant="outlined"
+                    fullWidth
                     disabled={true}
                   />
                 </Grid>
